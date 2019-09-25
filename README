@@ -1,0 +1,14 @@
+virtualenv env_triton --python=python3
+cd env_triton
+source bin/activate
+pip install Django==2.0
+django-admin startproject triton
+cd triton
+python manage.py runserver
+pip install djangorestframework
+pip install httpie
+
+cd apps
+python ../manage.py startapp myapp
+
+pip freeze > requirements.txt
