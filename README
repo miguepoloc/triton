@@ -12,3 +12,22 @@ cd apps
 python ../manage.py startapp myapp
 
 pip freeze > requirements.txt
+
+#Iniciar el proyecto
+git init
+#Conectarse al bitbucket
+git remote add origin https://miguepoloc@bitbucket.org/labsis_invemar/triton.git
+#Para ver todo lo que puedo hacer dentro del remoto
+git remote -v
+#Para ver los cambios
+git status
+#Para agregar todos los cambios realizados
+gil add . --all
+#Para comentar los cambios
+git commit -m "Comentario"
+#Publicar los cambios
+#origin es el nombre que le asigné al repositorio
+#master que estoy en el repositorio master
+git push origin master
+#Para crear la rama
+git fetch && git checkout create-envs-files
