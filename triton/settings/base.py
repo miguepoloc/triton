@@ -117,10 +117,9 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
-STATICFILES_DIRS =  [os.path.join(BASE_DIR, 'static')] # le digo a django donde esta mi directorio de staticos base
-
+STATICFILES_DIRS =  [os.path.join(os.path.dirname(BASE_DIR), 'static')] # le digo a django donde esta mi directorio de staticos base
+print (os.path.join(os.path.dirname(BASE_DIR)))
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), 'static') # directorio "static" que compartes todos los proyectos, que se crea despeus de ejecutar el comando django staticcompile
 
 MEDIA_URL = STATIC_URL + 'media/'
 

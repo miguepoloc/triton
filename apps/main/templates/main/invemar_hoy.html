@@ -1,3 +1,4 @@
+{% load staticfiles %}
 <!DOCTYPE html>
 <html lang="es">
 
@@ -7,20 +8,18 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-    <link href="css/font-awesome.min.css" rel="stylesheet">
-
-    <link rel="stylesheet" href="css/gmaps-sidebar.css" />
-
-    <link rel="stylesheet" href="css/bootstrap.css" />
-    <link rel="stylesheet" href="css/styles.css">
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/gmaps-sidebar.css' %}">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
 
     <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-
     <script src="https://code.highcharts.com/highcharts.js"></script>
     <script src="https://code.highcharts.com/modules/exporting.js"></script>
     <script src="https://momentjs.com/downloads/moment.min.js"></script>
-    <link href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+
 
     <style>
         body {
@@ -132,8 +131,6 @@
                     <p><b>Fuente:</b> IDEAM (<a
                             href='http://www.ideam.gov.co/web/tiempo-y-clima/cartilla-pronostico-pleamares-bajamares-costa-atlantica-colombiana'>Sitio
                             oficial</a>)</p>
-
-
                 </div>
             </div>
         </div>
@@ -159,10 +156,9 @@
     </section>
 
 
-
-    <script src="js/jquery-2.1.1.js"></script>
-    <script src="js/jquery-sidebar.js"></script>
-    <script src="js/bootstrap.js"></script>
+    <script type="text/javascript" src="{%  static 'js/jquery-2.1.1.js' %}"></script>
+    <script type="text/javascript" src="{%  static 'js/jquery-sidebar.js' %}"></script>
+    <script type="text/javascript" src="{%  static 'js/bootstrap.js' %}"></script>
 
     <script>
         function Meteogram(xml, container, t, h, v, p) {
@@ -703,9 +699,6 @@
                 this.drawWindArrows(chart);
                 this.drawBlocksForWindArrows(chart);
             }
-
-
-
         };
 
         Meteogram.prototype.createChart = function () {
@@ -728,7 +721,7 @@
                     printButtonTitle: "Importar",
                     rangeSelectorFrom: "Desde",
                     rangeSelectorTo: "Hasta",
-                    rangeSelectorZoom: "Período",
+                    rangeSelectorZoom: "Periodo",
                     downloadPNG: 'Descargar imagen PNG',
                     downloadJPEG: 'Descargar imagen JPEG',
                     downloadPDF: 'Descargar imagen PDF',
@@ -810,7 +803,7 @@
         });
         $.ajax({
             dataType: 'json',
-            url: '/conectividad/consultar-mareas',
+            url: '/datos',
             success: function (xml) {
                 console.log(xml);
                 var htmlStr = "";
@@ -827,7 +820,7 @@
         });
         $.ajax({
             dataType: 'json',
-            url: '/conectividad/mareas-horas',
+            url: '/datos-horas',
             success: function (xml) {
                 var dataMareas = [];
                 var horActual = [];
@@ -882,8 +875,5 @@
             error: Meteogram.prototype.error
         });
     </script>
-
-
 </body>
-
 </html>
