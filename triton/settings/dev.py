@@ -10,7 +10,19 @@ ALLOWED_HOSTS = ['*',]
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
+        'ENGINE': 'django.db.backends.oracle',
+        'NAME': 'sci',
+        'USER': 'datosdecampo',
+        'PASSWORD': 'paseos',
+        'HOST': '192.168.3.70',
+        'PORT': '1521',
+    },
+    'neo_argos': {
+        'ENGINE': 'django.db.backends.oracle',
+        'NAME': 'sci',
+        'USER': 'datosdecampo',
+        'PASSWORD': 'paseos',
+        'HOST': '192.168.3.70',
+        'PORT': '1521',
+    },
 }
