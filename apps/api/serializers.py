@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import VmAgm334580310
+from .models import VmAgm334580310, VmAgm3345803
 
 class MareaSerializer(serializers.Serializer):
     mes = serializers.IntegerField(default=None)
@@ -10,7 +10,12 @@ class MareaSerializer(serializers.Serializer):
     marea = serializers.CharField(default=None, max_length=None)
     mareaTexto = serializers.CharField(default=None, max_length=None)
 
-class DatosEstacionSerializer(serializers.ModelSerializer):
+class DatosEstacionSerializer10(serializers.ModelSerializer):
     class Meta:
         model = VmAgm334580310
+        fields = '__all__'
+
+class DatosEstacionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = VmAgm3345803
         fields = '__all__'

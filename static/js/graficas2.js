@@ -481,7 +481,7 @@ jQuery(document).ready(function ($) {
             Highcharts.setOptions({
                 global: {
                     useUTC: true,
-                    timezoneOffset: -5
+                    timezoneOffset: 300
                 },
                 lang: {
                     loading: 'Cargando...',
@@ -520,24 +520,24 @@ jQuery(document).ready(function ($) {
                 xml = this.xml,
                 pointStart;
             $.each(xml, function (i, dato) {
-                var fecha = dato.FECHA - 18000000;
+                var fecha = new Date(dato.fecha).getTime();
                 meteogram.temperatures.push({
                     x: fecha,
-                    y: dato.TEMPERATURA
+                    y: dato.temperatura
                 });
-                meteogram.windDirections.push(dato.DIRECCION_VIENTO);
+                meteogram.windDirections.push(dato.direccion_viento);
                 meteogram.windSpeeds.push({
                     x: fecha,
-                    y: dato.VELOCIDAD_VIENTO
+                    y: dato.velocidad_viento
                 });
                 meteogram.precipitations.push({
                     x: fecha,
-                    y: dato.HUMEDAD_RELATIVA
+                    y: dato.humedad_relativa
                 });
-                if (dato.PRESION != null) {
+                if (dato.presion != null) {
                     meteogram.pressures.push({
                         x: fecha,
-                        y: dato.PRESION * 1000
+                        y: dato.presion * 1000
                     });
                 }
             });
@@ -547,18 +547,19 @@ jQuery(document).ready(function ($) {
 
     $.ajax({
         dataType: 'json',
-        url: '/api/estacion/',
+        url: '/api/estacion10/',
         success: function (xml) {
-            console.log(xml);
-            //            window.meteogram = new Meteogram(xml, 'containerTemp', true, true, false, false);
-            //            window.meteogram = new Meteogram(xml, 'containerVientos', false, false, true, true);
-            //            var fecha = new Date(xml[0].FECHA);
-            //            $("#time").html(fecha.getFullYear() + "/" + (fecha.getMonth() + 1) + "/" + fecha.getDate() +
-            //                " " + fecha.getHours() + ":" + fecha.getMinutes());
-            //            $("#temp").html(xml[0].TEMPERATURA.toFixed(1) + "°C");
-            //            $("#wind").html("Velocidad de viento: " + xml[xml.length - 1].VELOCIDAD_VIENTO.toFixed(1) +
-            //                " m/s");
-            //
+            var xml_data = xml.results;
+            newFunction(xml_data);
+            window.meteogram = new Meteogram(xml_data, 'containerTemp', true, true, false, false);
+            window.meteogram = new Meteogram(xml_data, 'containerVientos', false, false, true, true);
+            var fecha = new Date(xml_data[0].fecha);
+            console.log(fecha);
+            $("#time").html(fecha.getFullYear() + "/" + (fecha.getMonth() + 1) + "/" + fecha.getDate() +
+                " " + fecha.getHours() + ":" + fecha.getMinutes());
+            $("#temp").html(xml_data[0].temperatura.toFixed(1) + "°C");
+            $("#wind").html("Velocidad de viento: " + xml_data[xml_data.length - 1].velocidad_viento.toFixed(1) +
+                " m/s");
         },
         error: Meteogram.prototype.error
     });
@@ -584,15 +585,16 @@ jQuery(document).ready(function ($) {
             var dataMareas = [];
             var horActual = [];
             var d = new Date();
+            //Para el valor actual
             for (var i = 0; i < xml.length; i++) {
                 dataMareas.push(xml[i].altura);
-                if (d.getMinutes() - 5 < xml[i].minuto && d.getMinutes() + 5 > xml[i].minuto && d
-                    .getHours() == xml[i].hora) {
+                if (d.getMinutes() - 5 < xml[i].minuto && d.getMinutes() + 5 > xml[i].minuto && d.getHours() == xml[i].hora) {
                     horActual.push(xml[i].altura);
                 } else {
                     horActual.push(null);
                 }
             }
+
             Highcharts.chart('g-mareas', {
                 chart: {
                     type: 'area'
@@ -602,9 +604,8 @@ jQuery(document).ready(function ($) {
                 },
                 xAxis: {
                     type: 'datetime'
-                    //categories: ['Apples', 'Oranges', 'Pears', 'Grapes', 'Bananas']
                 },
-                yAxis: [{ // precipitation axis
+                yAxis: [{
                     title: {
                         text: 'altura (m)'
                     }
@@ -615,18 +616,23 @@ jQuery(document).ready(function ($) {
                 series: [{
                         name: 'Marea',
                         data: dataMareas,
-                        pointStart: Date.UTC(d.getYear(), xml[0].mes - 1, xml[0].dia),
+                        pointStart: Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getDate()-1, d.getHours(), d.getSeconds()),
                         pointInterval: 60000
                     },
                     {
                         name: 'Valor actual',
                         data: horActual,
-                        pointStart: Date.UTC(d.getYear(), xml[0].mes - 1, xml[0].dia),
+                        pointStart: Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getDate()-1, d.getHours(), d.getSeconds()),
                         pointInterval: 60000
                     }
                 ]
             });
+            console.log(d.getDate())
         },
         error: Meteogram.prototype.error
     });
 });
+
+function newFunction(xml_data) {
+    console.log(xml_data);
+}
