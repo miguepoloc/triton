@@ -31,3 +31,17 @@ git commit -m "Comentario"
 git push origin master
 #Para crear la rama
 git fetch && git checkout create-envs-files
+
+
+#Para cambiar a la rama
+git checkout (rama)
+#Luego de hacer todo toca revisar el estado, añadir todo con 
+git add . --all
+#Luego hacer el commit
+#Cuando estoy trabajando en la rama para hacer el push
+git push origin
+
+#Luego debo regresar a trabajar en el master
+gir checkout master
+#Luego git pull para combinar los cambios remotos con el locl
+git pull origin master 

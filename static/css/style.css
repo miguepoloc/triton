@@ -14,8 +14,8 @@ html {
 }
 
 body {
-  font-size: 1.6rem;
-  font-family: "PT Sans", sans-serif;
+  height: 100%;
+  font: 10pt "roboto", Arial, Helvetica, sans-serif;
 }
 
 a {
@@ -715,9 +715,12 @@ li.list-group-item {
   border: none;
   cursor: pointer;
   position: relative;
-  border-radius: 16px; /*IE 11*/
-  -moz-border-radius: 16px; /*Mozilla*/
-  -webkit-border-radius: 16px; /*Chrome and Safari*/
+  border-radius: 16px;
+  /*IE 11*/
+  -moz-border-radius: 16px;
+  /*Mozilla*/
+  -webkit-border-radius: 16px;
+  /*Chrome and Safari*/
 }
 
 .s-switch:before {
@@ -730,9 +733,12 @@ li.list-group-item {
   height: 30px;
   background: #FFFFFF;
   z-index: 1;
-  border-radius: 16px; /*IE 11*/
-  -moz-border-radius: 16px; /*Mozilla*/
-  -webkit-border-radius: 16px; /*Chrome and Safari*/
+  border-radius: 16px;
+  /*IE 11*/
+  -moz-border-radius: 16px;
+  /*Mozilla*/
+  -webkit-border-radius: 16px;
+  /*Chrome and Safari*/
 }
 
 .s-switch:after {

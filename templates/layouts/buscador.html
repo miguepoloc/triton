@@ -1,0 +1,7 @@
+<form id="buscadorES" method="POST" action="{% url 'siam:buscador' %}">
+	{% csrf_token %}
+	<input style="margin-top: 2.2%;" name="q" type="text" placeholder="Buscador SiAM" {% if q %} value="{{ q }}" {% endif %}/>
+    <div class="icon-buscador">
+        <a id="enlaceBuscadorES" href=""><i class="fa fa-search"></i></a>
+    </div>
+</form>

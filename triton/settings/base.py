@@ -41,7 +41,8 @@ DJANGO_APPS = [
 ]
 
 LOCAL_APPS = [
-    'apps.main'
+    'apps.main',
+    'apps.api'
 ]
 
 THIRD_PARTY_APPS = [
@@ -65,7 +66,7 @@ ROOT_URLCONF = 'triton.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, "templates")],
+        'DIRS': [os.path.join(os.path.dirname(BASE_DIR), "templates")],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -77,7 +78,6 @@ TEMPLATES = [
         },
     },
 ]
-
 WSGI_APPLICATION = 'triton.wsgi.application'
 
 
@@ -118,7 +118,6 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
 STATICFILES_DIRS =  [os.path.join(os.path.dirname(BASE_DIR), 'static')] # le digo a django donde esta mi directorio de staticos base
-print (os.path.join(os.path.dirname(BASE_DIR)))
 STATIC_URL = '/static/'
 
 MEDIA_URL = STATIC_URL + 'media/'
