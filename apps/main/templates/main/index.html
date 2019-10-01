@@ -7,16 +7,24 @@
     {% include 'layouts/head.html' %}
     {% leaflet_js %}
     {% leaflet_css %}
+
     <style>
         .leaflet-container {
             height: 100%;
         }
+
         html,
         body,
         #map {
             height: 100%;
             font: 10pt "roboto", Arial, Helvetica, sans-serif;
             background: rgb(12, 63, 115);
+        }
+
+        .container,
+        .hidden-xs,
+        .hidden-sm {
+            margin-bottom: 0em;
         }
     </style>
 </head>

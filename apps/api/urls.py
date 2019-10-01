@@ -4,9 +4,8 @@ from apps.api import views
 from rest_framework import routers
 
 router = routers.DefaultRouter()
-router.register("estacion", views.DatosEstacionList)
-router.register("estacion10", views.DatosEstacionList10)
-
+router.register("estacion", views.DatosEstacionList10)
+router.register("coralina", views.DatosCoralinaList)
 
 urlpatterns = [
     url(r'^datos/$', views.MareaList.as_view()),

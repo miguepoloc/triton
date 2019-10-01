@@ -547,7 +547,7 @@ jQuery(document).ready(function ($) {
 
     $.ajax({
         dataType: 'json',
-        url: '/api/estacion10/',
+        url: '/api/estacion/',
         success: function (xml) {
             var xml_data = xml.results;
             newFunction(xml_data);
@@ -616,13 +616,13 @@ jQuery(document).ready(function ($) {
                 series: [{
                         name: 'Marea',
                         data: dataMareas,
-                        pointStart: Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getDate()-1, d.getHours(), d.getSeconds()),
+                        pointStart: Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getDate() - 1, d.getHours(), d.getSeconds()),
                         pointInterval: 60000
                     },
                     {
                         name: 'Valor actual',
                         data: horActual,
-                        pointStart: Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getDate()-1, d.getHours(), d.getSeconds()),
+                        pointStart: Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getDate() - 1, d.getHours(), d.getSeconds()),
                         pointInterval: 60000
                     }
                 ]

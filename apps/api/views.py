@@ -1,9 +1,9 @@
 from django.shortcuts import render
 from rest_framework import views, viewsets, mixins
 from rest_framework.response import Response
-from .serializers import MareaSerializer, DatosEstacionSerializer, DatosEstacionSerializer10
+from .serializers import MareaSerializer, DatosEstacionSerializer10, DatosCoralinaSerializer
 from .helper import MareaHoras, MareaHoy
-from .models import VmAgm334580310, VmAgm3345803
+from .models import VmAgm334580310, VmAgm2507816
 
 class MareaList(views.APIView):
 
@@ -19,13 +19,12 @@ class MareaHorasList(views.APIView):
         results = MareaSerializer(datos_lista, many=True).data
         return Response(results)
 
-class DatosEstacionList(mixins.ListModelMixin, viewsets.GenericViewSet):
-
-    serializer_class = DatosEstacionSerializer
-    queryset = VmAgm3345803.objects.using('neo_argos').order_by('-fecha')
-
 class DatosEstacionList10(mixins.ListModelMixin, viewsets.GenericViewSet):
 
-    serializer_class = DatosEstacionSerializer
+    serializer_class = DatosEstacionSerializer10
     queryset = VmAgm334580310.objects.using('neo_argos').order_by('-fecha')
 
+class DatosCoralinaList(mixins.ListModelMixin, viewsets.GenericViewSet):
+
+    serializer_class = DatosCoralinaSerializer
+    queryset = VmAgm2507816.objects.using('neo_argos').order_by('-fecha')[:10]

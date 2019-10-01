@@ -1,8 +1,6 @@
 import os
 from datetime import date
 import time
-from .models import VmAgm334580310
-from .serializers import DatosEstacionSerializer
 
 #Directorio raiz del proyecto (triton)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
