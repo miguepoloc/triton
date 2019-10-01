@@ -5,3 +5,6 @@ def invemar_hoy(request):
 
 def geovisor(request):
     return render(request, 'main/index.html')
+
+def coralina(request):
+    return render(request, 'main/coralina.html')

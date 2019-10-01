@@ -1,24 +1,9 @@
 {% load staticfiles %}
-{% load leaflet_tags %}
 <!DOCTYPE html>
 <html>
 
 <head>
     {% include 'layouts/head.html' %}
-    {% leaflet_js %}
-    {% leaflet_css %}
-    <style>
-        .leaflet-container {
-            height: 100%;
-        }
-        html,
-        body,
-        #map {
-            height: 100%;
-            font: 10pt "roboto", Arial, Helvetica, sans-serif;
-            background: rgb(12, 63, 115);
-        }
-    </style>
 </head>
 
 <body>
@@ -574,10 +559,11 @@
             <span class="glyphicon glyphicon-globe"></span>
         </li>
     </ul>
-    <div id="map" class="sidebar-map">{% leaflet_map "yourmap" %}</div>
-
-
+    <div id="map" class="sidebar-map"></div>
+    
+    <script type="text/javascript" src="{%  static 'js/esri-leaflet.js' %}"></script>
     {% include 'layouts/footer.html' %}
+    <script type="text/javascript" src="{%  static 'js/leaflet.js' %}"></script>
 </body>
 
 </html>
