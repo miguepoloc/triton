@@ -5,7 +5,11 @@ from rest_framework import routers
 
 router = routers.DefaultRouter()
 router.register("estacion", views.DatosEstacionList10)
-router.register("coralina", views.DatosCoralinaList)
+router.register("38883", views.DatosCoralinaList38883, "38883")
+router.register("38884", views.DatosCoralinaList38884, "38884")
+router.register("38885", views.DatosCoralinaList38885, "38885")
+router.register("39161", views.DatosCoralinaList39161, "39161")
+router.register("39162", views.DatosCoralinaList39162, "39162")
 
 urlpatterns = [
     url(r'^datos/$', views.MareaList.as_view()),

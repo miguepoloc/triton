@@ -95,7 +95,7 @@ article {
 
 .info .city,
 .night {
-	font-size: 24px;
+	font-size: 30px;
 	font-weight: 200;
 	position: relative;
 
@@ -112,12 +112,11 @@ article {
 }
 
 .info .city:after {
-	content: '';
 	width: 15px;
 	height: 2px;
 	background: #fff;
 	position: relative;
-	display: inline-block;
+	display: none;
 	vertical-align: middle;
 	margin-left: 10px;
 }
@@ -127,12 +126,12 @@ article {
 	font-size: 13px;
 	font-weight: bold;
 
-	text-transform: lowercase;
+	text-transform: uppercase;
 	text-align: left;
 }
 
 .night {
-	font-size: 15px;
+	font-size: 18px;
 	text-transform: uppercase;
 }
 
@@ -242,11 +241,12 @@ figure {
 /******************************cuadro temperatura y presion****************************************/
 
 
-#g-temp {
+#g-temp, #g-pre {
 	margin-top: 2em;
 	padding: 2em;
 	background: #0e284c;
 }
+
 
 #g-vientos {
 	margin-top: 0;

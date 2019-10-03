@@ -38,7 +38,7 @@ class VmAgm2507816(models.Model):
     id_proyecto = models.IntegerField()
     id_metodologia = models.IntegerField()
     id_tematicas = models.IntegerField()
-    fecha = models.DateField()
+    fecha = models.CharField(max_length=100, blank=True, null=True)
     fecha_ano = models.FloatField(blank=True, null=True)
     fecha_mes = models.CharField(max_length=7, blank=True, null=True)
     fecha_descarga = models.DateField(blank=True, null=True)
@@ -52,7 +52,7 @@ class VmAgm2507816(models.Model):
     es_replica = models.FloatField(blank=True, null=True)
     variable = models.CharField(max_length=2000, blank=True, null=True)
     variable_des = models.CharField(max_length=4000, blank=True, null=True)
-    fecha_hora = models.CharField(max_length=2000, blank=True, null=True)
+    fecha_hora = models.CharField(max_length=100, blank=True, null=True)
     valor = models.FloatField(blank=True, null=True)
     unidades = models.CharField(max_length=2000, blank=True, null=True)
     unidades_des = models.CharField(max_length=4000, blank=True, null=True)
@@ -61,3 +61,26 @@ class VmAgm2507816(models.Model):
     class Meta:
         managed = False
         db_table = 'vm_agm_2507_816'
+
+class VTriton(models.Model):
+    id_muestreo = models.IntegerField(primary_key=True)
+    id_estacion = models.IntegerField()
+    des_estacion = models.CharField(max_length=1200, blank=True, null=True)
+    fecha_hora = models.CharField(max_length=100, blank=True, null=True)
+    dir_v = models.FloatField(blank=True, null=True)
+    tem_ag = models.FloatField(blank=True, null=True)
+    od = models.FloatField(blank=True, null=True)
+    pr_at = models.FloatField(blank=True, null=True)
+    rg = models.FloatField(blank=True, null=True)
+    nm = models.FloatField(blank=True, null=True)
+    pr = models.FloatField(blank=True, null=True)
+    t_ai = models.FloatField(blank=True, null=True)
+    vel_v = models.FloatField(blank=True, null=True)
+    con = models.FloatField(blank=True, null=True)
+    ph = models.FloatField(blank=True, null=True)
+    hr = models.FloatField(blank=True, null=True)
+    sal = models.FloatField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'v_triton'

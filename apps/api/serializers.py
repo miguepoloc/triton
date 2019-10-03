@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import VmAgm334580310, VmAgm2507816
+from .models import VmAgm334580310, VmAgm2507816, VTriton
 
 class MareaSerializer(serializers.Serializer):
     mes = serializers.IntegerField(default=None)
@@ -18,4 +18,9 @@ class DatosEstacionSerializer10(serializers.ModelSerializer):
 class DatosCoralinaSerializer(serializers.ModelSerializer):
     class Meta:
         model = VmAgm2507816
+        fields = '__all__'
+
+class DatosTritonSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = VTriton
         fields = '__all__'

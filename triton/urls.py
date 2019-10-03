@@ -17,12 +17,12 @@ from django.contrib import admin
 from django.urls import path
 from django.conf.urls import url
 from django.urls import include
-from apps.main.views import invemar_hoy, geovisor, coralina
+from apps.main.views import invemar_hoy, geovisor
 
 urlpatterns = [
     path("", geovisor),
     path("invemar-hoy/", invemar_hoy),
-    path("coralina/", coralina),
     url(r'^', include('apps.api.urls')),
+    url(r'^', include('apps.coralina.urls')),
     path('admin/', admin.site.urls),
 ]
