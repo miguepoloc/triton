@@ -83,4 +83,4 @@ class VTriton(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'v_triton'
+        db_table = 'vm_triton'

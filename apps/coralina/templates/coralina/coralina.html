@@ -58,13 +58,15 @@
                         <div class="city-selected">
                             <article>
                                 <div class="info">
-                                    <div class="city"><span>Estación:</span> {{ estacion.des_estacion }}</div>
-                                    <div id="time" class="night">{{ estacion.fecha_hora }} </div>
-                                    <div id="temp" class="temp">{{ estacion.t_ai }} °C</div>
-                                    <div class="city">
-                                        <span id="wind">Velocidad del viento: {{ estacion.vel_v }} m/s</span>
+                                    <div class="city"><span>Estación:</span>
+                                        <p id="nom_estacion"></p>
                                     </div>
-                                    <p id="id_estacion">{{ estacion.id_estacion }}</p>
+                                    <div id="time" class="night"></div>
+                                    <div id="temp" class="temp"></div>
+                                    <div class="city">
+                                        <span id="wind"></span>
+                                    </div>
+                                    <p id="id_estacion" style="display: none">{{ estacion.id_estacion }}</p>
                                 </div>
                             </article>
                         </div>
@@ -119,25 +121,27 @@
         </div>
     </section>
 
-    <section id="g-prueba">
+    <section id="g-p">
         <div class="container-fluid">
             <div class="row">
-                <div class="col-md-6" id="containerp1"></div>
-                <div class="col-md-6" id="containerp2"></div>
+                <div class="col-md-6" id="containerX"></div>
+                <div class="col-md-6" id="containerY"></div>
             </div>
         </div>
     </section>
 
-    <!-- <script src="https://code.highcharts.com/highcharts.js"></script> -->
-    <script src="https://code.highcharts.com/stock/highstock.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highcharts/5.0.6/js/highstock.js"></script>
-    <script src="https://code.highcharts.com/stock/modules/data.js"></script>
-    <script src="https://code.highcharts.com/stock/modules/exporting.js"></script>
-    <script src="https://code.highcharts.com/stock/modules/export-data.js"></script>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/data.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <script src="https://code.highcharts.com/modules/export-data.js"></script>
+    <script src="https://code.highcharts.com/modules/windbarb.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+
+
     {% include 'layouts/footer.html' %}
+
     <script type="text/javascript" src="{%  static 'js/graficas_coralina.js' %}"></script>
-    <!-- <script type="text/javascript" src="{%  static 'js/prueba.js' %}"></script> -->
-    <script type="text/javascript" src="{%  static 'js/graficas_precipitacion.js' %}"></script>
+    <script type="text/javascript" src="{%  static 'js/grafica_estaciones.js' %}"></script>
 
 </body>
 

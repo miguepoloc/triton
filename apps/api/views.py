@@ -45,24 +45,24 @@ class DatosCoralinaList(mixins.ListModelMixin, viewsets.GenericViewSet):
 class DatosCoralinaList38883(mixins.ListModelMixin, viewsets.GenericViewSet):
 
     serializer_class = DatosTritonSerializer
-    queryset = VTriton.objects.using('neo_argos').filter(id_estacion=38883).order_by('-fecha_hora')[:200]
+    queryset = VTriton.objects.using('neo_argos').filter(id_estacion=38883).order_by('-fecha_hora')[:720]
 
 class DatosCoralinaList38884(mixins.ListModelMixin, viewsets.GenericViewSet):
 
     serializer_class = DatosTritonSerializer
-    queryset = VTriton.objects.using('neo_argos').filter(id_estacion=38884).order_by('-fecha_hora')[:200]
+    queryset = VTriton.objects.using('neo_argos').filter(id_estacion=38884).order_by('-fecha_hora')[:720]
 
 class DatosCoralinaList38885(mixins.ListModelMixin, viewsets.GenericViewSet):
 
     serializer_class = DatosTritonSerializer
-    queryset = VTriton.objects.using('neo_argos').filter(id_estacion=38885).order_by('-fecha_hora')[:200]
+    queryset = VTriton.objects.using('neo_argos').filter(id_estacion=38885).order_by('-fecha_hora')[:720]
 
 class DatosCoralinaList39161(mixins.ListModelMixin, viewsets.GenericViewSet):
 
     serializer_class = DatosTritonSerializer
-    queryset = VTriton.objects.using('neo_argos').filter(id_estacion=39161).order_by('-fecha_hora')[:200]
+    queryset = VTriton.objects.using('neo_argos').filter(id_estacion=39161).order_by('-fecha_hora')[:720]
 
 class DatosCoralinaList39162(mixins.ListModelMixin, viewsets.GenericViewSet):
 
     serializer_class = DatosTritonSerializer
-    queryset = VTriton.objects.using('neo_argos').filter(id_estacion=39162).order_by('-fecha_hora')[:200]
+    queryset = VTriton.objects.using('neo_argos').filter(id_estacion=39162).order_by('-fecha_hora')[:720]
