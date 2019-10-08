@@ -241,7 +241,7 @@ figure {
 /******************************cuadro temperatura y presion****************************************/
 
 
-#g-temp, #g-pre {
+#g-temp, #g-pre, #g-X {
 	margin-top: 2em;
 	padding: 2em;
 	background: #0e284c;
