@@ -1,12 +1,10 @@
 {% load staticfiles %}
-{% load leaflet_tags %}
+
 <!DOCTYPE html>
 <html>
 
 <head>
     {% include 'layouts/head.html' %}
-    {% leaflet_js %}
-    {% leaflet_css %}
 
     <style>
         .leaflet-container {
@@ -598,7 +596,8 @@
             <span class="glyphicon glyphicon-globe"></span>
         </li>
     </ul>
-    <div id="map" class="sidebar-map">{% leaflet_map "yourmap" %}</div>
+    <div id="map" class="sidebar-map">
+    </div>
     {% include 'layouts/footer.html' %}
 </body>
 

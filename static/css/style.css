@@ -866,7 +866,7 @@ li.list-group-item {
     height: auto;
     line-height: 3;
     color: inherit;
-    padding: 12px 0;
+    padding: 19px 0;
     text-decoration: none;
     text-align: center;
   }
@@ -877,6 +877,7 @@ li.list-group-item {
 
   .sidebar-tabs span {
     font-size: 13px;
+    line-height: 1;
   }
 
   .sidebar.collapsed {
