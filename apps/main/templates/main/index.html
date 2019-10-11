@@ -5,6 +5,9 @@
 
 <head>
     {% include 'layouts/head.html' %}
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" />
+    <link href='http://fonts.googleapis.com/css?family=Lato:900,300' rel='stylesheet' type='text/css'>
+    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
 
     <style>
         .leaflet-container {
@@ -27,7 +30,7 @@
     </style>
 </head>
 
-<body>
+<body class="easyPrint">
     {% include 'layouts/logo.html' %}
     <div id="sidebar" class="sidebar collapsed">
         <div class="sidebar-tabs">
@@ -45,14 +48,26 @@
                 </li>
                 <li>
                     <a href="#servicios" role="tab">
-                        <i class="icon-layers"></i><br>
+                        <i class="icon-stack"></i><br>
                         <span>Capas</span>
                     </a>
                 </li>
                 <li>
-                    <a href="/invemar-hoy/" role="tab">
+                    <a href="/invemar-hoy/" role="tab" target="_blank">
                         <i class="icon-estacion-invemar"></i><br>
                         <span>Invemar hoy</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="http://triton.invemar.org.co:8080/thredds/catalog.html" role="tab" target="_blank">
+                        <i class="icon-download"></i><br>
+                        <span>Descargar datos</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="javascript:manualPrint();" role="tab">
+                        <i class="icon-printer"></i><br>
+                        <span>Imprimir pantalla</span>
                     </a>
                 </li>
             </ul>
@@ -81,7 +96,7 @@
                     consumidos e interpretados a través framework Javascript leaflet 1.0.3. </p>
                 <p>Los archivos NetCDF de las variables desplegadas, pueden ser descargados para utilizarlos en otras
                     plataformas desde el repositorio de datos de TRITON en este <a
-                        href="http://triton.invemar.org.co:8080/thredds/catalog.html">enlace</a> .</p>
+                        href="http://triton.invemar.org.co:8080/thredds/catalog.html" target="_blank">enlace</a> .</p>
                 <p>
                     <h5>Versión:</h5> Versión a prueba de errores
                 </p>
@@ -142,6 +157,7 @@
                 </h1>
                 <div class="content-tab">
                     <div class="list-group">
+
                         <li class="list-group-item" id="bSLAh">
                             <span class="pull-right sbtn">
                                 <a class="info-sb" data-toggle="modal" data-target="#texto1">
@@ -154,9 +170,10 @@
                             </span>
                             <a class="list-group-item" href="#"> Altura nivel del mar</a>
                         </li>
+
                         <li class="list-group-item">
                             <span class="pull-right sbtn">
-                                <a data-toggle="modal" data-target="#texto2" class="info-sb" class="info-sb">
+                                <a data-toggle="modal" data-target="#texto2" class="info-sb">
                                     <span class="badge">
                                         <i class="fa fa-question-circle"></i>
                                     </span>
@@ -168,10 +185,11 @@
                             </span>
                             <a class="list-group-item" href="#"> Velocidad de las corrientes </a>
                         </li>
-                        <!--  li class="list-group-item"><span class="pull-right sbtn"><input id="cbSLA" type="checkbox" data-toggle="toggle" data-onstyle="info" data-on=" " data-off=" "></span> <a class="list-group-item" href="#"> Velocidad de las corrientes campo</a></li-->
+
                         <li class="list-group-item">
                             <span class="pull-right sbtn">
-                                <a data-toggle="modal" data-target="#texto3" class="info-sb"><span class="badge">
+                                <a data-toggle="modal" data-target="#texto3" class="info-sb">
+                                    <span class="badge">
                                         <i class="fa fa-question-circle"></i>
                                     </span>
                                 </a>
@@ -209,6 +227,7 @@
                             </span>
                             <a class="list-group-item" id="bWAVES" href="#"> Oleaje</a>
                         </li>
+
                         <li class="list-group-item">
                             <span class="pull-right sbtn">
                                 <a data-toggle="modal" data-target="#texto6" class="info-sb">
@@ -239,19 +258,24 @@
                         </li>
 
                         <li class="list-group-item">
-                            <a class="list-group-item" id="b38883" href="/estacion/38883"> Estacion 38883</a>
+                            <a class="list-group-item" id="b38883" href="/estacion/38883" target="_blank"> Estacion
+                                38883</a>
                         </li>
                         <li class="list-group-item">
-                            <a class="list-group-item" id="b38884" href="/estacion/38884"> Estacion 38884</a>
+                            <a class="list-group-item" id="b38884" href="/estacion/38884" target="_blank"> Estacion
+                                38884</a>
                         </li>
                         <li class="list-group-item">
-                            <a class="list-group-item" id="b38885" href="/estacion/38885"> Estacion 38885</a>
+                            <a class="list-group-item" id="b38885" href="/estacion/38885" target="_blank"> Estacion
+                                38885</a>
                         </li>
                         <li class="list-group-item">
-                            <a class="list-group-item" id="b39161" href="/estacion/39161"> Estacion 39161</a>
+                            <a class="list-group-item" id="b39161" href="/estacion/39161" target="_blank"> Estacion
+                                39161</a>
                         </li>
                         <li class="list-group-item">
-                            <a class="list-group-item" id="b39162" href="/estacion/39162"> Estacion 39162</a>
+                            <a class="list-group-item" id="b39162" href="/estacion/39162" target="_blank"> Estacion
+                                39162</a>
                         </li>
                     </div>
                 </div>
@@ -265,14 +289,6 @@
                 </h1>
             </div>
 
-            <div class="sidebar-pane" id="settings">
-                <h1 class="sidebar-header">
-                    Settings
-                    <span class="sidebar-close">
-                        <i class="fa fa-caret-left"></i>
-                    </span>
-                </h1>
-            </div>
         </div>
     </div>
 
@@ -312,7 +328,7 @@
                     </p>
 
                     <p>Fuente: COPERNICUS Marine Environtment Monitoring Service (
-                        <a href="http://marine.copernicus.eu/">http://marine.copernicus.eu/</a>)
+                        <a href="http://marine.copernicus.eu/" target="_blank">http://marine.copernicus.eu/</a>)
                     </p>
                 </div>
                 <div class="modal-footer">
@@ -353,7 +369,7 @@
                     </p>
 
                     <p>Fuente: COPERNICUS Marine Environtment Monitoring Service (
-                        <a href="http://marine.copernicus.eu/">http://marine.copernicus.eu/</a>)
+                        <a href="http://marine.copernicus.eu/" target="_blank">http://marine.copernicus.eu/</a>)
                     </p>
                 </div>
                 <div class="modal-footer">
@@ -398,7 +414,8 @@
                         o el generado por el paso de ondas y remolinos de mesoescala. </p>
 
                     <p>Fuente: OceanColor Web (
-                        <a href="https://oceancolor.gsfc.nasa.gov/">https://oceancolor.gsfc.nasa.gov/</a>)
+                        <a href="https://oceancolor.gsfc.nasa.gov/"
+                            target="_blank">https://oceancolor.gsfc.nasa.gov/</a>)
                     </p>
                 </div>
                 <div class="modal-footer">
@@ -447,7 +464,8 @@
 
 
                     <p>Fuente: OceanColor Web (
-                        <a href="https://oceancolor.gsfc.nasa.gov/">https://oceancolor.gsfc.nasa.gov/</a>)
+                        <a href="https://oceancolor.gsfc.nasa.gov/"
+                            target="_blank">https://oceancolor.gsfc.nasa.gov/</a>)
                     </p>
                 </div>
                 <div class="modal-footer">
@@ -596,9 +614,21 @@
             <span class="glyphicon glyphicon-globe"></span>
         </li>
     </ul>
-    <div id="map" class="sidebar-map">
-    </div>
+
+    <div id="map" class="sidebar-map"></div>
     {% include 'layouts/footer.html' %}
+    <script>
+        var printer = L.easyPrint({
+            sizeModes: ['Current'],
+            filename: 'myMap',
+            exportOnly: true,
+            hideControlContainer: true
+        }).addTo(map);
+
+        function manualPrint() {
+            printer.printMap('CurrentSize', 'MyManualPrint')
+        }
+    </script>
 </body>
 
 </html>
