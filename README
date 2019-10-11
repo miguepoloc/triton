@@ -11,6 +11,8 @@ pip install httpie
 cd apps
 python ../manage.py startapp myapp
 
+TOCA INSTALAR LEAFLET
+
 pip freeze > requirements.txt
 
 #Iniciar el proyecto
@@ -45,3 +47,14 @@ git push origin
 gir checkout master
 #Luego git pull para combinar los cambios remotos con el locl
 git pull origin master 
+
+#Las estaciones de monitoreo tienen los siguiente id
+38883
+38884
+38885
+39161
+39162
+
+#Se usará la base de datos VM_AGM_2507_816
+
+BUSCAR stockChart

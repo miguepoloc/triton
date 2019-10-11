@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from apps.api.models import VmAgm334580310, VmAgm2507816
 
 def invemar_hoy(request):
 	return render(request, 'main/invemar_hoy.html')

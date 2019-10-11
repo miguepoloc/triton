@@ -42,11 +42,12 @@ DJANGO_APPS = [
 
 LOCAL_APPS = [
     'apps.main',
-    'apps.api'
+    'apps.api',
+    'apps.coralina'
 ]
 
 THIRD_PARTY_APPS = [
-    'rest_framework'
+    'rest_framework',
 ]
 
 INSTALLED_APPS = DJANGO_APPS + LOCAL_APPS + THIRD_PARTY_APPS
@@ -79,7 +80,6 @@ TEMPLATES = [
     },
 ]
 WSGI_APPLICATION = 'triton.wsgi.application'
-
 
 # Password validation
 # https://docs.djangoproject.com/en/2.0/ref/settings/#auth-password-validators

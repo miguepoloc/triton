@@ -1,17 +1,18 @@
 jQuery(document).ready(function ($) {
     class Meteogram {
         constructor(xml, container, t, h, v, p) {
-            // Parallel arrays for the chart data, these are populated as the XML/JSON file
-            // is loaded
+
             this.symbols = [];
             this.symbolNames = [];
-            this.precipitations = [];
+            this.humedad = [];
             this.windDirections = [];
             this.windDirectionNames = [];
             this.windSpeeds = [];
             this.windSpeedNames = [];
             this.temperatures = [];
             this.pressures = [];
+            this.precipitacion = [];
+            this.radiacion = [];
             // Initialize
             this.xml = xml;
             this.container = container;
@@ -22,14 +23,11 @@ jQuery(document).ready(function ($) {
             // Run
             this.parseYrData();
         }
-        /**
-         * Callback function that is called from Highcharts on hovering each point and returns
-         * HTML for the tooltip.
-         */
+
         tooltipFormatter(tooltip) {
             // Create the header with reference to the time interval
             var index = tooltip.points[0].point.index,
-                ret = '<small>' + Highcharts.dateFormat('%A, %b %e, %H:%M', tooltip.x) + '</small><br>';
+                ret = '<small>' + Highcharts.dateFormat('%A, %b %e, %H:%M, %Y', tooltip.x) + '</small><br>';
             // Symbol text
             //ret += '<b>' + this.symbolNames[index] + '</b>';
             ret += '<table>';
@@ -189,12 +187,12 @@ jQuery(document).ready(function ($) {
         getTitle() {
             if (this.t) {
                 return "Historial Temperatura/Humedad";
-            } else {
+            } else if (this.v) {
                 return "Historial Vientos/Presión atmosférica";
             }
         }
         /**
-         * Build and return the Highcharts options structure
+         * Construye y retorna la estructura de Highcharts
          */
         getChartOptions() {
             var meteogram = this;
@@ -203,6 +201,7 @@ jQuery(document).ready(function ($) {
             if (this.t) {
                 serieSel.push({
                     name: 'Temperatura',
+                    connectNulls: true,
                     data: this.temperatures,
                     type: 'spline',
                     marker: {
@@ -218,7 +217,7 @@ jQuery(document).ready(function ($) {
                     },
                     zIndex: 1,
                     color: '#FF3333',
-                    negativeColor: '#48AFE8'
+                    negativeColor: '#48AFE8',
                 });
                 ySel.push({
                     title: {
@@ -231,27 +230,12 @@ jQuery(document).ready(function ($) {
                         },
                         x: -3
                     },
-                    floor: 23,
-                    ceiling: 35,
                     plotLines: [{
                         value: 0,
                         color: '#BBBBBB',
                         width: 1,
                         zIndex: 2
                     }],
-                    // Custom positioner to provide even temperature ticks from top down
-                    tickPositioner: function () {
-                        var max = Math.ceil(this.max) + 1,
-                            pos = max - 12, // start
-                            ret;
-                        if (pos < this.min) {
-                            ret = [];
-                            while (pos <= max) {
-                                ret.push(pos += 1);
-                            }
-                        } // else return undefined and go auto
-                        return ret;
-                    },
                     maxPadding: 0.3,
                     tickInterval: 1,
                     gridLineColor: (Highcharts.theme && Highcharts.theme.background2) || '#F0F0F0'
@@ -259,7 +243,8 @@ jQuery(document).ready(function ($) {
             }
             if (this.v) {
                 serieSel.push({
-                    name: 'vientos',
+                    name: 'Vientos',
+                    connectNulls: true,
                     data: this.windSpeeds,
                     type: 'spline',
                     marker: {
@@ -294,19 +279,6 @@ jQuery(document).ready(function ($) {
                         width: 1,
                         zIndex: 2
                     }],
-                    // Custom positioner to provide even temperature ticks from top down
-                    tickPositioner: function () {
-                        var max = Math.ceil(this.max) + 1,
-                            pos = max - 12, // start
-                            ret;
-                        if (pos < this.min) {
-                            ret = [];
-                            while (pos <= max) {
-                                ret.push(pos += 1);
-                            }
-                        } // else return undefined and go auto
-                        return ret;
-                    },
                     maxPadding: 0.3,
                     tickInterval: 1,
                     gridLineColor: (Highcharts.theme && Highcharts.theme.background2) || '#F0F0F0'
@@ -315,7 +287,8 @@ jQuery(document).ready(function ($) {
             if (this.h) {
                 serieSel.push({
                     name: 'Humedad relativa',
-                    data: this.precipitations,
+                    connectNulls: true,
+                    data: this.humedad,
                     type: 'spline',
                     color: '#68CFE8',
                     yAxis: 1,
@@ -324,7 +297,7 @@ jQuery(document).ready(function ($) {
                     borderWidth: 0,
                     shadow: false,
                     tooltip: {
-                        valueSuffix: '%'
+                        valueSuffix: ' %'
                     }
                 });
                 ySel.push({
@@ -341,11 +314,9 @@ jQuery(document).ready(function ($) {
                         textAlign: 'left',
                         x: 3
                     },
-                    floor: 0,
-                    ceiling: 80,
                     labels: {
                         style: {
-                            fontSize: '8px',
+                            fontSize: '10px',
                             color: '#68CFE8'
                         },
                         y: 2,
@@ -359,10 +330,11 @@ jQuery(document).ready(function ($) {
             }
             if (this.p) {
                 serieSel.push({
-                    name: 'presion del aire',
+                    name: 'Presión del aire',
+                    connectNulls: true,
                     data: this.pressures,
                     type: 'spline',
-                    color: Highcharts.getOptions().colors[2],
+                    color: Highcharts.getOptions().colors[4],
                     yAxis: 1,
                     groupPadding: 0,
                     pointPadding: 0,
@@ -381,20 +353,21 @@ jQuery(document).ready(function ($) {
                         rotation: 0,
                         style: {
                             fontSize: '10px',
-                            color: Highcharts.getOptions().colors[2]
+                            color: Highcharts.getOptions().colors[4]
                         },
                         textAlign: 'left',
                         x: 3
                     },
-                    floor: 1005,
-                    ceiling: 1013,
                     labels: {
                         style: {
-                            fontSize: '8px',
-                            color: Highcharts.getOptions().colors[2]
-                        }
+                            fontSize: '10px',
+                            color: Highcharts.getOptions().colors[4]
+                        },
+                        y: 2,
+                        x: 3
                     },
                     gridLineWidth: 0,
+                    tickLength: 0,
                     opposite: true,
                     showLastLabel: false
                 });
@@ -519,27 +492,26 @@ jQuery(document).ready(function ($) {
             var meteogram = this,
                 xml = this.xml,
                 pointStart;
+
             $.each(xml, function (i, dato) {
-                var fecha = new Date(dato.fecha).getTime();
+                var fecha = new Date(dato.fecha_hora).getTime();
                 meteogram.temperatures.push({
                     x: fecha,
-                    y: dato.temperatura
+                    y: dato.t_ai
                 });
-                meteogram.windDirections.push(dato.direccion_viento);
+                meteogram.windDirections.push(dato.dir_v);
                 meteogram.windSpeeds.push({
                     x: fecha,
-                    y: dato.velocidad_viento
+                    y: dato.vel_v
                 });
-                meteogram.precipitations.push({
+                meteogram.humedad.push({
                     x: fecha,
-                    y: dato.humedad_relativa
+                    y: dato.hr
                 });
-                if (dato.presion != null) {
-                    meteogram.pressures.push({
-                        x: fecha,
-                        y: dato.presion * 1000
-                    });
-                }
+                meteogram.pressures.push({
+                    x: fecha,
+                    y: dato.pr_at
+                });
             });
             this.createChart();
         }
@@ -547,19 +519,14 @@ jQuery(document).ready(function ($) {
 
     $.ajax({
         dataType: 'json',
-        url: '/api/estacion10/',
+        url: '/api/' + document.getElementById("id_estacion").innerHTML,
         success: function (xml) {
             var xml_data = xml.results;
-            newFunction(xml_data);
+            //console.log(xml_data)
             window.meteogram = new Meteogram(xml_data, 'containerTemp', true, true, false, false);
             window.meteogram = new Meteogram(xml_data, 'containerVientos', false, false, true, true);
             var fecha = new Date(xml_data[0].fecha);
-            console.log(fecha);
-            $("#time").html(fecha.getFullYear() + "/" + (fecha.getMonth() + 1) + "/" + fecha.getDate() +
-                " " + fecha.getHours() + ":" + fecha.getMinutes());
-            $("#temp").html(xml_data[0].temperatura.toFixed(1) + "°C");
-            $("#wind").html("Velocidad de viento: " + xml_data[xml_data.length - 1].velocidad_viento.toFixed(1) +
-                " m/s");
+            //console.log(fecha);
         },
         error: Meteogram.prototype.error
     });
@@ -578,32 +545,63 @@ jQuery(document).ready(function ($) {
         },
         error: Meteogram.prototype.error
     });
+    //-----------------------GRÁFICA MAREA-----------------------------
     $.ajax({
         dataType: 'json',
-        url: '/datos-horas/',
+        url: '/api/' + document.getElementById("id_estacion").innerHTML,
         success: function (xml) {
-            var dataMareas = [];
-            var horActual = [];
-            var d = new Date();
-            //Para el valor actual
-            for (var i = 0; i < xml.length; i++) {
-                dataMareas.push(xml[i].altura);
-                if (d.getMinutes() - 5 < xml[i].minuto && d.getMinutes() + 5 > xml[i].minuto && d.getHours() == xml[i].hora) {
-                    horActual.push(xml[i].altura);
-                } else {
-                    horActual.push(null);
+            var dato = xml.results;
+            console.log(dato);
+            nivel = [];
+            fecha_unix = [];
+            fecha = [];
+
+            //Función que convierte los datos obtenidos en vectores individuales
+            function convertidor(parametro, vector) {
+                vector = [];
+                for (i = (dato.length - 1); i > -1; i--) {
+                    vector.push(dato[i][parametro]);
                 }
+                return vector;
             }
+
+            nivel = convertidor("nm", nivel);
+            fecha = convertidor("fecha_hora", fecha);
+            for (i = 0; i < fecha.length; i++) {
+                anio = fecha[i].slice(0, 4);
+                mes = fecha[i].slice(5, 7);
+                mes = mes - 1;
+                dia = fecha[i].slice(8, 10);
+                hora = fecha[i].slice(11, 13);
+                minuto = fecha[i].slice(14, 16);
+                fecha_unix.push(Date.UTC(anio, mes, dia, hora, minuto));
+            }
+            console.log(fecha)
+            console.log(fecha_unix)
 
             Highcharts.chart('g-mareas', {
                 chart: {
-                    type: 'area'
+                    type: 'area',
+                    zoomType: 'x'
                 },
                 title: {
                     text: 'Nivel del mar'
                 },
                 xAxis: {
-                    type: 'datetime'
+                    type: 'datetime',
+                    categories: fecha_unix,
+                    labels: {
+                        formatter: function () {
+                            return Highcharts.dateFormat('%e, %b', this.value);
+                        }
+                    },
+                },
+                plotOptions: {
+                    series: {
+                        marker: {
+                            enabled: false
+                        }
+                    }
                 },
                 yAxis: [{
                     title: {
@@ -613,26 +611,17 @@ jQuery(document).ready(function ($) {
                 credits: {
                     enabled: false
                 },
+                tooltip: {
+                    xDateFormat: '%A, %b %e, %H:%M, %Y',
+                    valueSuffix: ' m'
+                },
                 series: [{
-                        name: 'Marea',
-                        data: dataMareas,
-                        pointStart: Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getDate()-1, d.getHours(), d.getSeconds()),
-                        pointInterval: 60000
-                    },
-                    {
-                        name: 'Valor actual',
-                        data: horActual,
-                        pointStart: Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getDate()-1, d.getHours(), d.getSeconds()),
-                        pointInterval: 60000
-                    }
-                ]
+                    name: 'Marea',
+                    data: nivel,
+                    connectNulls: true,
+                }, ]
             });
-            console.log(d.getDate())
         },
         error: Meteogram.prototype.error
     });
 });
-
-function newFunction(xml_data) {
-    console.log(xml_data);
-}

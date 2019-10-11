@@ -23,5 +23,6 @@ urlpatterns = [
     path("", geovisor),
     path("invemar-hoy/", invemar_hoy),
     url(r'^', include('apps.api.urls')),
+    url(r'^', include('apps.coralina.urls')),
     path('admin/', admin.site.urls),
 ]

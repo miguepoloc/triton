@@ -52,25 +52,31 @@
     <section id="temperatura">
         <div class="container-fluid">
             <div class="row">
+                <!------------------------------- CUADRO DE INFORMACIÓN ACTUAL ------------------------------->
                 <div class="col-md-4">
                     <div id="card" class="weater">
                         <div class="city-selected">
                             <article>
                                 <div class="info">
-                                    <div class="city"><span>Ciudad:</span> Santa Marta</div>
+                                    <div class="city"><span>Estación:</span>
+                                        <p id="nom_estacion"></p>
+                                    </div>
                                     <div id="time" class="night"></div>
                                     <div id="temp" class="temp"></div>
                                     <div class="city">
                                         <span id="wind"></span>
                                     </div>
+                                    <p id="id_estacion" style="display: none">{{ estacion.id_estacion }}</p>
                                 </div>
                             </article>
                         </div>
                     </div>
                 </div>
+                <!----------------------------------GRÁFICA DE LA MAREA--------------------------------------->
                 <div class="col-md-6">
                     <div id="g-mareas" style="height: 300px;"></div>
                 </div>
+                <!---------------------------------TABLA DE LA MAREA------------------------------------------>
                 <div class="col-md-2">
                     <h4 style="color:rgb(99, 94, 94);">Mareas</h4>
                     <table class="table">
@@ -96,20 +102,38 @@
             </div>
         </div>
     </section>
-
+    <!----------------------------------GRÁFICA DE LA TEMPERATURA, HUMEDAD, VIENTOS Y PRESIÓN--------------------------------------->
     <section id="g-temp">
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-6" id="containerTemp"></div>
+                <div class="col-md-6" id="containerHum"></div>
+            </div>
+        </div>
+    </section>
+
+    <section id="g-X">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-6" id="containerPresion"></div>
                 <div class="col-md-6" id="containerVientos"></div>
             </div>
         </div>
     </section>
 
-    <section id="g-vientos"></section>
+    <section id="g-pre">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-6" id="containerPre"></div>
+                <div class="col-md-6" id="containerRad"></div>
+            </div>
+        </div>
+    </section>
 
     {% include 'layouts/footer.html' %}
-    <script type="text/javascript" src="{%  static 'js/graficas.js' %}"></script>
+    <script type="text/javascript" src="{%  static 'js/grafica_estaciones.js' %}"></script>
+    <script type="text/javascript" src="{%  static 'js/graficas_mareas.js' %}"></script>
+
 </body>
 
 </html>

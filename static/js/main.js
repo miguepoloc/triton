@@ -1,4 +1,6 @@
-var homeUrl = '../thredds/';
+//var homeUrl='../thredds/';
+var homeUrl = 'http://192.168.3.173:8080/thredds/';
+
 var map = L.map('map', {
     zoomControl: false,
     attributionControl: false
@@ -25,11 +27,12 @@ map.setMaxZoom(12);
 map.setMaxBounds(bounds);
 
 var markerIcon = L.icon({
-    iconUrl: '/images/marker.png',
+    iconUrl: 'static/images/marker.png',
     iconSize: [20, 20]
 });
 
 var variables = [{
+        wms: null,
         v: true,
         l: [],
         b: 'bSLAh',
@@ -53,6 +56,7 @@ var variables = [{
         texto: "Anomal&iacute;a del nivel del mar (m) del producto combinado las mediciones satelitales de altimetr&iacute;a de todas misiones actualmente en orbita (Jason-3, Sentinel-3A, HY-2A, Saral/AltiKa, Cryosat-2, Jason-2, Jason-1, T/P, ENVISAT, GFO, ERS1/2), calculada respecto al promedio del 20 a&ntilde;os del nivel del mar."
     },
     {
+        wms: null,
         v: true,
         l: [],
         b: 'bSLAuv',
@@ -76,6 +80,7 @@ var variables = [{
         texto: "Campo de corrientes geostr&oacute;ficas derivadas (m) del producto combinado las mediciones satelitales de altimetr&iacute;a de todas misiones actualmente en orbita (Jason-3, Sentinel-3A, HY-2A, Saral/AltiKa, Cryosat-2, Jason-2, Jason-1, T/P, ENVISAT, GFO, ERS1/2)"
     },
     {
+        wms: null,
         v: false,
         l: [],
         b: 'bSLA',
@@ -99,6 +104,7 @@ var variables = [{
         texto: "Campo de corrientes geostr&oacute;ficas derivadas (m) del producto combinado las mediciones satelitales de altimetr&iacute;a de todas misiones actualmente en orbita (Jason-3, Sentinel-3A, HY-2A, Saral/AltiKa, Cryosat-2, Jason-2, Jason-1, T/P, ENVISAT, GFO, ERS1/2)"
     },
     {
+        wms: null,
         v: false,
         l: [],
         b: 'bCHL',
@@ -122,6 +128,7 @@ var variables = [{
         texto: "Promedio-compuesto de los &uacute;ltimos tres d&iacute;as de registros satelitales de la Concentraci&oacute;n de Clorofila del sensor Modis-Aqua. Resoluci&oacute;n espacial 1km."
     },
     {
+        wms: null,
         v: false,
         l: [],
         b: 'bSST',
@@ -132,7 +139,7 @@ var variables = [{
         max: 31,
         min: 23,
         center: 27,
-        unidades: '�c',
+        unidades: '°c',
         p: {
             layers: 'sst',
             format: 'image/png',
@@ -144,6 +151,7 @@ var variables = [{
         texto: "Promedio-compuesto de los &uacute;ltimos tres d&iacute;as de registros satelitales de la Temperatura Superficial del Mar del sensor Modis-Aqua. Resoluci&oacute;n espacial 1km."
     },
     {
+        wms: null,
         v: false,
         l: [],
         b: 'bWIND',
@@ -167,6 +175,7 @@ var variables = [{
         texto: "Campo de vientos a 10 metros sobre el nivel del mar, proveniente del producto combinado de mas de 6 mediciones satelitales (Microwave Imager-SSMI, Tropical Rainfall Measuring Mission Microwave Imager-TMI, Advanced Microwave Scanning Radiometer-AMSR-E, mas mediciones de dispers&oacute;metros satelitales activos de largo plazo), con una resoluci&oacute;n espacial remuestreada a 1/10&deg;."
     },
     {
+        wms: null,
         v: false,
         l: [],
         b: 'bWINDv',
@@ -190,6 +199,7 @@ var variables = [{
         texto: "Campo de vientos a 10 metros sobre el nivel del mar, proveniente del producto combinado de mas de 6 mediciones satelitales (Microwave Imager-SSMI, Tropical Rainfall Measuring Mission Microwave Imager-TMI, Advanced Microwave Scanning Radiometer-AMSR-E, mas mediciones de dispers&oacute;metros satelitales activos de largo plazo), con una resoluci&oacute;n espacial remuestreada a 1/10&deg;."
     },
     {
+        wms: null,
         v: false,
         l: [],
         b: 'bWAVES',
@@ -213,6 +223,7 @@ var variables = [{
         texto: "Predicciones de la altura, direcci&oacute;n y periodo de ola, generadas cada 6 horas (0, 6, 12 y 18H) por el modelo WAVEWATCH III y remuestreadas a una resoluci&oacute;n espacial de 1/10&deg;."
     },
     {
+        wms: null,
         v: false,
         l: [],
         b: 'bWAVESv',
@@ -236,9 +247,11 @@ var variables = [{
         texto: "Predicciones de la altura, direcci&oacute;n y periodo de ola, generadas cada 6 horas (0, 6, 12 y 18H) por el modelo WAVEWATCH III y remuestreadas a una resoluci&oacute;n espacial de 1/10&deg;."
     }
 ];
+
 var tierra = L.esri.featureLayer({
     url: "http://gis.invemar.org.co/arcgis/rest/services/Conectividad/ConectividadBase/MapServer/0/"
 });
+
 tierra.setStyle({
     color: "#C7C7C7",
     fillColor: "#EFEFEF",
@@ -250,8 +263,6 @@ tierra.addTo(map);
 for (var i = 0; i < variables.length; i++) {
     iniciarControl(variables[i]);
 }
-
-
 
 $("#trigger").click(function () {
     if (tlegend) {
@@ -269,6 +280,7 @@ $("#trigger").click(function () {
         $('#coor').html('');
     }
 });
+
 $("#tpicker").click(function () {
     if (tpicker) {
         $("#picker").slideReveal("hide");
@@ -285,6 +297,7 @@ $("#tpicker").click(function () {
         trace = false;
     }
 });
+
 $("#trace").click(function () {
     if (trace) {
         $("#tracer").slideReveal("hide");
@@ -302,15 +315,12 @@ $("#trace").click(function () {
     console.log("select tracer");
 });
 
-
 $(document).ready(function () {
     $('#table').bootstrapTable();
     $('#tableTrace').bootstrapTable();
-
     $("#slider").show();
     $("#picker").show();
     $("#tracer").show();
-
     sidebar: $('#sidebar').sidebar();
     $("#slider").slideReveal({
         position: "right",
@@ -333,10 +343,8 @@ $(document).ready(function () {
 function llenarlista(capa) {
     $.get(homeUrl + "catalog/" + capa.variable + "/latest.xml", function (data) {
         try {
-
             capa.l.push(data.getElementsByName("Latest " + capa.variable)[0].attributes.urlPath.nodeValue);
         } catch (err) {
-
             capa.l.push(data.getElementsByTagName("dataset")[0].attributes.urlPath.nodeValue);
         }
         capa.wms = L.tileLayer.wms(homeUrl + 'wms/' + capa.l[0] + '?', capa.p);
@@ -346,12 +354,8 @@ function llenarlista(capa) {
             $('#c' + capa.b).bootstrapToggle('on');
             $("#" + capa.legendiv).show();
         }
-
         $.get(homeUrl + "catalog/" + capa.variable + "/catalog.xml", function (data2) {
-
-
             var historico = [];
-
             try {
                 historico = data2.getElementsByName(capa.variable)[0].children;
                 for (var i = 5; i < historico.length; i++) {
@@ -363,8 +367,6 @@ function llenarlista(capa) {
                     capa.l.push(historico[i].attributes.urlPath.nodeValue);
                 }
             }
-
-
             iniciarControles(capa);
         });
     });
@@ -391,7 +393,6 @@ function iniciarControles(capa) {
     }
     html += '</select></div></div></div></div>';
     $("#" + capa.legendiv).html(html);
-
     $("#" + capa.legendiv).on('change', "#" + capa.sp, function () {
         map.removeLayer(capa.wms);
         capa.wms = L.tileLayer.wms(homeUrl + 'wms/' + $(this).val() + '?', capa.p);
@@ -402,7 +403,6 @@ function iniciarControles(capa) {
 
 function iniciarControl(capa) {
     llenarlista(capa);
-
     $("#c" + capa.b).change(function () {
         if (!$(this).is(":checked")) {
             map.removeLayer(capa.wms);
@@ -416,8 +416,6 @@ function iniciarControl(capa) {
         }
     });
 };
-
-
 
 function descargarTrace(evt) {
     let csvContent = "";
@@ -461,7 +459,6 @@ function getFeatureInfo(evt) {
             map.removeLayer(trazado[i]);
         }
         $('#tableTrace').bootstrapTable('removeAll');
-
         //console.log(evt.latlng);
         trazado.push(L.marker(evt.latlng, {
             icon: markerIcon
@@ -471,13 +468,11 @@ function getFeatureInfo(evt) {
         puntos = []
         $('#traceVar').empty();;
         for (var i = 0; i < trazado.length; i++) {
-
             trazado[i].addTo(map);
             var p = {
                 punto: i + 1,
                 lon: trazado[i].getLatLng().lat.toFixed(3),
                 lat: trazado[i].getLatLng().lng.toFixed(3),
-
             }
             if (i > 0) {
                 p.dist = map.distance(trazado[i - 1].getLatLng(), trazado[i].getLatLng());
@@ -485,7 +480,6 @@ function getFeatureInfo(evt) {
                 p.total = t;
                 p.dist = (p.dist / 1000).toFixed(1);
                 p.total = (p.total / 1000).toFixed(1);
-
             }
 
             var ht = '<table class="table" data-toggle="table" id="tv' + i + '"> ';
@@ -504,12 +498,8 @@ function getFeatureInfo(evt) {
                 getInfo('#tv' + i, variables[j], trazado[i].getLatLng(), p);
             }
             puntos.push(p)
-
         }
-
         trazadoLine.addTo(map);
-
-
     }
 }
 
@@ -538,16 +528,13 @@ function getInfo(tabla, capa, latlng, p) {
                 valor: parseFloat(data.getElementsByTagName("value")[0].childNodes[0].data, 2).toFixed(2),
                 unidades: capa.unidades
             };
-
             if (p) {
-
                 p[capa.nombre] = v.valor;
                 p[capa.nombre] = v.valor;
             }
             $(tabla).bootstrapTable('append', v);
         });
     }
-
     return v;
 }
 
