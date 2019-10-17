@@ -6,3 +6,6 @@ def invemar_hoy(request):
 
 def geovisor(request):
     return render(request, 'main/index.html')
+
+def geovisor2(request):
+    return render(request, 'main/index2.html')

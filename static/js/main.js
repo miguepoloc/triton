@@ -260,6 +260,7 @@ tierra.setStyle({
 });
 
 tierra.addTo(map);
+
 for (var i = 0; i < variables.length; i++) {
     iniciarControl(variables[i]);
 }
@@ -312,7 +313,7 @@ $("#trace").click(function () {
         tlegend = false;
         trace = true;
     }
-    console.log("select tracer");
+    //console.log("select tracer");
 });
 
 $(document).ready(function () {
@@ -348,8 +349,10 @@ function llenarlista(capa) {
             capa.l.push(data.getElementsByTagName("dataset")[0].attributes.urlPath.nodeValue);
         }
         capa.wms = L.tileLayer.wms(homeUrl + 'wms/' + capa.l[0] + '?', capa.p);
+        console.log(capa.wms);
         if (capa.v) {
             capa.wms.addTo(map);
+           // console.log(capa.wms.addTo(map));
             tierra.addTo(map);
             $('#c' + capa.b).bootstrapToggle('on');
             $("#" + capa.legendiv).show();
@@ -430,7 +433,7 @@ function descargarTrace(evt) {
         }
         csvContent += row + "\r\n";
     });
-    console.log(csvContent);
+   // console.log(csvContent);
 
     var element = document.createElement('a');
     element.setAttribute('href', 'data:text/csv;charset=utf-8,' + encodeURIComponent(csvContent));
@@ -445,7 +448,7 @@ function getFeatureInfo(evt) {
     if (tpicker) {
         map.removeLayer(punto);
         punto = L.marker(evt.latlng);
-        console.log(evt.latlng);
+       // console.log(evt.latlng);
         punto.addTo(map);
         $('#coor').html('<span class="glyphicon glyphicon-map-marker"></span>(Lat,Lng):' + evt.latlng.lat.toFixed(4) + ',' + evt.latlng.lng.toFixed(4) + '')
         $('#table').bootstrapTable('removeAll');

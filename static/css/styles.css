@@ -4,12 +4,6 @@ body {
 	margin: 0;
 }
 
-html,
-body,
-#map {
-	background: rgb(12, 63, 115);
-}
-
 .lorem {
 	font-style: italic;
 	color: #AAA;
@@ -241,10 +235,11 @@ figure {
 /******************************cuadro temperatura y presion****************************************/
 
 
-#g-temp, #g-pre, #g-X {
+#g-temp,
+#g-pre,
+#g-X {
 	margin-top: 2em;
 	padding: 2em;
-	background: #0e284c;
 }
 
 
