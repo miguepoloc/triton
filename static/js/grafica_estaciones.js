@@ -75,7 +75,6 @@ Highcharts.getJSON(
         salinidad = convertidor("sal", salinidad);
 
         //Vectores Unidades
-
         function convertidor_u(parametro) {
             vector = [];
             for (i = (dato.length - 1); i > -1; i--) {
