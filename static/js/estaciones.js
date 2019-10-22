@@ -1,34 +1,3 @@
-//Variables
-fecha_unix = [];
-fecha = [];
-direccion = [];
-temperatura_agua = [];
-od = [];
-presion_atmosferica = [];
-radiacion = [];
-nivel = [];
-precipitacion = [];
-temperatura_aire = [];
-velocidad = [];
-conductividad = [];
-ph = [];
-humedad = [];
-salinidad = [];
-
-tiempo_direccion = [];
-tiempo_temperatura_agua = [];
-tiempo_od = [];
-tiempo_presion_atmosferica = [];
-tiempo_radiacion = [];
-tiempo_nivel = [];
-tiempo_precipitacion = [];
-tiempo_temperatura_aire = [];
-tiempo_velocidad = [];
-tiempo_conductividad = [];
-tiempo_ph = [];
-tiempo_humedad = [];
-tiempo_salinidad = [];
-
 function tooltipFormatter(tooltip) {
     // tooltip trae los puntos y sus valores y otros parámetros
     var index = tooltip.points[0].point.index,
@@ -83,8 +52,37 @@ function convertidor_u(dato, parametro) {
     return unidad;
 }
 
-function graficar(dato) {
+function graficar(dato, selecto) {
+    //Variables
+    fecha_unix = [];
+    fecha = [];
+    direccion = [];
+    temperatura_agua = [];
+    od = [];
+    presion_atmosferica = [];
+    radiacion = [];
+    nivel = [];
+    precipitacion = [];
+    temperatura_aire = [];
+    velocidad = [];
+    conductividad = [];
+    ph = [];
+    humedad = [];
+    salinidad = [];
 
+    tiempo_direccion = [];
+    tiempo_temperatura_agua = [];
+    tiempo_od = [];
+    tiempo_presion_atmosferica = [];
+    tiempo_radiacion = [];
+    tiempo_nivel = [];
+    tiempo_precipitacion = [];
+    tiempo_temperatura_aire = [];
+    tiempo_velocidad = [];
+    tiempo_conductividad = [];
+    tiempo_ph = [];
+    tiempo_humedad = [];
+    tiempo_salinidad = [];
     dato = dato.results;
     //Vector de fecha
     fecha = convertidor_fecha(dato, "fecha_hora");
@@ -173,14 +171,32 @@ function graficar(dato) {
 
     // Vectores de datos y tiempo
     for (i = 0; i < fecha_unix.length; i++) {
-        tiempo_temperatura_aire.push([fecha_unix[i], temperatura_aire[i]])
+        tiempo_temperatura_aire.push([fecha_unix[i], temperatura_aire[i]]);
+        tiempo_humedad.push([fecha_unix[i], humedad[i]]);
+        tiempo_direccion.push([fecha_unix[i], direccion[i]]);
+        tiempo_temperatura_agua.push([fecha_unix[i], temperatura_agua[i]]);
+        tiempo_od.push([fecha_unix[i], od[i]]);
+        tiempo_presion_atmosferica.push([fecha_unix[i], presion_atmosferica[i]]);
+        tiempo_radiacion.push([fecha_unix[i], radiacion[i]]);
+        tiempo_nivel.push([fecha_unix[i], nivel[i]]);
+        tiempo_precipitacion.push([fecha_unix[i], precipitacion[i]]);
+        tiempo_velocidad.push([fecha_unix[i], velocidad[i]]);
+        tiempo_conductividad.push([fecha_unix[i], conductividad[i]]);
+        tiempo_ph.push([fecha_unix[i], ph[i]]);
+        tiempo_salinidad.push([fecha_unix[i], salinidad[i]]);
     }
 
-    for (i = 0; i < fecha_unix.length; i++) {
-        tiempo_humedad.push([fecha_unix[i], humedad[i]])
+    var seleccion = {
+        tai_h: [tiempo_temperatura_aire, tiempo_humedad, null, "Temperatura del aire", "Humedad", null, u_temperatura_aire, u_humedad, null],
+        v_p: [tiempo_velocidad, tiempo_presion_atmosferica, null, "Velocidad del viento", "Presión atmosférica", null, u_velocidad, u_presion_atmosferica, null],
+        r_l: [tiempo_radiacion, tiempo_precipitacion, null, "Radiación", "Precipitación", null, u_radiacion, u_precipitacion, null],
+        s_tag: [tiempo_salinidad, tiempo_temperatura_agua, null, "Salinidad", "Temperatura del agua", null, u_salinidad, u_temperatura_agua, null],
+        od_ph: [tiempo_od, tiempo_ph, null, "Oxígeno disuelto", "pH", null, u_od, u_ph, null],
+        tai_tag_p: [tiempo_temperatura_aire, tiempo_temperatura_agua, tiempo_presion_atmosferica, "Temperatura del aire", "Temperatura del agua", "Presión atmosférica", u_temperatura_aire, u_temperatura_agua, u_presion_atmosferica],
+        vv_od: [tiempo_velocidad, tiempo_od, tiempo_ph, "Velocidad del viento", "Oxígeno disuelto", "pH", u_velocidad, u_od, u_ph]
     }
-
     // create the chart
+    console.log(seleccion[selecto][0]);
     chart = new Highcharts.StockChart({
         chart: {
             renderTo: 'container',
@@ -188,17 +204,21 @@ function graficar(dato) {
             zoomType: 'x',
             plotBorderWidth: 1,
         },
+        legend: {
+            enabled: false
+        },
 
         rangeSelector: {
             // Alinear la barra de selección de fecha
-            x: -80,
+         //   x: -80,
             verticalAlign: 'top',
             buttonPosition: {
-                align: 'right'
+                align: 'right',
+                x: -35
             },
             inputPosition: {
                 align: 'left',
-                x: 80
+         //       x: 80
             },
 
             // Configruación de botones de selección de fecha
@@ -236,14 +256,19 @@ function graficar(dato) {
 
         yAxis: [{
             title: {
-                text: 'Temperatura',
+                text: seleccion[selecto][4],
             },
 
         }, {
             title: {
-                text: 'Humedad'
+                text: seleccion[selecto][3]
             },
             opposite: false,
+        }, {
+            title: {
+                text: seleccion[selecto][5]
+            },
+            opposite: true,
         }],
 
         xAxis: { //Axis principal
@@ -265,35 +290,46 @@ function graficar(dato) {
 
         series: [{
                 type: 'spline',
-                name: 'Humedad',
-                data: tiempo_humedad,
+                name: seleccion[selecto][3],
+                data: seleccion[selecto][0],
                 yAxis: 1,
                 connectNulls: true,
-                valueSuffix: '%',
+                valueSuffix: seleccion[selecto][6],
                 color: '#3ad0ff'
             }, {
                 type: 'spline',
-                name: 'Temperatura',
-                data: tiempo_temperatura_aire,
+                name: seleccion[selecto][4],
+                data: seleccion[selecto][1],
                 yAxis: 0,
                 connectNulls: true,
-                valueSuffix: '°C',
+                valueSuffix: seleccion[selecto][7],
                 color: '#ff3e1f'
             },
             {
                 type: 'spline',
-                name: 'Temperatura',
-                data: null,
+                name: seleccion[selecto][5],
+                data: seleccion[selecto][2],
                 yAxis: 0,
                 connectNulls: true,
-                valueSuffix: '°C',
-                color: '#ff3e1f'
+                valueSuffix: seleccion[selecto][8],
+                color: '#32ff00'
             },
         ]
     });
 }
 
-Highcharts.getJSON(
-    '/api/' + document.getElementById("id_estacion").innerHTML,
-    graficar
+var select = document.getElementById('grafica_seleccionada');
+$(document).ready(function () {
+    console.log(select.value);
+    $.get('/api/' + document.getElementById("id_estacion").innerHTML, function (result) {
+        graficar(result, select.value)
+    });
+});
+select.addEventListener('change',
+    function () {
+        var selectedOption = this.options[select.selectedIndex];
+        $.get('/api/' + document.getElementById("id_estacion").innerHTML, function (result) {
+            graficar(result, selectedOption.value)
+        });
+    }
 );

@@ -100,16 +100,27 @@
             </div>
         </div>
     </section>
+    <select name="variables" id="grafica_seleccionada">
+        <option value="tai_h" disabled selected>Seleccione la variable a graficar</option>
+        <option value="tai_h">Temperatura del aire / Humedad</option>
+        <option value="v_p">Vientos / Presión</option>
+        <option value="r_l">Radiación / Precipitación</option>
+        <option value="s_tag">Salinidad / Temperatura del agua</option>
+        <option value="od_ph">Oxígeno disuelto / pH</option>
+        <option value="tai_tag_p">Temperatura del aire / Temperatura del agua / Presión</option>
+        <option value="vv_od">Velocidad del viento / Oxígeno disuelto / pH</option>
+    </select>
     <!----------------------------------GRÁFICAS--------------------------------------->
     <script src="https://code.highcharts.com/stock/highstock.js"></script>
     <script src="https://code.highcharts.com/stock/modules/exporting.js"></script>
     <script src="https://code.highcharts.com/stock/modules/export-data.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
     <div id="container" style="height: 400px; min-width: 310px"></div>
     <script type="text/javascript" src="{%  static 'js/estaciones.js' %}"></script>
     {% include 'layouts/footer.html' %}
-
     <script type="text/javascript" src="{%  static 'js/graficas_mareas.js' %}"></script>
+    
 
 </body>
 
