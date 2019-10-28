@@ -35,92 +35,107 @@
         </div>
     </nav>
     <!-- TERMINA EL QUE NO SÉ  -->
-
-    <section>
-        <div class="row">
-            <div class="container-fluid">
-                <div class="pull-right">
-                    <a class="btn btn-primary" href="/">
-                        <i class="glyphicon glyphicon-chevron-left"></i> Regresar al portal
-                    </a></div>
-            </div>
-        </div>
-    </section>
-
-    <section id="temperatura">
-        <div class="container-fluid">
+    <div class="content">
+        <section>
             <div class="row">
-                <!------------------------------- CUADRO DE INFORMACIÓN ACTUAL ------------------------------->
-                <div class="col-md-4">
-                    <div id="card" class="weater">
-                        <div class="city-selected">
-                            <article>
-                                <div class="info">
-                                    <div class="city"><span>Estación:</span>
-                                        <p id="nom_estacion"></p>
+                <div class="container-fluid">
+                    <div class="pull-right">
+                        <a class="btn btn-primary" href="/">
+                            <i class="glyphicon glyphicon-chevron-left"></i> Regresar al portal
+                        </a></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="temperatura">
+            <div class="container-fluid">
+                <div class="row">
+                    <!------------------------------- CUADRO DE INFORMACIÓN ACTUAL ------------------------------->
+                    <div class="col-md-4">
+                        <div id="card" class="weater">
+                            <div class="city-selected">
+                                <article>
+                                    <div class="info">
+                                        <div class="city"><span>Estación:</span>
+                                            <p id="nom_estacion"></p>
+                                        </div>
+                                        <div id="time" class="night"></div>
+                                        <div id="temp" class="temp"></div>
+                                        <div class="city">
+                                            <span id="wind"></span>
+                                        </div>
+                                        <p id="id_estacion" style="display: none">{{ estacion.id_estacion }}</p>
                                     </div>
-                                    <div id="time" class="night"></div>
-                                    <div id="temp" class="temp"></div>
-                                    <div class="city">
-                                        <span id="wind"></span>
-                                    </div>
-                                    <p id="id_estacion" style="display: none">{{ estacion.id_estacion }}</p>
-                                </div>
-                            </article>
+                                </article>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <!----------------------------------GRÁFICA DE LA MAREA--------------------------------------->
-                <div class="col-md-6">
-                    <div id="g-mareas" style="height: 300px;"></div>
-                </div>
-                <!---------------------------------TABLA DE LA MAREA------------------------------------------>
-                <div class="col-md-2">
-                    <h4 style="color:rgb(99, 94, 94);">Mareas</h4>
-                    <table class="table">
-                        <caption></caption>
-                        <thead>
-                            <tr class="tablax">
-                                <th>Hora</th>
-                                <th>Altura (m)</th>
-                                <th>Tipo</th>
-                            </tr>
-                        </thead>
-                        <tbody id="tbody">
-                        </tbody>
-                    </table>
-                    <p>
-                        <b>Fuente:</b>
-                        IDEAM (<a
-                            href='http://www.ideam.gov.co/web/tiempo-y-clima/cartilla-pronostico-pleamares-bajamares-costa-atlantica-colombiana'>Sitio
-                            oficial
-                        </a>)
-                    </p>
+                    <!----------------------------------GRÁFICA DE LA MAREA--------------------------------------->
+                    <div class="col-md-6">
+                        <div id="g-mareas" style="height: 300px;"></div>
+                    </div>
+                    <!---------------------------------TABLA DE LA MAREA------------------------------------------>
+                    <div class="col-md-2">
+                        <h4 style="color:rgb(99, 94, 94);">Mareas</h4>
+                        <table class="table">
+                            <caption></caption>
+                            <thead>
+                                <tr class="tablax">
+                                    <th>Hora</th>
+                                    <th>Altura (m)</th>
+                                    <th>Tipo</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tbody">
+                            </tbody>
+                        </table>
+                        <p>
+                            <b>Fuente:</b>
+                            IDEAM (<a
+                                href='http://www.ideam.gov.co/web/tiempo-y-clima/cartilla-pronostico-pleamares-bajamares-costa-atlantica-colombiana'>Sitio
+                                oficial
+                            </a>)
+                        </p>
+                    </div>
                 </div>
             </div>
+        </section>
+        <div class="container mb-3em">
+            <div class="col-md-12" style="display: flex;align-items: center;justify-content: center;">
+                <button onclick="myFunction(tai_h)" id="tai_h" type="button"
+                    class="btn min-h6em mx-8px active-btn">Temperatura del aire
+                    <hr> Humedad</button>
+                <button onclick="myFunction(v_p)" id="v_p" type="button" class="btn min-h6em mx-8px sombra">Vientos
+                    <hr> Presión atmosférica</button>
+                <button onclick="myFunction(r_l)" id="r_l" type="button" class="btn min-h6em mx-8px sombra">Radiación
+                    <hr> Precipitación</button>
+                <button onclick="myFunction(s_tag)" id="s_tag" type="button"
+                    class="btn min-h6em mx-8px sombra">Salinidad
+                    <hr> Temperatura del agua</button>
+                <button onclick="myFunction(od_ph)" id="od_ph" type="button" class="btn min-h6em mx-8px sombra">Oxígeno
+                    disuelto
+                    <hr> pH</button>
+                <!-- <button onclick="myFunction(tai_tag_p)" id="tai_tag_p" type="button" class="btn min-h6em mx-8px">Temperatura del aire <hr> Temperatura del agua <hr> Presión atmosférica</button> -->
+                <button onclick="myFunction(vv_od)" id="vv_od" type="button"
+                    class="btn min-h6em mx-8px sombra">Velocidad del
+                    viento
+                    <hr> Oxígeno disuelto</button>
+            </div>
         </div>
-    </section>
-    <select name="variables" id="grafica_seleccionada">
-        <option value="tai_h" disabled selected>Seleccione la variable a graficar</option>
-        <option value="tai_h">Temperatura del aire / Humedad</option>
-        <option value="v_p">Vientos / Presión</option>
-        <option value="r_l">Radiación / Precipitación</option>
-        <option value="s_tag">Salinidad / Temperatura del agua</option>
-        <option value="od_ph">Oxígeno disuelto / pH</option>
-        <option value="tai_tag_p">Temperatura del aire / Temperatura del agua / Presión</option>
-        <option value="vv_od">Velocidad del viento / Oxígeno disuelto / pH</option>
-    </select>
-    <!----------------------------------GRÁFICAS--------------------------------------->
+
+        <!----------------------------------GRÁFICAS--------------------------------------->
+        <div id="container" style="height: 400px; min-width: 310px"></div>
+    </div>
+
     <script src="https://code.highcharts.com/stock/highstock.js"></script>
     <script src="https://code.highcharts.com/stock/modules/exporting.js"></script>
     <script src="https://code.highcharts.com/stock/modules/export-data.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-
-    <div id="container" style="height: 400px; min-width: 310px"></div>
     <script type="text/javascript" src="{%  static 'js/estaciones.js' %}"></script>
+    <script type="text/javascript" src="{%  static 'js/botones.js' %}"></script>
     {% include 'layouts/footer.html' %}
     <script type="text/javascript" src="{%  static 'js/graficas_mareas.js' %}"></script>
-    
+
 
 </body>
 

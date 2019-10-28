@@ -374,7 +374,7 @@
   position: relative;
   overflow: hidden;
   min-height: 200px;
-  background: #3D6AA2;
+  /* background: #3D6AA2; */
 }
 
 article {

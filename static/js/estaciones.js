@@ -317,19 +317,16 @@ function graficar(dato, selecto) {
         ]
     });
 }
-
-var select = document.getElementById('grafica_seleccionada');
-$(document).ready(function () {
-    console.log(select.value);
+function myFunction(variables){
+    console.log(variables.id);
     $.get('/api/' + document.getElementById("id_estacion").innerHTML, function (result) {
-        graficar(result, select.value)
+            graficar(result, variables.id)
+        });
+}
+var variables = document.getElementById('tai_h');
+$(document).ready(function () {
+    console.log(variables.id);
+    $.get('/api/' + document.getElementById("id_estacion").innerHTML, function (result) {
+        graficar(result, variables.id)
     });
 });
-select.addEventListener('change',
-    function () {
-        var selectedOption = this.options[select.selectedIndex];
-        $.get('/api/' + document.getElementById("id_estacion").innerHTML, function (result) {
-            graficar(result, selectedOption.value)
-        });
-    }
-);
