@@ -57,7 +57,7 @@ var variables = [{
     },
     {
         wms: null,
-        v: true,
+        v: false,
         l: [],
         b: 'bSLAuv',
         variable: 'SLA-UV',
