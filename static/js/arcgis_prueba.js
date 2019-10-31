@@ -170,6 +170,7 @@ variables = [{
   }
 ];
 
+// Grafica la capa que sea seleccionada
 function iniciarControl(capa) {
   // Si el elemento con id "#c capa.b" cambia
   $("#c" + capa.b).change(function () {
@@ -198,6 +199,7 @@ function iniciarControl(capa) {
   });
 };
 
+// Llena la lista de URLS correspondientes a la ubicación del servicio WMS
 function llenarlista(capa) {
   // Obtiene los datos de la siguiente URL
   $.get(homeUrl + "catalog/" + capa.variable + "/latest.xml", function (data) {
@@ -505,7 +507,6 @@ dojo.ready(function () {
       ];
       callback(capa_actual.wms + dojo.objectToQuery(parametros[capa_actual.p]));
     }
-
   });
 });
 
