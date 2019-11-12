@@ -297,23 +297,15 @@ function llenarlista(capa) {
 };
 
 require([
-    'esri/map', 'esri/layers/WMSLayer', 'esri/layers/WMSLayerInfo', 'esri/geometry/Extent', "esri/layers/FeatureLayer",
-], function (Map, WMSLayer, WMSLayerInfo, Extent, FeatureLayer) {
+    'esri/map', 'esri/layers/WMSLayer', 'esri/layers/WMSLayerInfo', 'esri/geometry/Extent',
+], function (Map, WMSLayer, WMSLayerInfo, Extent) {
 
     map = new Map('map', {
-        basemap: 'gray',
+        basemap: 'streets',
         center: [-75, 16],
         zoom: 6,
         slider: false
     });
-    map.on("load", mapLoaded);
-
-    function mapLoaded() {
-        var featureLayer = new FeatureLayer("http://gis.invemar.org.co/arcgis/rest/services/Conectividad/ConectividadBase/MapServer/0/", {
-            mode: FeatureLayer.MODE_ONDEMAND
-        });
-        map.addLayer(featureLayer);
-    }
     for (var i = 0; i < variables.length; i++) {
         iniciarControl(variables[i]);
         llenarlista(variables[i]);
@@ -359,7 +351,7 @@ require([
                             wkid: 4269
                         }),
                     customLayerParameters: capa.p,
-                    layerInfos: new WMSLayerInfo({ //No sé esto por qué toca ponerlo
+                    layerInfos: new WMSLayerInfo({//No sé esto por qué toca ponerlo
                     })
                 },
                 visibleLayers: ['Todas'] //No sé esto por qué toca ponerlo
