@@ -297,15 +297,23 @@ function llenarlista(capa) {
 };
 
 require([
-    'esri/map', 'esri/layers/WMSLayer', 'esri/layers/WMSLayerInfo', 'esri/geometry/Extent', 'esri/layers/FeatureLayer', "esri/InfoTemplate",
-], function (Map, WMSLayer, WMSLayerInfo, Extent, FeatureLayer, InfoTemplate) {
+    'esri/map', 'esri/layers/WMSLayer', 'esri/layers/WMSLayerInfo', 'esri/geometry/Extent', 'esri/layers/FeatureLayer', "esri/InfoTemplate", "esri/tasks/GeometryService"
+], function (Map, WMSLayer, WMSLayerInfo, Extent, FeatureLayer, InfoTemplate, GeometryService) {
+
+
+    var geometryService = new GeometryService("http://tasks.arcgisonline.com/ArcGIS/rest/services/Geometry/GeometryServer");
+
 
     map = new Map('map', {
-        basemap: 'streets',
+        basemap: 'gray',
         center: [-75, 16],
         zoom: 6,
         slider: false
     });
+
+    var url = "http://gis.invemar.org.co/arcgis/rest/services/Conectividad/ConectividadBase/MapServer/0/";
+    var tierra = new FeatureLayer(url);
+    map.addLayer(tierra);
     for (var i = 0; i < variables.length; i++) {
         iniciarControl(variables[i]);
         llenarlista(variables[i]);
@@ -330,7 +338,14 @@ require([
             else {
                 // Añade la capa al mapa
                 wmsLayer = graficar(capa);
-                map.addLayer(wmsLayer);
+                //geometryService.cut(wmsLayer,tierra);  
+                // geometryService.on("cut-complete", function(results) {  
+                //     console.log("Prueba");
+                //     wmsLayer=results.result.geometries[0];
+                    map.addLayer(wmsLayer);
+                // });
+
+                // map.addLayer(wmsLayer);
                 let idx = map.layerIds;
                 capa.l_id = idx[idx.length - 1];
                 console.log(capa.l_id);
@@ -343,14 +358,17 @@ require([
         });
 
     };
-
-    $("#xbEstaciones").change(function () {
+    var fl;
+    $("#xbEstaciones").on("change", function () {
         // Si NO está seleccionado
         if (!$(this).is(":checked")) {
             console.log("Eliminar");
+
+            // map.addLayer(fl);
+            // map.removeLayer(fl);
             // Elimina la capa
-            // let idx = map.getLayer(capa.l_id)
-            // map.removeLayer(idx);
+            //  let idx = map.getLayer(capa.l_id)
+            map.removeLayer(fl);
             // // Cambia el estado de visibilidad a falso
             // capa.v = false;
             // // Oculta el elemento "#capa.legendiv"
@@ -362,14 +380,16 @@ require([
             // Agregar las estaciones
             var url = "http://gis.invemar.org.co/arcgis/rest/services/CLIMARES/Estaciones_Meteoceanograficas/MapServer/0";
             var template = new InfoTemplate("Estación", "${Name} <br> <a href='/estacion/${id}' target='_blank'> Ver más </a>");
-            var fl = new FeatureLayer(url, {
+            fl = new FeatureLayer(url, {
+                id: "Estaciones",
                 infoTemplate: template,
                 outFields: ["*"]
             });
             map.addLayer(fl);
-            map.infoWindow.resize(180, 75);
-            let idx = map.layerIds;
-            id_estacion = idx[idx.length - 1];
+            // let idx = map.layerIds;
+            // console.log("id" + idx);
+            // id_estacion = idx[idx.length - 1];
+
         }
     });
 
