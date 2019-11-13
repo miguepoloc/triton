@@ -344,32 +344,34 @@ require([
 
     };
 
-    // $("#xbEstaciones").change(function () {
-    //     // Si NO está seleccionado
-    //     if (!$(this).is(":checked")) {
-    //         console.log("Eliminar");
-    //         // Elimina la capa
-    //         // let idx = map.getLayer(capa.l_id)
-    //         // map.removeLayer(idx);
-    //         // // Cambia el estado de visibilidad a falso
-    //         // capa.v = false;
-    //         // // Oculta el elemento "#capa.legendiv"
-    //         // $("#" + capa.legendiv).hide();
-    //     }
-    //     // En caso de estar chequeado el elemento
-    //     else {
-    //         // Añade la capa al mapa
-    //         // Agregar las estaciones
-    //         var url = "http://gis.invemar.org.co/arcgis/rest/services/CLIMARES/Estaciones_Meteoceanograficas/MapServer/0";
-    //         var template = new InfoTemplate("Attributes", "${*}");
-    //         var fl = new FeatureLayer(url, {
-    //             infoTemplate: template
-    //         });
-    //         map.addLayer(fl);
-    //         let idx = map.layerIds;
-    //         id_estacion = idx[idx.length - 1];
-    //     }
-    // });
+    $("#xbEstaciones").change(function () {
+        // Si NO está seleccionado
+        if (!$(this).is(":checked")) {
+            console.log("Eliminar");
+            // Elimina la capa
+            // let idx = map.getLayer(capa.l_id)
+            // map.removeLayer(idx);
+            // // Cambia el estado de visibilidad a falso
+            // capa.v = false;
+            // // Oculta el elemento "#capa.legendiv"
+            // $("#" + capa.legendiv).hide();
+        }
+        // En caso de estar chequeado el elemento
+        else {
+            // Añade la capa al mapa
+            // Agregar las estaciones
+            var url = "http://gis.invemar.org.co/arcgis/rest/services/CLIMARES/Estaciones_Meteoceanograficas/MapServer/0";
+            var template = new InfoTemplate("Estación", "${Name} <br> <a href='/estacion/${id}' target='_blank'> Ver más </a>");
+            var fl = new FeatureLayer(url, {
+                infoTemplate: template,
+                outFields: ["*"]
+            });
+            map.addLayer(fl);
+            map.infoWindow.resize(180, 75);
+            let idx = map.layerIds;
+            id_estacion = idx[idx.length - 1];
+        }
+    });
 
     function graficar(capa) {
         wmsLayer = new WMSLayer(
