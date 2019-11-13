@@ -245,7 +245,7 @@ var variables = [{
         l_id: null,
         name: "vwnd",
         texto: "Predicciones de la altura, direcci&oacute;n y periodo de ola, generadas cada 6 horas (0, 6, 12 y 18H) por el modelo WAVEWATCH III y remuestreadas a una resoluci&oacute;n espacial de 1/10&deg;."
-    }
+    },
 ];
 
 // Llena la lista de URLS correspondientes a la ubicación del servicio WMS
@@ -297,8 +297,8 @@ function llenarlista(capa) {
 };
 
 require([
-    'esri/map', 'esri/layers/WMSLayer', 'esri/layers/WMSLayerInfo', 'esri/geometry/Extent',
-], function (Map, WMSLayer, WMSLayerInfo, Extent) {
+    'esri/map', 'esri/layers/WMSLayer', 'esri/layers/WMSLayerInfo', 'esri/geometry/Extent', 'esri/layers/FeatureLayer', "esri/InfoTemplate",
+], function (Map, WMSLayer, WMSLayerInfo, Extent, FeatureLayer, InfoTemplate) {
 
     map = new Map('map', {
         basemap: 'streets',
@@ -315,6 +315,7 @@ require([
     function iniciarControl(capa) {
         // Si el elemento con id "#c capa.b" cambia
         $("#c" + capa.b).change(function () {
+            console.log(capa.b);
             // Si NO está seleccionado
             if (!$(this).is(":checked")) {
                 // Elimina la capa
@@ -340,7 +341,35 @@ require([
 
             }
         });
+
     };
+
+    // $("#xbEstaciones").change(function () {
+    //     // Si NO está seleccionado
+    //     if (!$(this).is(":checked")) {
+    //         console.log("Eliminar");
+    //         // Elimina la capa
+    //         // let idx = map.getLayer(capa.l_id)
+    //         // map.removeLayer(idx);
+    //         // // Cambia el estado de visibilidad a falso
+    //         // capa.v = false;
+    //         // // Oculta el elemento "#capa.legendiv"
+    //         // $("#" + capa.legendiv).hide();
+    //     }
+    //     // En caso de estar chequeado el elemento
+    //     else {
+    //         // Añade la capa al mapa
+    //         // Agregar las estaciones
+    //         var url = "http://gis.invemar.org.co/arcgis/rest/services/CLIMARES/Estaciones_Meteoceanograficas/MapServer/0";
+    //         var template = new InfoTemplate("Attributes", "${*}");
+    //         var fl = new FeatureLayer(url, {
+    //             infoTemplate: template
+    //         });
+    //         map.addLayer(fl);
+    //         let idx = map.layerIds;
+    //         id_estacion = idx[idx.length - 1];
+    //     }
+    // });
 
     function graficar(capa) {
         wmsLayer = new WMSLayer(
@@ -351,7 +380,7 @@ require([
                             wkid: 4269
                         }),
                     customLayerParameters: capa.p,
-                    layerInfos: new WMSLayerInfo({//No sé esto por qué toca ponerlo
+                    layerInfos: new WMSLayerInfo({ //No sé esto por qué toca ponerlo
                     })
                 },
                 visibleLayers: ['Todas'] //No sé esto por qué toca ponerlo
@@ -359,6 +388,9 @@ require([
         );
         return wmsLayer;
     }
+
+
+
 });
 
 sidebar: $('#sidebar').sidebar();

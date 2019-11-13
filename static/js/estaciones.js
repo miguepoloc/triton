@@ -192,140 +192,295 @@ function graficar(dato, selecto) {
         r_l: [tiempo_radiacion, tiempo_precipitacion, null, "Radiación", "Precipitación", null, u_radiacion, u_precipitacion, null],
         s_tag: [tiempo_salinidad, tiempo_temperatura_agua, null, "Salinidad", "Temperatura del agua", null, u_salinidad, u_temperatura_agua, null],
         od_ph: [tiempo_od, tiempo_ph, null, "Oxígeno disuelto", "pH", null, u_od, u_ph, null],
+        vv_od: [tiempo_velocidad, tiempo_od, tiempo_ph, "Velocidad del viento", "Oxígeno disuelto", "pH", u_velocidad, u_od, u_ph],
         tai_tag_p: [tiempo_temperatura_aire, tiempo_temperatura_agua, tiempo_presion_atmosferica, "Temperatura del aire", "Temperatura del agua", "Presión atmosférica", u_temperatura_aire, u_temperatura_agua, u_presion_atmosferica],
-        vv_od: [tiempo_velocidad, tiempo_od, tiempo_ph, "Velocidad del viento", "Oxígeno disuelto", "pH", u_velocidad, u_od, u_ph]
     }
-    // create the chart
-    console.log(seleccion[selecto][0]);
-    chart = new Highcharts.StockChart({
-        chart: {
-            renderTo: 'container',
-            alignTicks: false,
-            zoomType: 'x',
-            plotBorderWidth: 1,
-        },
-        legend: {
-            enabled: false
-        },
 
-        rangeSelector: {
-            // Alinear la barra de selección de fecha
-         //   x: -80,
-            verticalAlign: 'top',
-            buttonPosition: {
-                align: 'right',
-                x: -35
+    if (selecto == "viento") {
+        var primera_fecha = new Date(fecha[0]);
+        console.log(fecha);
+        Highcharts.chart('container', {
+            chart: {
+                zoomType: 'x',
+                alignTicks: false,
             },
-            inputPosition: {
-                align: 'left',
-         //       x: 80
+            title: {
+                text: 'Histórico'
             },
 
-            // Configruación de botones de selección de fecha
-            allButtonsEnabled: true,
-            buttons: [{
-                    type: 'day',
-                    count: 1,
-                    text: '1 día'
-                },
-                {
-                    type: 'day',
-                    count: 3,
-                    text: '3 días'
-                },
-                {
-                    type: 'week',
-                    count: 1,
-                    text: '1 semana'
-                },
-                {
-                    type: 'all',
-                    text: 'Todos'
+            xAxis: {
+                type: 'datetime',
+                offset: 40,
+                categories: fecha,
+                minorTickInterval: 'auto',
+                format: '{value:%Y}',
+                gridLineWidth: 1,
+                gridLineColor: (Highcharts.theme && Highcharts.theme.background2) || '#F0F0F0',
+            },
+            yAxis: {
+                title: {
+                    text: 'Velocidad del viento',
                 }
-            ],
-            buttonTheme: {
-                width: 60
-            },
-            selected: 3
-        },
-
-
-        title: {
-            text: 'Historico'
-        },
-
-        yAxis: [{
-            title: {
-                text: seleccion[selecto][4],
             },
 
-        }, {
-            title: {
-                text: seleccion[selecto][3]
+            plotOptions: {
+                series: {
+                    cursor: 'zoom-in',
+                    // pointStart: Date.UTC(primera_fecha.getFullYear(), primera_fecha.getMonth(), primera_fecha.getDate(), primera_fecha.getHours(), primera_fecha.getMinutes()),
+                    // pointInterval: 10 * 60 * 1000
+                }
             },
-            opposite: false,
-        }, {
-            title: {
-                text: seleccion[selecto][5]
-            },
-            opposite: true,
-        }],
 
-        xAxis: { //Axis principal
-            minorTickInterval: 'auto',
-            gridLineWidth: 1,
-            gridLineColor: (Highcharts.theme && Highcharts.theme.background2) || '#F0F0F0',
-        },
+            series: [{
+                type: 'windbarb',
+                data: data_vientos,
+                name: 'Velocidad del viento',
+                color: Highcharts.getOptions().colors[1],
+                showInLegend: false,
+                tooltip: {
+                    valueSuffix: u_velocidad
 
-        navigator: {
-            enabled: false
-        },
-        tooltip: {
-            shared: true,
-            useHTML: true,
-            formatter: function () {
-                return tooltipFormatter(this);
-            }
-        },
+                },
+                dataGrouping: {
+                    enabled: true,
+                    groupPixelWidth: 24, // vector length plus some padding
+                    approximation: function (values, directions, c) {
+                        var vectorX = 0,
+                            vectorY = 0,
+                            i,
+                            len = values.length;
 
-        series: [{
-                type: 'spline',
-                name: seleccion[selecto][3],
-                data: seleccion[selecto][0],
-                yAxis: 1,
-                connectNulls: true,
-                valueSuffix: seleccion[selecto][6],
-                color: '#3ad0ff'
+                        for (i = 0; i < len; i++) {
+                            vectorX += values[i] * Math.cos(directions[i] * Highcharts.deg2rad);
+                            vectorY += values[i] * Math.sin(directions[i] * Highcharts.deg2rad);
+                        }
+
+                        return [
+                            Math.round(10 * Math.sqrt(Math.pow(vectorX, 2) + Math.pow(vectorY, 2)) / len) / 10,
+                            Math.atan2(vectorY, vectorX) / Highcharts.deg2rad
+                        ]
+                    },
+                }
             }, {
-                type: 'spline',
-                name: seleccion[selecto][4],
-                data: seleccion[selecto][1],
-                yAxis: 0,
-                connectNulls: true,
-                valueSuffix: seleccion[selecto][7],
-                color: '#ff3e1f'
+                type: 'area',
+                keys: ['y', 'rotation'], // rotation is not used here
+                data: data_vientos,
+                valueSuffix: u_velocidad,
+                color: Highcharts.getOptions().colors[0],
+                fillColor: {
+                    linearGradient: {
+                        x1: 0,
+                        x2: 0,
+                        y1: 0,
+                        y2: 1
+                    },
+                    stops: [
+                        [0, Highcharts.getOptions().colors[0]],
+                        [
+                            1,
+                            Highcharts.color(Highcharts.getOptions().colors[0])
+                            .setOpacity(0.25).get()
+                        ]
+                    ]
+                },
+                name: 'Velocidad del viento',
+                tooltip: {
+                    shared: true,
+                    useHTML: true,
+                    valueSuffix: u_velocidad,
+                    formatter: function () {
+                        return tooltipFormatter(this);
+                    }
+                },
+            }]
+
+        });
+
+    } else {
+        chart = new Highcharts.StockChart({
+            chart: {
+                renderTo: 'container',
+                alignTicks: false,
+                zoomType: 'x',
+                plotBorderWidth: 1,
             },
-            {
-                type: 'spline',
-                name: seleccion[selecto][5],
-                data: seleccion[selecto][2],
-                yAxis: 0,
-                connectNulls: true,
-                valueSuffix: seleccion[selecto][8],
-                color: '#32ff00'
+
+            legend: {
+                enabled: false
             },
-        ]
-    });
+
+            rangeSelector: {
+                // Alinear la barra de selección de fecha
+                //   x: -80,
+                verticalAlign: 'top',
+                buttonPosition: {
+                    align: 'right',
+                    x: -35
+                },
+                inputPosition: {
+                    align: 'left',
+                    //       x: 80
+                },
+
+                // Configruación de botones de selección de fecha
+                allButtonsEnabled: true,
+                buttons: [{
+                        type: 'day',
+                        count: 1,
+                        text: '1 día'
+                    },
+                    {
+                        type: 'day',
+                        count: 3,
+                        text: '3 días'
+                    },
+                    {
+                        type: 'week',
+                        count: 1,
+                        text: '1 semana'
+                    },
+                    {
+                        type: 'all',
+                        text: 'Todos'
+                    }
+                ],
+                buttonTheme: {
+                    width: 60
+                },
+                selected: 3
+            },
+
+            title: {
+                text: 'Historico'
+            },
+
+            yAxis: [{
+                title: {
+                    text: seleccion[selecto][4],
+                },
+
+            }, {
+                title: {
+                    text: seleccion[selecto][3]
+                },
+                opposite: false,
+            }, {
+                title: {
+                    text: seleccion[selecto][5]
+                },
+                opposite: true,
+            }],
+
+            xAxis: { //Axis principal
+                minorTickInterval: 'auto',
+                gridLineWidth: 1,
+                gridLineColor: (Highcharts.theme && Highcharts.theme.background2) || '#F0F0F0',
+            },
+
+            navigator: {
+                enabled: false
+            },
+            tooltip: {
+                shared: true,
+                useHTML: true,
+                formatter: function () {
+                    return tooltipFormatter(this);
+                }
+            },
+
+            series: [{
+                    type: 'spline',
+                    name: seleccion[selecto][3],
+                    data: seleccion[selecto][0],
+                    yAxis: 1,
+                    connectNulls: true,
+                    valueSuffix: seleccion[selecto][6],
+                    color: '#3ad0ff'
+                }, {
+                    type: 'spline',
+                    name: seleccion[selecto][4],
+                    data: seleccion[selecto][1],
+                    yAxis: 0,
+                    connectNulls: true,
+                    valueSuffix: seleccion[selecto][7],
+                    color: '#ff3e1f'
+                },
+                {
+                    type: 'spline',
+                    name: seleccion[selecto][5],
+                    data: seleccion[selecto][2],
+                    yAxis: 2,
+                    connectNulls: true,
+                    valueSuffix: seleccion[selecto][8],
+                    color: '#32ff00'
+                },
+            ]
+        });
+    }
 }
-function myFunction(variables){
+
+// function vientos(data_vientos){
+//     Highcharts.chart('container_dir', {
+//         chart: {
+//             zoomType: 'x',
+//         },
+
+//         title: {
+//             text: 'Dirección del viento'
+//         },
+
+//         xAxis: {
+//             // type: 'datetime',
+//             minorTickInterval: 'auto',
+//             categories:fecha,
+//             gridLineWidth: 1,
+//             gridLineColor: (Highcharts.theme && Highcharts.theme.background2) || '#F0F0F0',
+//         },
+
+//         series: [{
+//             type: 'windbarb',
+//             data: data_vientos,
+//             connectNulls: true,
+//             name: 'Dirección del viento',
+//             color: Highcharts.getOptions().colors[1],
+//             showInLegend: false,
+//             tooltip: {
+//                 valueSuffix: ' m/s'
+//             },
+//             dataGrouping: {
+//                 enabled: true,
+//                 groupPixelWidth: 24, // vector length plus some padding
+//                 approximation: function (values, directions, c) {
+//                     var vectorX = 0,
+//                         vectorY = 0,
+//                         i,
+//                         len = values.length;
+
+//                     for (i = 0; i < len; i++) {
+//                         vectorX += values[i] * Math.cos(directions[i] * Highcharts.deg2rad);
+//                         vectorY += values[i] * Math.sin(directions[i] * Highcharts.deg2rad);
+//                     }
+
+//                     return [
+//                         Math.round(10 * Math.sqrt(Math.pow(vectorX, 2) + Math.pow(vectorY, 2)) / len) / 10,
+//                         Math.atan2(vectorY, vectorX) / Highcharts.deg2rad
+//                     ]
+//                 },
+
+//             }
+//         }]
+
+//     });
+// }
+
+function myFunction(variables) {
     console.log(variables.id);
     $.get('/api/' + document.getElementById("id_estacion").innerHTML, function (result) {
-            graficar(result, variables.id)
-        });
+        graficar(result, variables.id)
+    });
 }
 var variables = document.getElementById('tai_h');
 $(document).ready(function () {
-    console.log(variables.id);
     $.get('/api/' + document.getElementById("id_estacion").innerHTML, function (result) {
         graficar(result, variables.id)
     });

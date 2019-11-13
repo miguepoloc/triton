@@ -105,7 +105,7 @@
                 <button onclick="myFunction(tai_h)" id="tai_h" type="button"
                     class="btn min-h6em mx-8px active-btn">Temperatura del aire
                     <hr> Humedad</button>
-                <button onclick="myFunction(v_p)" id="v_p" type="button" class="btn min-h6em mx-8px sombra">Vientos
+                <button onclick="myFunction(v_p)" id="v_p" type="button" class="btn min-h6em mx-8px sombra">Velocidad del viento
                     <hr> Presión atmosférica</button>
                 <button onclick="myFunction(r_l)" id="r_l" type="button" class="btn min-h6em mx-8px sombra">Radiación
                     <hr> Precipitación</button>
@@ -117,9 +117,14 @@
                     <hr> pH</button>
                 <!-- <button onclick="myFunction(tai_tag_p)" id="tai_tag_p" type="button" class="btn min-h6em mx-8px">Temperatura del aire <hr> Temperatura del agua <hr> Presión atmosférica</button> -->
                 <button onclick="myFunction(vv_od)" id="vv_od" type="button"
-                    class="btn min-h6em mx-8px sombra">Velocidad del
-                    viento
-                    <hr> Oxígeno disuelto</button>
+                    class="btn min-h6em mx-8px sombra">Velocidad del viento
+                    <hr> Oxígeno disuelto / pH</button>
+                <button onclick="myFunction(tai_tag_p)" id="tai_tag_p" type="button"
+                    class="btn min-h6em mx-8px sombra">Presión atmosférica
+                    <hr> Temperatura del agua / aire</button>
+                <button onclick="myFunction(viento)" id="viento" type="button"
+                    class="btn min-h6em mx-8px sombra">Velocidad del viento
+                    <hr> Dirección del viento</button>
             </div>
         </div>
 
@@ -131,6 +136,7 @@
     <script src="https://code.highcharts.com/stock/modules/exporting.js"></script>
     <script src="https://code.highcharts.com/stock/modules/export-data.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="http://code.highcharts.com/modules/windbarb.js"></script>
     <script type="text/javascript" src="{%  static 'js/estaciones.js' %}"></script>
     <script type="text/javascript" src="{%  static 'js/botones.js' %}"></script>
     {% include 'layouts/footer.html' %}
