@@ -297,8 +297,10 @@ function llenarlista(capa) {
 };
 
 require([
-    'esri/map', 'esri/layers/WMSLayer', 'esri/layers/WMSLayerInfo', 'esri/geometry/Extent', 'esri/layers/FeatureLayer', "esri/InfoTemplate"
-], function (Map, WMSLayer, WMSLayerInfo, Extent, FeatureLayer, InfoTemplate) {
+    'esri/map', 'esri/layers/WMSLayer', 'esri/layers/WMSLayerInfo', 'esri/geometry/Extent', 'esri/layers/FeatureLayer', "esri/InfoTemplate",
+    "esri/dijit/Print",
+    "esri/tasks/PrintTemplate",
+], function (Map, WMSLayer, WMSLayerInfo, Extent, FeatureLayer, InfoTemplate, Print, PrintTemplate) {
 
     map = new Map('map', {
         basemap: 'gray-vector',

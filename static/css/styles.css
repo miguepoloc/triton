@@ -9,7 +9,6 @@ body {
 	color: #AAA;
 }
 
-.container,
 .hidden-xs,
 .hidden-sm {
 	margin-bottom: 6em;
@@ -270,6 +269,7 @@ hr {
 
 .min-h6em {
 	min-height: 6em;
+	min-width: 13.5em;
 }
 
 .active-btn {
@@ -303,4 +303,79 @@ hr {
 
 .btn {
 	outline: none !important;
+}
+
+footer {
+	width: 100%;
+	padding: 1.5em 0;
+	/**min-height: 105px;*/
+	background-color: #0d335f;
+	/*border-top: 5px solid #2773c4;
+    padding-left: 1.125rem;*/
+}
+
+footer .content {
+	padding: 1.5em 1em;
+}
+
+footer nav {
+	margin: 10px 0;
+	width: 70%;
+}
+
+footer nav ul {
+	padding: 0;
+	margin: 0;
+}
+
+footer nav ul li {
+	display: inline-block;
+	margin-right: 1.5rem;
+}
+
+footer nav ul li a {
+	font-size: 11px;
+	color: #fff;
+	text-transform: uppercase;
+}
+
+footer nav ul li a:hover {
+	color: #4badf1
+}
+
+footer p {
+	font-size: 10px;
+	margin: 5px 0;
+	font-weight: initial;
+	line-height: 1.5rem;
+	font-weight: 300;
+	color: #fff;
+}
+
+footer .logo-footer {
+	width: 80px;
+	height: 80px;
+	display: inline-block;
+	/* float: right; */
+	/*margin-right: 180px;*/
+	margin-top: -20px
+}
+
+footer .logo-footer img {
+	width: 100%;
+	height: auto;
+	display: block;
+	margin: 0 auto;
+	max-width: 80px;
+}
+
+footer .dat-direccionales {
+	width: 70%;
+	display: inline-block;
+}
+
+footer .dat-direccionales p:first-child {
+	opacity: 0.7;
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=30)";
+	filter: alpha(opacity=30)
 }
