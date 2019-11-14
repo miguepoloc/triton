@@ -1,38 +1,26 @@
 {% load staticfiles %}
-
 <!DOCTYPE html>
 <html>
 
 <head>
     {% include 'layouts/head.html' %}
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" />
-    <link href='http://fonts.googleapis.com/css?family=Lato:900,300' rel='stylesheet' type='text/css'>
-    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
-
     <style>
-        .leaflet-container {
-            height: 100%;
-        }
-
         html,
         body,
         #map {
             height: 100%;
-            font: 10pt "roboto", Arial, Helvetica, sans-serif;
-            background: rgb(12, 63, 115);
-        }
-
-        .container,
-        .hidden-xs,
-        .hidden-sm {
-            margin-bottom: 0em;
+            width: 100%;
+            margin: 0;
+            padding: 0;
         }
     </style>
-    <link rel="stylesheet" href="{% static 'css/leaflet.css' %}">
+    <script src="https://js.arcgis.com/3.30/"></script>
 </head>
 
-<body class="easyPrint">
+<body>
     {% include 'layouts/logo.html' %}
+
+    <!-- Control de usuario -->
     <div id="sidebar" class="sidebar collapsed">
         <div class="sidebar-tabs">
             <ul role="tablist">
@@ -43,31 +31,31 @@
                 </li>
                 <li>
                     <a href="#info" role="tab">
-                        <i class="fa fa-info-circle"></i><br>
+                        <i class="fa fa-info-circle"></i>
                         <span>Acerca de</span>
                     </a>
                 </li>
                 <li>
                     <a href="#servicios" role="tab">
-                        <i class="icon-stack"></i><br>
+                        <i class="icon-stack"></i>
                         <span>Capas</span>
                     </a>
                 </li>
                 <li>
                     <a href="/invemar-hoy/" role="tab" target="_blank">
-                        <i class="icon-estacion-invemar"></i><br>
+                        <i class="icon-estacion-invemar"></i>
                         <span>Invemar hoy</span>
                     </a>
                 </li>
                 <li>
                     <a href="http://triton.invemar.org.co:8080/thredds/catalog.html" role="tab" target="_blank">
-                        <i class="icon-download"></i><br>
+                        <i class="icon-download"></i>
                         <span>Descargar datos</span>
                     </a>
                 </li>
                 <li>
                     <a href="javascript:manualPrint();" role="tab">
-                        <i class="icon-printer"></i><br>
+                        <i class="icon-printer"></i>
                         <span>Imprimir pantalla</span>
                     </a>
                 </li>
@@ -252,31 +240,10 @@
                                         <i class="fa fa-question-circle"></i>
                                     </span>
                                 </a>
-                                <input id="cbEstaciones" type="checkbox" data-toggle="toggle" data-onstyle="info"
+                                <input id="xbEstaciones" type="checkbox" data-toggle="toggle" data-onstyle="info"
                                     data-on=" " data-off=" ">
                             </span>
                             <a class="list-group-item" id="bEstaciones" href="#"> Estaciones meteomarinas</a>
-                        </li>
-
-                        <li class="list-group-item">
-                            <a class="list-group-item" id="b38883" href="/estacion/38883" target="_blank"> Estacion
-                                38883</a>
-                        </li>
-                        <li class="list-group-item">
-                            <a class="list-group-item" id="b38884" href="/estacion/38884" target="_blank"> Estacion
-                                38884</a>
-                        </li>
-                        <li class="list-group-item">
-                            <a class="list-group-item" id="b38885" href="/estacion/38885" target="_blank"> Estacion
-                                38885</a>
-                        </li>
-                        <li class="list-group-item">
-                            <a class="list-group-item" id="b39161" href="/estacion/39161" target="_blank"> Estacion
-                                39161</a>
-                        </li>
-                        <li class="list-group-item">
-                            <a class="list-group-item" id="b39162" href="/estacion/39162" target="_blank"> Estacion
-                                39162</a>
                         </li>
                     </div>
                 </div>
@@ -293,6 +260,7 @@
         </div>
     </div>
 
+    <!-- Visualización de texto -->
     <div class="modal fade" tabindex="-1" id="texto1" role="dialog">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -518,6 +486,8 @@
             </div>
         </div>
     </div>
+
+    <!-- Visualización de mapas -->
     <div id="slider" style="padding: 20px; background:#0c3f73; z-index: 335; display: none;">
         <div class="sidebar-content" style="background:#0c3f73; left: 7px;">
             <div class="content-tab" id="" style="width:305px;margin-top: 5em;">
@@ -533,7 +503,8 @@
             </div>
         </div>
     </div>
-    
+
+    <!-- Panel de información izquierdo CONTROL -->
     <div id="picker" style="padding: 20px; background:#0c3f73; z-index: 335;display: none;">
         <div class="sidebar-content" style="background:#0c3f73; left: 7px;">
             <div class="content-tab" id="" style="width:305px;margin-top: 5em;">
@@ -605,6 +576,7 @@
     </div>
     </div>
 
+    <!-- Visualizador del panel de información izquierdo -->
     <ul class="nav nav-pills nav-stacked" style="display: table-cell;  position: absolute; right: -2px; top: 15%;">
         <li class="bnt-right btn btn-primary" id='trigger'>
             <span class="fa fa-info-circle"></span>
@@ -617,24 +589,18 @@
         </li>
     </ul>
 
-    <div id="map" class="sidebar-map"></div>
-    {% include 'layouts/footer.html' %}
-    <script type="text/javascript" src="{%  static 'js/leaflet.js' %}"></script>
-    <script type="text/javascript" src="{%  static 'js/esri-leaflet.js' %}"></script>
-    <script type="text/javascript" src="{%  static 'js/main.js' %}"></script>
-    <script type="text/javascript" src="{%  static 'js/bundle.js' %}"></script>
-    <script>
-        var printer = L.easyPrint({
-            sizeModes: ['Current'],
-            filename: 'myMap',
-            exportOnly: true,
-            hideControlContainer: true
-        }).addTo(map);
+    <!-- MAPA -->
+    <div id="map"></div>
 
-        function manualPrint() {
-            printer.printMap('CurrentSize', 'MyManualPrint')
-        }
-    </script>
+    <!-- JAVASCRIPT -->
+    <script type="text/javascript" src="{%  static 'js/jquery-2.1.1.js' %}"></script>
+    <script type="text/javascript" src="{%  static 'js/jquery-sidebar.js' %}"></script>
+    <script type="text/javascript" src="{%  static 'js/bootstrap.js' %}"></script>
+    <script type="text/javascript" src="{%  static 'js/bootstrap-table.js' %}"></script>
+    <script type="text/javascript" src="{%  static 'js/jquery.slidereveal.js' %}"></script>
+    <script type="text/javascript" src="{%  static 'js/slidereveal.js' %}"></script>
+    <script type="text/javascript" src="{%  static 'js/bootstrap-toggle.min.js' %}"></script>
+    <script type="text/javascript" src="{%  static 'js/arcgis_WMS.js' %}"></script> -->
 </body>
 
 </html>

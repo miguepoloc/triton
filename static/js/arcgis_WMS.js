@@ -297,23 +297,21 @@ function llenarlista(capa) {
 };
 
 require([
-    'esri/map', 'esri/layers/WMSLayer', 'esri/layers/WMSLayerInfo', 'esri/geometry/Extent', 'esri/layers/FeatureLayer', "esri/InfoTemplate", "esri/tasks/GeometryService"
-], function (Map, WMSLayer, WMSLayerInfo, Extent, FeatureLayer, InfoTemplate, GeometryService) {
-
-
-    var geometryService = new GeometryService("http://tasks.arcgisonline.com/ArcGIS/rest/services/Geometry/GeometryServer");
-
+    'esri/map', 'esri/layers/WMSLayer', 'esri/layers/WMSLayerInfo', 'esri/geometry/Extent', 'esri/layers/FeatureLayer', "esri/InfoTemplate"
+], function (Map, WMSLayer, WMSLayerInfo, Extent, FeatureLayer, InfoTemplate) {
 
     map = new Map('map', {
-        basemap: 'gray',
+        basemap: 'gray-vector',
         center: [-75, 16],
-        zoom: 6,
+        zoom: 5,
         slider: false
     });
 
+    // Añandiendo una cpa de tierra para evitar la superposición
     var url = "http://gis.invemar.org.co/arcgis/rest/services/Conectividad/ConectividadBase/MapServer/0/";
     var tierra = new FeatureLayer(url);
     map.addLayer(tierra);
+
     for (var i = 0; i < variables.length; i++) {
         iniciarControl(variables[i]);
         llenarlista(variables[i]);
@@ -322,8 +320,7 @@ require([
 
     function iniciarControl(capa) {
         // Si el elemento con id "#c capa.b" cambia
-        $("#c" + capa.b).change(function () {
-            console.log(capa.b);
+        $("#c" + capa.b).on("change", function () {
             // Si NO está seleccionado
             if (!$(this).is(":checked")) {
                 // Elimina la capa
@@ -338,41 +335,21 @@ require([
             else {
                 // Añade la capa al mapa
                 wmsLayer = graficar(capa);
-                //geometryService.cut(wmsLayer,tierra);  
-                // geometryService.on("cut-complete", function(results) {  
-                //     console.log("Prueba");
-                //     wmsLayer=results.result.geometries[0];
-                    map.addLayer(wmsLayer);
-                // });
-
-                // map.addLayer(wmsLayer);
+                map.addLayer(wmsLayer);
                 let idx = map.layerIds;
                 capa.l_id = idx[idx.length - 1];
-                console.log(capa.l_id);
                 // Cambia el estado de visibilidad a true
                 capa.v = true;
                 // Deja visible el elemento "#capa.legendiv"
                 $("#" + capa.legendiv).show();
-
             }
         });
-
     };
     var fl;
     $("#xbEstaciones").on("change", function () {
         // Si NO está seleccionado
         if (!$(this).is(":checked")) {
-            console.log("Eliminar");
-
-            // map.addLayer(fl);
-            // map.removeLayer(fl);
-            // Elimina la capa
-            //  let idx = map.getLayer(capa.l_id)
             map.removeLayer(fl);
-            // // Cambia el estado de visibilidad a falso
-            // capa.v = false;
-            // // Oculta el elemento "#capa.legendiv"
-            // $("#" + capa.legendiv).hide();
         }
         // En caso de estar chequeado el elemento
         else {
@@ -386,10 +363,6 @@ require([
                 outFields: ["*"]
             });
             map.addLayer(fl);
-            // let idx = map.layerIds;
-            // console.log("id" + idx);
-            // id_estacion = idx[idx.length - 1];
-
         }
     });
 
@@ -410,9 +383,6 @@ require([
         );
         return wmsLayer;
     }
-
-
-
 });
 
 sidebar: $('#sidebar').sidebar();

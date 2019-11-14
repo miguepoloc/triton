@@ -208,15 +208,35 @@ function graficar(dato, selecto) {
                 text: 'Histórico'
             },
 
-            xAxis: {
-                type: 'datetime',
-                offset: 40,
-                categories: fecha,
-                minorTickInterval: 'auto',
-                format: '{value:%Y}',
-                gridLineWidth: 1,
-                gridLineColor: (Highcharts.theme && Highcharts.theme.background2) || '#F0F0F0',
-            },
+            xAxis: [{ //Axis principal
+                    type: 'datetime',
+                    categories: fecha_unix,
+                    minorTickInterval: 'auto',
+                    gridLineWidth: 1,
+                    offset: 40,
+                    gridLineColor: (Highcharts.theme && Highcharts.theme.background2) || '#F0F0F0',
+                    labels: {
+                        format: '{value:%H:%M}'
+                    },
+                    minTickInterval: 20
+                },
+                { //Axis suplementario (Arriba)
+                    linkedTo: 0,
+                    type: 'datetime',
+                    categories: fecha_unix,
+                    labels: {
+                        format: '{value:<span style="font-size: 12px; font-weight: bold">%a</span> %b %e}',
+                        align: 'left',
+                        x: 3,
+                        y: -5
+                    },
+                    opposite: true,
+                    tickLength: 20,
+                    gridLineWidth: 1,
+                    tickPixelInterval: 24 * 3600 * 1000,
+                    minTickInterval: 24 * 6
+                }
+            ],
             yAxis: {
                 title: {
                     text: 'Velocidad del viento',
@@ -418,60 +438,6 @@ function graficar(dato, selecto) {
         });
     }
 }
-
-// function vientos(data_vientos){
-//     Highcharts.chart('container_dir', {
-//         chart: {
-//             zoomType: 'x',
-//         },
-
-//         title: {
-//             text: 'Dirección del viento'
-//         },
-
-//         xAxis: {
-//             // type: 'datetime',
-//             minorTickInterval: 'auto',
-//             categories:fecha,
-//             gridLineWidth: 1,
-//             gridLineColor: (Highcharts.theme && Highcharts.theme.background2) || '#F0F0F0',
-//         },
-
-//         series: [{
-//             type: 'windbarb',
-//             data: data_vientos,
-//             connectNulls: true,
-//             name: 'Dirección del viento',
-//             color: Highcharts.getOptions().colors[1],
-//             showInLegend: false,
-//             tooltip: {
-//                 valueSuffix: ' m/s'
-//             },
-//             dataGrouping: {
-//                 enabled: true,
-//                 groupPixelWidth: 24, // vector length plus some padding
-//                 approximation: function (values, directions, c) {
-//                     var vectorX = 0,
-//                         vectorY = 0,
-//                         i,
-//                         len = values.length;
-
-//                     for (i = 0; i < len; i++) {
-//                         vectorX += values[i] * Math.cos(directions[i] * Highcharts.deg2rad);
-//                         vectorY += values[i] * Math.sin(directions[i] * Highcharts.deg2rad);
-//                     }
-
-//                     return [
-//                         Math.round(10 * Math.sqrt(Math.pow(vectorX, 2) + Math.pow(vectorY, 2)) / len) / 10,
-//                         Math.atan2(vectorY, vectorX) / Highcharts.deg2rad
-//                     ]
-//                 },
-
-//             }
-//         }]
-
-//     });
-// }
 
 function myFunction(variables) {
     console.log(variables.id);
