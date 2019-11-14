@@ -44,7 +44,7 @@ git add . --all
 git push origin
 
 #Luego debo regresar a trabajar en el master
-gir checkout master
+git checkout master
 #Luego git pull para combinar los cambios remotos con el locl
 git pull origin master 
 

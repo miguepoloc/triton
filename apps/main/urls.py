@@ -1,6 +1,6 @@
 from django.conf.urls import url
 from django.urls import path, include
-from apps.coralina import views
+from apps.main import views
 from rest_framework import routers
 
 urlpatterns = [

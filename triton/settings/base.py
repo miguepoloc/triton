@@ -43,7 +43,6 @@ DJANGO_APPS = [
 LOCAL_APPS = [
     'apps.main',
     'apps.api',
-    'apps.coralina'
 ]
 
 THIRD_PARTY_APPS = [

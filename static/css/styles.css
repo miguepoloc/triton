@@ -4,18 +4,11 @@ body {
 	margin: 0;
 }
 
-html,
-body,
-#map {
-	background: rgb(12, 63, 115);
-}
-
 .lorem {
 	font-style: italic;
 	color: #AAA;
 }
 
-.container,
 .hidden-xs,
 .hidden-sm {
 	margin-bottom: 6em;
@@ -49,9 +42,9 @@ body,
 	background: #fff;
 	position: relative;
 
-	-webkit-box-shadow: 0px 1px 10px 0px rgba(207, 207, 207, 1);
+	/* -webkit-box-shadow: 0px 1px 10px 0px rgba(207, 207, 207, 1);
 	-moz-box-shadow: 0px 1px 10px 0px rgba(207, 207, 207, 1);
-	box-shadow: 0px 1px 10px 0px rgba(207, 207, 207, 1);
+	box-shadow: 0px 1px 10px 0px rgba(207, 207, 207, 1); */
 
 	-webkit-transition: all 0.5s ease;
 	-moz-transition: all 0.5s ease;
@@ -64,13 +57,13 @@ body,
 	position: relative;
 	overflow: hidden;
 	min-height: 200px;
-	background: #3D6AA2;
+	/* background: #3D6AA2; */
 }
 
 article {
 	position: relative;
 	z-index: 2;
-	color: #fff;
+	color: #0c3f73;
 	padding: 20px;
 
 	display: -ms-flexbox;
@@ -95,7 +88,7 @@ article {
 
 .info .city,
 .night {
-	font-size: 30px;
+	font-size: 2em;
 	font-weight: 200;
 	position: relative;
 
@@ -122,7 +115,7 @@ article {
 }
 
 .city span {
-	color: #fff;
+	color: #999;
 	font-size: 13px;
 	font-weight: bold;
 
@@ -154,7 +147,7 @@ article {
 
 
 .temp {
-	font-size: 73px;
+	font-size: 5em;
 	display: block;
 	position: relative;
 	font-weight: bold;
@@ -241,10 +234,11 @@ figure {
 /******************************cuadro temperatura y presion****************************************/
 
 
-#g-temp, #g-pre, #g-X {
+#g-temp,
+#g-pre,
+#g-X {
 	margin-top: 2em;
 	padding: 2em;
-	background: #0e284c;
 }
 
 
@@ -252,4 +246,136 @@ figure {
 	margin-top: 0;
 	padding: 2em;
 	background: #eee;
+}
+
+/******************************BOTONES****************************************/
+
+.mx-8px {
+	margin: 0 6px;
+}
+
+.mb-3em {
+	margin-bottom: 3em;
+	margin-top: 3em;
+}
+
+hr {
+	margin: 4px;
+}
+
+.btn {
+	line-height: 1.2;
+}
+
+.min-h6em {
+	min-height: 6em;
+	min-width: 13.5em;
+}
+
+.active-btn {
+	background-color: #0c3f73;
+	color: #fff;
+	box-shadow: inset 1px 1px 6px 0 #1C1C1C;
+}
+
+.active-btn>hr {
+	/*! color: #30eaea; */
+	/*! background: beige; */
+	border-color: #fff;
+}
+
+.active-btn:focus,
+.active-btn:hover {
+	color: #fff !important;
+}
+
+.content-todo {
+	display: block;
+	position: relative;
+	margin-top: 7em;
+	min-height: 700px;
+	padding: 0 15px;
+}
+
+.sombra {
+	box-shadow: 1px 1px 4px 0 #CACACA;
+}
+
+.btn {
+	outline: none !important;
+}
+
+footer {
+	width: 100%;
+	padding: 1.5em 0;
+	/**min-height: 105px;*/
+	background-color: #0d335f;
+	/*border-top: 5px solid #2773c4;
+    padding-left: 1.125rem;*/
+}
+
+footer .content {
+	padding: 1.5em 1em;
+}
+
+footer nav {
+	margin: 10px 0;
+	width: 70%;
+}
+
+footer nav ul {
+	padding: 0;
+	margin: 0;
+}
+
+footer nav ul li {
+	display: inline-block;
+	margin-right: 1.5rem;
+}
+
+footer nav ul li a {
+	font-size: 11px;
+	color: #fff;
+	text-transform: uppercase;
+}
+
+footer nav ul li a:hover {
+	color: #4badf1
+}
+
+footer p {
+	font-size: 10px;
+	margin: 5px 0;
+	font-weight: initial;
+	line-height: 1.5rem;
+	font-weight: 300;
+	color: #fff;
+}
+
+footer .logo-footer {
+	width: 80px;
+	height: 80px;
+	display: inline-block;
+	/* float: right; */
+	/*margin-right: 180px;*/
+	margin-top: -20px
+}
+
+footer .logo-footer img {
+	width: 100%;
+	height: auto;
+	display: block;
+	margin: 0 auto;
+	max-width: 80px;
+}
+
+footer .dat-direccionales {
+	width: 70%;
+	display: inline-block;
+}
+
+footer .dat-direccionales p:first-child {
+	opacity: 0.7;
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=30)";
+	filter: alpha(opacity=30)
 }
