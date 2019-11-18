@@ -79,26 +79,28 @@
                     </div>
                     <!---------------------------------TABLA DE LA MAREA------------------------------------------>
                     <div class="col-md-2">
-                        <h4 style="color:rgb(99, 94, 94);">Mareas</h4>
-                        <table class="table">
-                            <caption></caption>
-                            <thead>
-                                <tr class="tablax">
-                                    <th>Hora</th>
-                                    <th>Altura (m)</th>
-                                    <th>Tipo</th>
-                                </tr>
-                            </thead>
-                            <tbody id="tbody">
-                            </tbody>
-                        </table>
-                        <p>
-                            <b>Fuente:</b>
-                            IDEAM (<a
-                                href='http://www.ideam.gov.co/web/tiempo-y-clima/cartilla-pronostico-pleamares-bajamares-costa-atlantica-colombiana'>Sitio
-                                oficial
-                            </a>)
-                        </p>
+                        <div id="tabla_mareas" style="display: none;">
+                            <h4 style="color:rgb(99, 94, 94);">Mareas</h4>
+                            <table class="table">
+                                <caption></caption>
+                                <thead>
+                                    <tr class="tablax">
+                                        <th>Hora</th>
+                                        <th>Altura (m)</th>
+                                        <th>Tipo</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbody">
+                                </tbody>
+                            </table>
+                            <p>
+                                <b>Fuente:</b>
+                                IDEAM (<a
+                                    href='http://www.ideam.gov.co/web/tiempo-y-clima/cartilla-pronostico-pleamares-bajamares-costa-atlantica-colombiana'>Sitio
+                                    oficial
+                                </a>)
+                            </p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -108,7 +110,8 @@
                 <button onclick="myFunction(tai_h)" id="tai_h" type="button"
                     class="btn min-h6em mx-8px active-btn">Temperatura del aire
                     <hr> Humedad</button>
-                <button onclick="myFunction(v_p)" id="v_p" type="button" class="btn min-h6em mx-8px sombra">Velocidad del viento
+                <button onclick="myFunction(v_p)" id="v_p" type="button" class="btn min-h6em mx-8px sombra">Velocidad
+                    del viento
                     <hr> Presión atmosférica</button>
                 <button onclick="myFunction(r_l)" id="r_l" type="button" class="btn min-h6em mx-8px sombra">Radiación
                     <hr> Precipitación</button>

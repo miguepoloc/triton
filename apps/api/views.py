@@ -35,7 +35,7 @@ class DatosCoralinaList(mixins.ListModelMixin, viewsets.GenericViewSet):
     #queryset = VmAgm2507816.objects.using('neo_argos').filter(id_estacion=38884).filter(variable_des="pH").order_by('-fecha')[:120]
     #queryset = VmAgm2507816.objects.using('neo_argos').filter(id_estacion=38884).filter(variable_des="Salinidad").order_by('-fecha')[:120]
     #queryset = VmAgm2507816.objects.using('neo_argos').filter(id_estacion=38883).filter(variable_des="Radiación solar global").order_by('-fecha')[:120]
-    queryset = VmAgm2507816.objects.using('neo_argos').filter(id_estacion=38883).filter(variable_des="Precipitación").order_by('-fecha')[:120]
+    queryset = VmAgm2507816.objects.using('neo_argos').filter(id_estacion=38883).order_by('-fecha')[:4320]
     #queryset = VmAgm2507816.objects.using('neo_argos').filter(id_estacion=38883).filter(variable_des="Presión atmosferica").order_by('-fecha')[:120]
     #queryset = VmAgm2507816.objects.using('neo_argos').filter(id_estacion=38883).filter(variable_des="Temperatura del aire").order_by('-fecha')[:2]
     #queryset = VmAgm2507816.objects.using('neo_argos').filter(id_estacion=38883).filter(variable_des="Humedad relativa").order_by('-fecha')[:120]

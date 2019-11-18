@@ -1,5 +1,3 @@
-var ctd_prueba;
-
 $(document).ready(function () {
     $.get('/api/ctd/', function (result) {
         ctd_prueba = result.results;
@@ -12,6 +10,7 @@ function grafica(ctd) {
     vector_muestra = [];
     vector_variable = [];
     vector_variable_des = [];
+    vector_unidad_des = [];
     for (i = 0; i < ctd.length; i++) {
         muestra = String(ctd[i]["id_muestra"]);
         var cod_muestra = muestra.slice(1, muestra.length);
@@ -26,35 +25,52 @@ function grafica(ctd) {
         if (vector_variable_des.includes(variable_des) == false) {
             vector_variable_des.push(variable_des);
         }
+        unidad_des = String(ctd[i]["unidades_medida_des"]);
+        if (vector_unidad_des.includes(unidad_des) == false) {
+            vector_unidad_des.push(unidad_des);
+        }
     }
     console.log(vector_muestra);
     console.log(vector_variable);
     console.log(vector_variable_des);
+    console.log(vector_unidad_des);
 
     var objeto_variable = new Object();
-    for (i = 0; i < vector_variable_des.length; i++) {
+    
+    for (i = 0; i < vector_variable.length; i++) {
         objeto_variable[vector_variable[i]] = [];
     }
-    console.log(objeto_variable);
-
+    
     for (i = 0; i < ctd.length; i++) {
-        for (j = 0; j < ctd.length; j++) {
+        for (j = 0; j < vector_variable.length; j++) {
             if (ctd[i].variable == vector_variable[j]) {
-                objeto_variable[vector_variable[j]].push(ctd[i].valor);
+                if (ctd[i].variable == "PR") {
+                    objeto_variable[vector_variable[j]].push(-1 * ctd[i].valor);
+                } else {
+                    objeto_variable[vector_variable[j]].push(ctd[i].valor);
+                }
             }
         }
     }
-    console.log(objeto_variable);
+
+    vector_grafica = [];
+    objeto_variable["grafica"] = [];
+    for (i = 0; i < objeto_variable[vector_variable[0]].length; i++) {
+        objeto_variable["grafica"].push([objeto_variable["PR"][i], objeto_variable["TEM"][i]]);
+    }
+
+    console.log(objeto_variable["grafica"]);
     Highcharts.chart('container', {
         chart: {
             type: 'spline',
-            inverted: true
+            inverted: true,
+            zoomType: 'x',
         },
         title: {
-            text: 'Atmosphere Temperature by Altitude'
+            text: 'Estacion ' + ctd[0].id_estacion
         },
         subtitle: {
-            text: 'According to the Standard Atmosphere Model'
+            text: 'Temperatura vs Distancia'
         },
         xAxis: {
             reversed: false,
@@ -63,14 +79,14 @@ function grafica(ctd) {
                 text: 'Altitude'
             },
             labels: {
-                format: '{value} km'
+                format: '{value} m'
             },
             maxPadding: 0.05,
             showLastLabel: true
         },
         yAxis: {
             title: {
-                text: 'Temperature'
+                text: vector_variable_des[0]
             },
             labels: {
                 format: '{value}°'
@@ -82,7 +98,7 @@ function grafica(ctd) {
         },
         tooltip: {
             headerFormat: '<b>{series.name}</b><br/>',
-            pointFormat: '{point.x} km: {point.y}°C'
+            pointFormat: '{point.x} m: {point.y}°C'
         },
         plotOptions: {
             spline: {
@@ -93,17 +109,7 @@ function grafica(ctd) {
         },
         series: [{
             name: 'Temperature',
-            data: [
-                [0, 15],
-                [10, -50],
-                [20, -56.5],
-                [30, -46.5],
-                [40, -22.1],
-                [50, -2.5],
-                [60, -27.7],
-                [70, -55.7],
-                [80, -76.5]
-            ]
+            data: objeto_variable["grafica"]
         }]
     });
 }
