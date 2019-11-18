@@ -1,14 +1,18 @@
+id_estacion = document.getElementById("id_estacion").innerHTML
 Highcharts.getJSON(
     '/datos/',
     function (data) {
         //Variables
-        var htmlStr = "";
-        for (var i = 0; i < data.length; i++) {
-            htmlStr += '<tr> <td >' + data[i].hora + '</td>';
-            htmlStr += '<td>' + data[i].altura + '</td>' +
-                '<td>' + data[i].mareaTexto + '</td> </tr>';
+        if (id_estacion == "39162") {
+            document.getElementById("tabla_mareas").style.display = "block";
+            var htmlStr = "";
+            for (var i = 0; i < data.length; i++) {
+                htmlStr += '<tr> <td >' + data[i].hora + '</td>';
+                htmlStr += '<td>' + data[i].altura + '</td>' +
+                    '<td>' + data[i].mareaTexto + '</td> </tr>';
+            }
+            $("#tbody").html(htmlStr);
         }
-        $("#tbody").html(htmlStr);
     }
 );
 
@@ -28,54 +32,58 @@ Highcharts.getJSON(
                 horActual.push(null);
             }
         }
-        
+
         for (var i = 0; i < xml.length; i++) {
             fecha.push(d.getFullYear() + "-" + xml[i].mes + "-" + xml[i].dia + " " + xml[i].hora + ":" + xml[i].minuto + ":00");
         }
 
-        Highcharts.chart('g-mareas', {
-            chart: {
-                type: 'area'
-            },
-            title: {
-                text: 'Nivel del mar'
-            },
-            xAxis: {
-                type: 'datetime'
-            },
-            yAxis: {
+
+
+        if (id_estacion == "39162") {
+            Highcharts.chart('g-mareas', {
+                chart: {
+                    type: 'area'
+                },
                 title: {
-                    text: 'altura (m)'
-                }
-            },
-            plotOptions: {
-                area: {
-                    pointStart: Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getDate(), d.getHours()-14, d.getSeconds()),
-                    marker: {
-                        enabled: false,
-                        symbol: 'circle',
-                        radius: 2,
-                        states: {
-                            hover: {
-                                enabled: true
+                    text: 'Nivel del mar'
+                },
+                xAxis: {
+                    type: 'datetime'
+                },
+                yAxis: {
+                    title: {
+                        text: 'altura (m)'
+                    }
+                },
+                plotOptions: {
+                    area: {
+                        pointStart: Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getDate(), d.getHours() - 14, d.getSeconds()),
+                        marker: {
+                            enabled: false,
+                            symbol: 'circle',
+                            radius: 2,
+                            states: {
+                                hover: {
+                                    enabled: true
+                                }
                             }
                         }
                     }
-                }
-            },
-            series: [{
-                    name: 'Marea',
-                    data: dataMareas,
-                    connectNulls: true,
-                    pointInterval: 60000
                 },
-                {
-                    name: 'Valor actual',
-                    data: horActual,
-                    connectNulls: true,
-                    pointInterval: 60000
-                }
-            ]
-        })
+                series: [{
+                        name: 'Marea',
+                        data: dataMareas,
+                        connectNulls: true,
+                        pointInterval: 60000
+                    },
+                    {
+                        name: 'Valor actual',
+                        data: horActual,
+                        connectNulls: true,
+                        pointInterval: 60000
+                    }
+                ]
+            });
+        }
     }
 );

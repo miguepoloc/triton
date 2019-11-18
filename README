@@ -58,3 +58,8 @@ git pull origin master
 #Se usará la base de datos VM_AGM_2507_816
 
 BUSCAR stockChart
+
+Toca usar la Bdd 2068_822 para la CTD
+
+// Para crear models
+python manage.py inspectdb --database neo_argos > models_2.py
