@@ -140,3 +140,47 @@ class VmAgm2068822(models.Model):
     class Meta:
         managed = False
         db_table = 'vm_agm_2068_822'
+
+
+class VmAgm3303822(models.Model):
+    id_muestreo = models.IntegerField(primary_key=True)
+    id_estacion = models.IntegerField()
+    nom_estacion = models.CharField(max_length=100, blank=True, null=True)
+    id_muestreotx = models.CharField(max_length=40, blank=True, null=True)
+    id_proyecto = models.FloatField()
+    id_metodologia = models.IntegerField()
+    id_tematicas = models.IntegerField()
+    fecha = models.DateField()
+    fecha_ano = models.FloatField(blank=True, null=True)
+    fecha_mes = models.CharField(max_length=7, blank=True, null=True)
+    participantes = models.CharField(max_length=4000, blank=True, null=True)
+    entidades = models.CharField(max_length=4000, blank=True, null=True)
+    notas_generales = models.CharField(max_length=1000, blank=True, null=True)
+    componente = models.CharField(max_length=2000, blank=True, null=True)
+    componente_des = models.CharField(max_length=4000, blank=True, null=True)
+    metodologia = models.CharField(max_length=2000, blank=True, null=True)
+    metodologia_des = models.CharField(max_length=4000, blank=True, null=True)
+    entidad = models.CharField(max_length=2000, blank=True, null=True)
+    entidad_des = models.CharField(max_length=4000, blank=True, null=True)
+    proyecto = models.CharField(max_length=2000, blank=True, null=True)
+    proyecto_des = models.CharField(max_length=4000, blank=True, null=True)
+    des_estacion = models.CharField(max_length=1200, blank=True, null=True)
+    cod_estacion = models.CharField(max_length=81, blank=True, null=True)
+    sus_estacion = models.CharField(max_length=2, blank=True, null=True)
+    sus_estacion_des = models.CharField(max_length=400, blank=True, null=True)
+    id_muestra = models.IntegerField(blank=True, null=True)
+    notas = models.CharField(max_length=1000, blank=True, null=True)
+    es_replica = models.FloatField(blank=True, null=True)
+    quality_flag = models.FloatField(blank=True, null=True)
+    fecha_registro = models.CharField(max_length=2000, blank=True, null=True)
+    variable = models.CharField(max_length=2000, blank=True, null=True)
+    variable_des = models.CharField(max_length=4000, blank=True, null=True)
+    valor = models.FloatField(blank=True, null=True)
+    unidades_medida = models.CharField(max_length=2000, blank=True, null=True)
+    unidades_medida_des = models.CharField(max_length=4000, blank=True, null=True)
+    muestra = models.CharField(max_length=2000, blank=True, null=True)
+    err_creacion = models.CharField(max_length=4000, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'vm_agm_3303_822'

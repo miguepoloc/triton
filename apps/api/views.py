@@ -1,9 +1,9 @@
 from django.shortcuts import render
 from rest_framework import views, viewsets, mixins
 from rest_framework.response import Response
-from .serializers import MareaSerializer, DatosEstacionSerializer10, DatosCoralinaSerializer, DatosTritonSerializer, DatosCTDSerializer
+from .serializers import MareaSerializer, DatosEstacionSerializer10, DatosCoralinaSerializer, DatosTritonSerializer, DatosCTDSerializer, DatosCTDSerializer2
 from .helper import MareaHoras, MareaHoy
-from .models import VmAgm334580310, VmAgm2507816, VTriton, VmAgm2068822
+from .models import VmAgm334580310, VmAgm2507816, VTriton, VmAgm2068822, VmAgm3303822
 
 class MareaList(views.APIView):
 
@@ -71,4 +71,10 @@ class DatosCTDList2068(mixins.ListModelMixin, viewsets.GenericViewSet):
 
     serializer_class = DatosCTDSerializer
     queryset = VmAgm2068822.objects.using('neo_argos').filter(id_estacion=36329).order_by('-id_muestra')
+    print("queryset")
+
+class DatosCTDList3303(mixins.ListModelMixin, viewsets.GenericViewSet):
+
+    serializer_class = DatosCTDSerializer2
+    queryset = VmAgm3303822.objects.using('neo_argos').filter(id_estacion=49505).order_by('-id_muestra')
     print("queryset")
