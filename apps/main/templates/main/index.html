@@ -53,6 +53,12 @@
                         <span>Descargar datos</span>
                     </a>
                 </li>
+
+
+                <!-- BOTÓN DE IMPRIMIR  -->
+                <!-- <div id="printButton"></div> -->
+
+
                 <!-- <li>
                     <a href="javascript:manualPrint();" role="tab">
                         <i class="icon-printer"></i>
@@ -244,6 +250,19 @@
                                     data-on=" " data-off=" ">
                             </span>
                             <a class="list-group-item" id="bEstaciones" href="#"> Estaciones meteomarinas</a>
+                        </li>
+
+                        <li class="list-group-item">
+                            <span class="pull-right sbtn">
+                                <a data-toggle="modal" data-target="#texto7" class="info-sb">
+                                    <span class="badge">
+                                        <i class="fa fa-question-circle"></i>
+                                    </span>
+                                </a>
+                                <input id="xbCTD" type="checkbox" data-toggle="toggle" data-onstyle="info" data-on=" "
+                                    data-off=" ">
+                            </span>
+                            <a class="list-group-item" id="bCTD" href="#"> Estaciones CTD</a>
                         </li>
                     </div>
                 </div>
@@ -505,7 +524,7 @@
     </div> -->
 
     <!-- Panel de información izquierdo CONTROL -->
-    <!-- <div id="picker" style="padding: 20px; background:#0c3f73; z-index: 335;display: none;">
+    <div id="picker" style="padding: 20px; background:#0c3f73; z-index: 335;display: none;">
         <div class="sidebar-content" style="background:#0c3f73; left: 7px;">
             <div class="content-tab" id="" style="width:305px;margin-top: 5em;">
                 <div class="panel panel-default" style="margin-top:1em; margin-bottom:1em">
@@ -560,7 +579,7 @@
                 </div>
 
                 <div>
-                    <a onclick="clearTrace()" class="btn btn-primary">
+                    <a class="btn btn-primary" id="clearGraphics">
                         <i class="glyphicon glyphicon-remove"></i>Borrar trazado
                     </a>
                 </div>
@@ -586,7 +605,7 @@
         <li class="bnt-right btn btn-primary" id="trace">
             <span class="glyphicon glyphicon-globe"></span>
         </li>
-    </ul> -->
+    </ul>
 
     <!-- MAPA -->
     <div id="map"></div>
@@ -599,7 +618,7 @@
     <script type="text/javascript" src="{%  static 'js/jquery.slidereveal.js' %}"></script>
     <script type="text/javascript" src="{%  static 'js/slidereveal.js' %}"></script>
     <script type="text/javascript" src="{%  static 'js/bootstrap-toggle.min.js' %}"></script>
-    <script type="text/javascript" src="{%  static 'js/arcgis_WMS.js' %}"></script> -->
+    <script type="text/javascript" src="{%  static 'js/arcgis.js' %}"></script>
 </body>
 
 </html>
