@@ -267,7 +267,6 @@ function llenarlista(capa) {
         }
         // Guarda los datos de las capas en capa.wms
         capa.wms = homeUrl + 'wms/' + capa.l[0];
-        console.log(capa.wms);
         if (capa.v) {
             // Si es verdadero el valor de "capa.v" (La variable que controla la visibilidad)
             // Grafica la capa en el mapa
@@ -316,7 +315,9 @@ require(['esri/map',
     "esri/tasks/GeometryService",
     "esri/geometry/webMercatorUtils",
     "esri/geometry/Point",
-    "esri/SpatialReference"
+    "esri/SpatialReference",
+    "dojo/_base/array",
+    "esri/geometry/screenUtils"
 ], function (Map,
     WMSLayer,
     WMSLayerInfo,
@@ -337,8 +338,11 @@ require(['esri/map',
     GeometryService,
     webMercatorUtils,
     Point,
-    SpatialReference
+    SpatialReference,
+    array,
+    screenUtils
 ) {
+
 
     parser.parse();
     esriConfig.defaults.geometryService = new GeometryService("https://utility.arcgisonline.com/ArcGIS/rest/services/Geometry/GeometryServer");
@@ -388,6 +392,7 @@ require(['esri/map',
                 // Elimina la capa
                 let idx = map.getLayer(capa.l_id)
                 map.removeLayer(idx);
+                capa.l_id = null;
                 // Cambia el estado de visibilidad a falso
                 capa.v = false;
                 // Oculta el elemento "#capa.legendiv"
@@ -428,8 +433,9 @@ require(['esri/map',
         }
     });
 
+
     function graficar(capa) {
-        wmsLayer = new WMSLayer(
+        var wmsLayer = new WMSLayer(
             capa.wms, {
                 resourceInfo: {
                     extent: new Extent(-124.71430969199997, -33.741115570999966, 179.77593994100005,
@@ -437,6 +443,7 @@ require(['esri/map',
                             wkid: 4269
                         }),
                     customLayerParameters: capa.p,
+                    getFeatureInfoURL: capa.wms,
                     layerInfos: new WMSLayerInfo({ //No sé esto por qué toca ponerlo
                     })
                 },
@@ -446,12 +453,12 @@ require(['esri/map',
         return wmsLayer;
     }
 
-
+    // PUNTOOOOOOOOOOOO
     $("#tpicker").click(function () {
         if (tpicker) {
             $("#picker").slideReveal("hide");
             tpicker = false;
-            map.removeLayer(punto);
+            map.graphics.clear();
             $('#table').bootstrapTable('removeAll');
             $('#coor').html('');
         } else {
@@ -465,94 +472,135 @@ require(['esri/map',
     });
 
     map.on('click', getFeatureInfo);
+    var graphic;
 
-    map.on("load", function () {
-        ShowLocation(-81.3765, 28.54175);
-    });
-
-    function ShowLocation(x, y) {
-        var pointa = new Point(x, y, new SpatialReference({
-            wkid: 4326
-        }));
-        var simpleMarkerSymbol = new SimpleMarkerSymbol();
-        var graphic = new Graphic(pointa, simpleMarkerSymbol);
-        console.log("PUNTITO");
-        console.log(pointa);
-        map.graphics.add(graphic);
-    };
-
+    var punto_seleccion;
     function getFeatureInfo(evt) {
         if (tpicker) {
             var mp = webMercatorUtils.webMercatorToGeographic(evt.mapPoint);
-            punto = mp.x.toFixed(3) + ", " + mp.y.toFixed(3);
-            console.log(punto);
-            // map.removeLayer(punto);
-            point = new Point(Number(mp.x.toFixed(3)), Number(mp.y.toFixed(3)));
+            // y = Latitud
+            // x = Longitud
+            // {lat: 18.187606552494625, lng: -68.00537109375001}
+            coordenada = {
+                lat: Number(mp.y.toFixed(15)),
+                lng: Number(mp.x.toFixed(15))
+            }
+            // coordenada = mp.x.toFixed(15) + ", " + mp.y.toFixed(15);
+            console.log(coordenada);
+            map.graphics.clear();
+            punto_seleccion = new Point(Number(mp.x.toFixed(4)), Number(mp.y.toFixed(4)));
+            console.log(punto_seleccion);
+
+            console.log(map);
+
             var simpleMarkerSymbol = new SimpleMarkerSymbol();
-            simpleMarkerSymbol.setPath("M16,4.938c-7.732,0-14,4.701-14,10.5c0,1.981,0.741,3.833,2.016,5.414L2,25.272l5.613-1.44c2.339,1.316,5.237,2.106,8.387,2.106c7.732,0,14-4.701,14-10.5S23.732,4.938,16,4.938zM16.868,21.375h-1.969v-1.889h1.969V21.375zM16.772,18.094h-1.777l-0.176-8.083h2.113L16.772,18.094z");
-            simpleMarkerSymbol.setColor(new Color("#00FFFF"));
-            var graphic = new Graphic(point, simpleMarkerSymbol);
+            // simpleMarkerSymbol.setPath("M16,4.938c-7.732,0-14,4.701-14,10.5c0,1.981,0.741,3.833,2.016,5.414L2,25.272l5.613-1.44c2.339,1.316,5.237,2.106,8.387,2.106c7.732,0,14-4.701,14-10.5S23.732,4.938,16,4.938zM16.868,21.375h-1.969v-1.889h1.969V21.375zM16.772,18.094h-1.777l-0.176-8.083h2.113L16.772,18.094z");
+            // simpleMarkerSymbol.setColor(new Color("#00FFFF"));
+            graphic = new Graphic(punto_seleccion, simpleMarkerSymbol);
             map.graphics.add(graphic);
-            console.log("El punto");
-            console.log(point);
-            // map.graphics.add(new Graphic("point", symbol));
-            // punto = L.marker(evt.latlng);
-            // // console.log(evt.latlng);
-            // punto.addTo(map);
-            // $('#coor').html('<span class="glyphicon glyphicon-map-marker"></span>(Lat,Lng):' + evt.latlng.lat.toFixed(4) + ',' + evt.latlng.lng.toFixed(4) + '')
-            // $('#table').bootstrapTable('removeAll');
-            // for (var i = 0; i < variables.length; i++) {
-            //     getInfo('#table', variables[i], evt.latlng);
-            // }
-        }
-        if (trace) {
-            map.removeLayer(trazadoLine);
-            for (var i = 0; i < trazado.length; i++) {
-                map.removeLayer(trazado[i]);
+            $('#coor').html('<span class="glyphicon glyphicon-map-marker"></span>(Lat,Lng):' + mp.y.toFixed(4) + ',' + mp.x.toFixed(4) + '')
+            $('#table').bootstrapTable('removeAll');
+            for (var i = 0; i < variables.length; i++) {
+                getInfo('#table', variables[i], coordenada);
             }
-            $('#tableTrace').bootstrapTable('removeAll');
-            //console.log(evt.latlng);
-            trazado.push(L.marker(evt.latlng, {
-                icon: markerIcon
-            }));
-            trazadoLine.addLatLng(evt.latlng);
-            var t = 0;
-            puntos = []
-            $('#traceVar').empty();;
-            for (var i = 0; i < trazado.length; i++) {
-                trazado[i].addTo(map);
-                var p = {
-                    punto: i + 1,
-                    lon: trazado[i].getLatLng().lat.toFixed(3),
-                    lat: trazado[i].getLatLng().lng.toFixed(3),
-                }
-                if (i > 0) {
-                    p.dist = map.distance(trazado[i - 1].getLatLng(), trazado[i].getLatLng());
-                    t += p.dist;
-                    p.total = t;
-                    p.dist = (p.dist / 1000).toFixed(1);
-                    p.total = (p.total / 1000).toFixed(1);
-                }
-
-                var ht = '<table class="table" data-toggle="table" id="tv' + i + '"> ';
-                ht += '<caption><span class="glyphicon glyphicon-map-marker"></span>Punto ' + (i + 1) + ',lat:' + p.lat + ',lon:' + p.lon + '</caption>';
-                ht += '<thead><tr>';
-                ht += '<th data-field="variable">Variable</th>';
-                ht += '<th data-field="valor">Valor</th>';
-                ht += '<th data-field="unidades">Unidades</th>';
-                ht += '</tr></thead></table>';
-
-                $('#traceVar').append(ht);
-                $('#tv' + i).bootstrapTable();
-                $('#tableTrace').bootstrapTable('append', p);
-                $('#table').bootstrapTable('removeAll');
-                for (var j = 0; j < variables.length; j++) {
-                    getInfo('#tv' + i, variables[j], trazado[i].getLatLng(), p);
-                }
-                puntos.push(p)
-            }
-            trazadoLine.addTo(map);
         }
+        // if (trace) {
+        //     map.removeLayer(trazadoLine);
+        //     for (var i = 0; i < trazado.length; i++) {
+        //         map.removeLayer(trazado[i]);
+        //     }
+        //     $('#tableTrace').bootstrapTable('removeAll');
+        //     //console.log(evt.latlng);
+        //     trazado.push(L.marker(evt.latlng, {
+        //         icon: markerIcon
+        //     }));
+        //     trazadoLine.addLatLng(evt.latlng);
+        //     var t = 0;
+        //     puntos = []
+        //     $('#traceVar').empty();;
+        //     for (var i = 0; i < trazado.length; i++) {
+        //         trazado[i].addTo(map);
+        //         var p = {
+        //             punto: i + 1,
+        //             lon: trazado[i].getLatLng().lat.toFixed(3),
+        //             lat: trazado[i].getLatLng().lng.toFixed(3),
+        //         }
+        //         if (i > 0) {
+        //             p.dist = map.distance(trazado[i - 1].getLatLng(), trazado[i].getLatLng());
+        //             t += p.dist;
+        //             p.total = t;
+        //             p.dist = (p.dist / 1000).toFixed(1);
+        //             p.total = (p.total / 1000).toFixed(1);
+        //         }
+
+        //         var ht = '<table class="table" data-toggle="table" id="tv' + i + '"> ';
+        //         ht += '<caption><span class="glyphicon glyphicon-map-marker"></span>Punto ' + (i + 1) + ',lat:' + p.lat + ',lon:' + p.lon + '</caption>';
+        //         ht += '<thead><tr>';
+        //         ht += '<th data-field="variable">Variable</th>';
+        //         ht += '<th data-field="valor">Valor</th>';
+        //         ht += '<th data-field="unidades">Unidades</th>';
+        //         ht += '</tr></thead></table>';
+
+        //         $('#traceVar').append(ht);
+        //         $('#tv' + i).bootstrapTable();
+        //         $('#tableTrace').bootstrapTable('append', p);
+        //         $('#table').bootstrapTable('removeAll');
+        //         for (var j = 0; j < variables.length; j++) {
+        //             getInfo('#tv' + i, variables[j], trazado[i].getLatLng(), p);
+        //         }
+        //         puntos.push(p)
+        //     }
+        //     trazadoLine.addTo(map);
+        // }
+    }
+
+    function getInfo(tabla, capa, latlng, p) {
+        var v = {};
+        if (capa.l_id) {
+            console.log("Soy " + capa.l_id);
+            var url = getFeatureInfoUrl(latlng, capa.wms);
+            //     //var capa=variables[i];
+            //     $.get(url, function (data) {
+            //         v = {
+            //             variable: capa.nombre,
+            //             valor: parseFloat(data.getElementsByTagName("value")[0].childNodes[0].data, 2).toFixed(2),
+            //             unidades: capa.unidades
+            //         };
+            //         if (p) {
+            //             p[capa.nombre] = v.valor;
+            //             p[capa.nombre] = v.valor;
+            //         }
+            //         $(tabla).bootstrapTable('append', v);
+            //     });
+        }
+        return v;
+    }
+
+    function getFeatureInfoUrl(latlng, wms) {
+        var punto_pixel = screenUtils.toScreenPoint(map.extent, map.width, map.height, punto_seleccion);
+        console.log("AQUI");
+        console.log(wms);
+        console.log(punto_pixel);
+        params = {
+            request: 'GetFeatureInfo',
+            service: 'WMS',
+            srs: 'EPSG:4326',
+            styles: wms.wmsParams.styles,
+            transparent: wms.wmsParams.transparent,
+            version: wms.wmsParams.version,
+            format: wms.wmsParams.format,
+            bbox: wms._map.getBounds().toBBoxString(),
+            height: size.y,
+            width: size.x,
+            layers: wms.wmsParams.layers,
+            query_layers: wms.wmsParams.layers,
+            info_format: 'text/xml'
+        };
+        
+        params[params.version === '1.3.0' ? 'i' : 'x'] = point.x;
+        params[params.version === '1.3.0' ? 'j' : 'y'] = point.y;
+        console.log(params);
+        // return wms._url + L.Util.getParamString(params, wms._url, true);
     }
 
     // LA PARTE IZQUIERDA
@@ -777,52 +825,4 @@ function descargarTrace(evt) {
     document.body.appendChild(element);
     element.click();
     document.body.removeChild(element);
-}
-
-
-
-
-
-function getInfo(tabla, capa, latlng, p) {
-    var v = {};
-    if (map.hasLayer(capa.wms)) {
-        var url = getFeatureInfoUrl(latlng, capa.wms);
-        //var capa=variables[i];
-        $.get(url, function (data) {
-            v = {
-                variable: capa.nombre,
-                valor: parseFloat(data.getElementsByTagName("value")[0].childNodes[0].data, 2).toFixed(2),
-                unidades: capa.unidades
-            };
-            if (p) {
-                p[capa.nombre] = v.valor;
-                p[capa.nombre] = v.valor;
-            }
-            $(tabla).bootstrapTable('append', v);
-        });
-    }
-    return v;
-}
-
-function getFeatureInfoUrl(latlng, wms) {
-    var point = wms._map.latLngToContainerPoint(latlng, wms._map.getZoom()),
-        size = wms._map.getSize(),
-        params = {
-            request: 'GetFeatureInfo',
-            service: 'WMS',
-            srs: 'EPSG:4326',
-            styles: wms.wmsParams.styles,
-            transparent: wms.wmsParams.transparent,
-            version: wms.wmsParams.version,
-            format: wms.wmsParams.format,
-            bbox: wms._map.getBounds().toBBoxString(),
-            height: size.y,
-            width: size.x,
-            layers: wms.wmsParams.layers,
-            query_layers: wms.wmsParams.layers,
-            info_format: 'text/xml'
-        };
-    params[params.version === '1.3.0' ? 'i' : 'x'] = point.x;
-    params[params.version === '1.3.0' ? 'j' : 'y'] = point.y;
-    return wms._url + L.Util.getParamString(params, wms._url, true);
 }
