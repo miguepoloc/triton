@@ -317,7 +317,10 @@ require(['esri/map',
     "esri/geometry/Point",
     "esri/SpatialReference",
     "dojo/_base/array",
-    "esri/geometry/screenUtils"
+    "esri/geometry/screenUtils",
+    "esri/tasks/query",
+    "esri/tasks/QueryTask",
+    "esri/request"
 ], function (Map,
     WMSLayer,
     WMSLayerInfo,
@@ -340,7 +343,10 @@ require(['esri/map',
     Point,
     SpatialReference,
     array,
-    screenUtils
+    screenUtils,
+    Query,
+    QueryTask,
+    esriRequest
 ) {
 
 
@@ -475,6 +481,7 @@ require(['esri/map',
     var graphic;
 
     var punto_seleccion;
+
     function getFeatureInfo(evt) {
         if (tpicker) {
             var mp = webMercatorUtils.webMercatorToGeographic(evt.mapPoint);
@@ -558,7 +565,7 @@ require(['esri/map',
         var v = {};
         if (capa.l_id) {
             console.log("Soy " + capa.l_id);
-            var url = getFeatureInfoUrl(latlng, capa.wms);
+            var url = getFeatureInfoUrl(latlng, capa);
             //     //var capa=variables[i];
             //     $.get(url, function (data) {
             //         v = {
@@ -576,30 +583,44 @@ require(['esri/map',
         return v;
     }
 
-    function getFeatureInfoUrl(latlng, wms) {
+    function getFeatureInfoUrl(latlng, capa) {
         var punto_pixel = screenUtils.toScreenPoint(map.extent, map.width, map.height, punto_seleccion);
         console.log("AQUI");
-        console.log(wms);
-        console.log(punto_pixel);
+        console.log(map.geographicExtent);
+        console.log(map.geographicExtent.toJson());
+        bbox_string = String(map.geographicExtent.toJson().xmin) + "," + String(map.geographicExtent.toJson().ymin) + "," + String(map.geographicExtent.toJson().xmax) + "," + String(map.geographicExtent.toJson().ymax)
+        console.log(bbox_string);
+
         params = {
             request: 'GetFeatureInfo',
             service: 'WMS',
             srs: 'EPSG:4326',
-            styles: wms.wmsParams.styles,
-            transparent: wms.wmsParams.transparent,
-            version: wms.wmsParams.version,
-            format: wms.wmsParams.format,
-            bbox: wms._map.getBounds().toBBoxString(),
-            height: size.y,
-            width: size.x,
-            layers: wms.wmsParams.layers,
-            query_layers: wms.wmsParams.layers,
+            styles: capa.p.STYLES,
+            transparent: capa.p.TRANSPARENT,
+            format: capa.p.format,
+            bbox: bbox_string,
+            height: map.height,
+            width: map.width,
+            layers: capa.p.layers,
+            query_layers: capa.p.layers,
             info_format: 'text/xml'
         };
-        
-        params[params.version === '1.3.0' ? 'i' : 'x'] = point.x;
-        params[params.version === '1.3.0' ? 'j' : 'y'] = point.y;
+
+        params[params.version === '1.3.0' ? 'i' : 'x'] = punto_pixel.x;
+        params[params.version === '1.3.0' ? 'j' : 'y'] = punto_pixel.y;
         console.log(params);
+        console.log(map);
+        var query = new Query();
+        var queryTask = new QueryTask(capa.p.wms);
+        query.where = params;
+        query.outSpatialReference = {
+            wkid: 102100
+        };
+        query.returnGeometry = true;
+        // query.outFields = ["CITY_NAME"];
+        prueba = queryTask.execute(query);
+        console.log("LA prueba");
+        console.log(prueba);
         // return wms._url + L.Util.getParamString(params, wms._url, true);
     }
 
