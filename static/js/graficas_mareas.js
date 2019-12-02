@@ -5,6 +5,7 @@ Highcharts.getJSON(
         //Variables
         if (id_estacion == "39162") {
             document.getElementById("tabla_mareas").style.display = "block";
+            document.getElementById("g-mareas").style.display = "block";
             var htmlStr = "";
             for (var i = 0; i < data.length; i++) {
                 htmlStr += '<tr> <td >' + data[i].hora + '</td>';

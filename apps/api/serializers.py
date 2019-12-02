@@ -13,7 +13,7 @@ class MareaSerializer(serializers.Serializer):
 
 
 class CoralinaSerializer(serializers.Serializer):
-    DateTime = serializers.CharField(default=None, max_length=None)
+    fecha = serializers.CharField(default=None, max_length=None)
     viento_direccion = serializers.IntegerField(default=None)
     u_viento_direccion = serializers.CharField(default=None, max_length=None)
     viento_velocidad = serializers.FloatField(default=None)

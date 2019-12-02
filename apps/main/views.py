@@ -19,3 +19,6 @@ def Estacion(request, idx):
     else:
         estacion = None
     return render(request, 'main/estaciones.html',{'estacion': estacion})
+
+def Estacion2(request):
+    return render(request, 'main/estaciones2.html')

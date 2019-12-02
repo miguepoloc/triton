@@ -57,7 +57,7 @@
                                 <article>
                                     <div class="info">
                                         <div class="city"><span>Estación:</span>
-                                            <p id="nom_estacion"></p>
+                                            <p id="nom_estacion">Cayo Bolívar - Meteoceanográficos</p>
                                         </div>
                                         <div id="time" class="night"></div>
                                         <div id="temp" class="temp"></div>
@@ -72,7 +72,7 @@
                     </div>
                     <!----------------------------------GRÁFICA DE LA MAREA--------------------------------------->
                     <div class="col-md-6">
-                        <div id="g-mareas" style="height: 300px; display: none;"></div>
+                        <div id="g-mareas"></div>
                     </div>
                     <div class="col-md-6" style="display: none;">
                         <div id="info_text" style="height: 300px;"></div>
@@ -113,8 +113,8 @@
                 <button onclick="myFunction(v_p)" id="v_p" type="button" class="btn min-h6em mx-8px sombra">Velocidad
                     del viento
                     <hr> Presión atmosférica</button>
-                <button onclick="myFunction(r_l)" id="r_l" type="button" class="btn min-h6em mx-8px sombra">Radiación
-                    <hr> Precipitación</button>
+                <button onclick="myFunction(r_l)" id="r_l" type="button"
+                    class="btn min-h6em mx-8px sombra">Precipitación</button>
                 <button onclick="myFunction(s_tag)" id="s_tag" type="button"
                     class="btn min-h6em mx-8px sombra">Salinidad
                     <hr> Temperatura del agua</button>
@@ -143,9 +143,9 @@
     <script src="https://code.highcharts.com/stock/modules/export-data.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="http://code.highcharts.com/modules/windbarb.js"></script>
-    <script type="text/javascript" src="{%  static 'js/estaciones.js' %}"></script>
+    <script type="text/javascript" src="{%  static 'js/estaciones2.js' %}"></script>
     <script type="text/javascript" src="{%  static 'js/botones.js' %}"></script>
-    {% include 'layouts/footer.html' %}
+    {% include 'layouts/footer2.html' %}
     <script type="text/javascript" src="{%  static 'js/graficas_mareas.js' %}"></script>
 
 

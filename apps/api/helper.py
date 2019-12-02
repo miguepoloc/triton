@@ -88,17 +88,12 @@ def MareaHoras():
 def Coralina():
     """Leer el archivo de datos de la boya de Coralina"""
 
-    # Lee el archivo de mareas
+    # Lee el archivo
     archivo = open(BASE_DIR + '/data/coralina', 'r')
-    # hoy = date.today()                              #Definimos la fecha de hoy
-    # dia = hoy.day                                   #Definimos el día de hoy
-    # mes = hoy.month                                 #Definimos el mes de hoy
-
-    # Se crea la lista donde se van a almacenar los datos de la marea
+    # Se crea la lista donde se van a almacenar los datos
     x_list = []
     while True:
         linea = archivo.readline()  # Lee una linea del archivo
-        # El archivo marea tiene el formato      mes, dia, hora, minuto, altura
         l = linea.split(",")  # Separa el archivo por comas
 
         try:
@@ -140,42 +135,20 @@ def Coralina():
         except IndexError:  # En caso de que no esté dentro del rango ese vector
             pass
 
-        x = {'fecha': DateTime, 'viento_direccion': viento_direccion, "u_viento_direccion": u_viento_direccion, "viento_velocidad": viento_velocidad, "u_viento_direccion": u_viento_direccion,
+        x = {'fecha': DateTime, 'viento_direccion': viento_direccion, "u_viento_direccion": u_viento_direccion, "viento_velocidad": viento_velocidad, "u_viento_velocidad": u_viento_velocidad,
              "precipitacion10": precipitacion10, "u_precipitacion10": u_precipitacion10, "voltaje_bateria": voltaje_bateria, "u_voltaje_bateria": u_voltaje_bateria, "temperatura_ambiente": temperatura_ambiente,
              "u_temperatura_ambiente": u_temperatura_ambiente, "humedad_relativa": humedad_relativa, "u_humedad_relativa": u_humedad_relativa, "presion_barometrica": presion_barometrica,
              "u_presion_barometrica": u_presion_barometrica, "precipitacion": precipitacion, "u_precipitacion": u_precipitacion, "latitud": latitud, "u_latitud": u_latitud, "longitud": longitud,
              "u_longitud": u_longitud, "yb": yb, "u_yb": u_yb, "conductividad": conductividad, "u_conductividad": u_conductividad, "salinidad": salinidad, "u_salinidad": u_salinidad, "u_salinidad": u_salinidad,
              "ph": ph, "u_ph": u_ph, "temperatura_agua": temperatura_agua, "u_temperatura_agua": u_temperatura_agua, "od": od, "u_od": u_od, "conductividad2": conductividad2, "u_conductividad2": u_conductividad2}
-
-        """Si es el día y mes de hoy (Debido a que el archivo de mareas es un pronóstico 
-        y tiene datos de todo el año)"""
         x_list.append(x)
         if not linea:  # Si no hay más lineas en el archivo
             break  # Cierra el ciclo
     archivo.close  # Cierra el archivo
-    new_fecha = datetime.datetime.strptime(
-        x_list[len(x_list)-2]["fecha"], "%Y/%m/%d %H:%M:%S")
-    dia7 = datetime.timedelta(days=7)
-    fecha_7 = new_fecha - dia7
-    print(x_list[len(x_list)-2]["fecha"])
-    print(new_fecha)
-    print(fecha_7)
-    time_range = DateTimeRange(fecha_7, new_fecha)
     new_list = []
-    for i in range((len(x_list)-1009), (len(x_list)-1)):
+    for i in range((len(x_list)-1010), (len(x_list)-1)):
         new_list.append(x_list[i])
-        # fechando = datetime.datetime.strptime(x_list[i]["fecha"], "%Y/%m/%d %H:%M:%S")
-        # print(i)
-        # print(fechando)
-        # new_list.append(fechando)
-        # if fechando in time_range.range(datetime.timedelta(hours=1)):
-
-        #     new_list.append(x_list[i])
-
-    # print("Nueva lista")
-    # print(new_list)
-    print("Hay esta cantidad de elementos " + str(len(new_list)))
-    return new_list  # Retorna la lista resultante+
+    return new_list  # Retorna la lista resultante
 
 
 migue = Coralina()
