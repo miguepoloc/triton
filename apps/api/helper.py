@@ -146,7 +146,8 @@ def Coralina():
             break  # Cierra el ciclo
     archivo.close  # Cierra el archivo
     new_list = []
-    for i in range((len(x_list)-1010), (len(x_list)-1)):
+    # for i in range((len(x_list)-1010), (len(x_list)-1)):
+    for i in range((len(x_list)-6248), (len(x_list)-5240)):
         new_list.append(x_list[i])
     return new_list  # Retorna la lista resultante
 

@@ -108,7 +108,7 @@ function graficar(dato, selecto) {
 
     // Correcciones de valores
     for (i = 0; i < humedad.length; i++) {
-        if (velocidad[i] > 100) {
+        if (velocidad[i] > 100 || velocidad[i] < 0) {
             velocidad[i] = NaN;
         }
         if (precipitacion[i] < 0) {
