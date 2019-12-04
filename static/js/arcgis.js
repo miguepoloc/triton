@@ -320,7 +320,10 @@ require(['esri/map',
     "esri/geometry/screenUtils",
     "esri/tasks/query",
     "esri/tasks/QueryTask",
-    "esri/request"
+    "esri/request",
+    "esri/dijit/PopupTemplate",
+
+    "dojo/domReady!"
 ], function (Map,
     WMSLayer,
     WMSLayerInfo,
@@ -346,9 +349,11 @@ require(['esri/map',
     screenUtils,
     Query,
     QueryTask,
-    esriRequest
+    esriRequest,
+    PopupTemplate,
 ) {
 
+    var CTD_Layer;
 
     parser.parse();
     esriConfig.defaults.geometryService = new GeometryService("https://utility.arcgisonline.com/ArcGIS/rest/services/Geometry/GeometryServer");
@@ -397,6 +402,7 @@ require(['esri/map',
             if (!$(this).is(":checked")) {
                 // Elimina la capa
                 let idx = map.getLayer(capa.l_id)
+
                 map.removeLayer(idx);
                 capa.l_id = null;
                 // Cambia el estado de visibilidad a falso
@@ -410,6 +416,7 @@ require(['esri/map',
                 wmsLayer = graficar(capa);
                 map.addLayer(wmsLayer);
                 let idx = map.layerIds;
+                console.log(idx);
                 capa.l_id = idx[idx.length - 1];
                 // Cambia el estado de visibilidad a true
                 capa.v = true;
@@ -442,40 +449,70 @@ require(['esri/map',
     });
 
     // Añadir las CTD
-    $("#xbCTD").on("change", function () {
-        // Si NO está seleccionado
-        if (!$(this).is(":checked")) {
-            //Nada
-            map.graphics.clear();
+    var featureCollection = {
+        "layerDefinition": null,
+        "featureSet": {
+            "features": [],
+            "geometryType": "esriGeometryPoint"
         }
-        // En caso de estar chequeado el elemento
-        else {
-            // Añade la capa al mapa
-            // Agregar las estaciones
-            $.get("/api/ctd_lances/", function (data) {
-
-                var simpleMarkerSymbol = new SimpleMarkerSymbol();
-                ctd_data = data.results;
-                console.log(ctd_data);
-                for (let index = 0; index < ctd_data.length; index++) {
-                    // console.log(ctd_data[index].latitudinicio_loc + " , " + ctd_data[index].longitudinicio_loc)
-                    ShowLocation(ctd_data[index].longitudinicio_loc, ctd_data[index].latitudinicio_loc)
-                }
+    };
+    featureCollection.layerDefinition = {
+        "geometryType": "esriGeometryPoint",
+        "objectIdField": "ObjectID",
+        "drawingInfo": {
+            // "renderer": {
+            //     "type": "simple",
+            //     "symbol": {
+            //         "type": "esriPMS",
+            //         "url": "{% static 'images/flickr.png' %}",
+            //         "contentType": "image/png",
+            //         "width": 15,
+            //         "height": 15
+            //     }
+            // }
+        },
+    };
+    // Configuración del Popup
+    var popupTemplate = new PopupTemplate({
+        title: "{titulo}",
+        description: "{descripcion}"
+    });
+    // Creación de la capa donde se almacenarán las CTS
+    CTD_Layer = new FeatureLayer(featureCollection, {
+        infoTemplate: popupTemplate
+    });
+    var contar = 0;
+    $("#xbCTD").on("change", function () {
+        if (!$(this).is(":checked")) {
+            map.removeLayer(CTD_Layer);
+        } else {
+            var requestHandle = esriRequest({
+                url: "/api/ctd_lances/",
+                callbackParamName: "jsoncallback"
             });
-
+            if (contar == 0) {
+                requestHandle.then(requestSucceeded);
+            }
+            map.addLayers([CTD_Layer]);
         }
     });
 
+    function requestSucceeded(response) {
+        contar = 1;
+        //loop through the items and add to the feature layer
+        var ctd_features = [];
+        array.forEach(response.results, function (item) {
+            var attr = {};
+            attr["titulo"] = item.titulo;
+            attr["descripcion"] = "Fecha: " + item.fecha + "<br>" + "Código de la estación: " + item.prefijo_cdg_est_loc + item.codigo_estacion_loc + "<br>" + "Lugar: " + item.lugar + "<br>" + "Profundidad máxima del lance: " + item.prof_max_loc;
+            var punto_ctd = new Point(item.longitudinicio_loc, item.latitudinicio_loc);
+            var graphic_ctd = new Graphic(punto_ctd);
+            graphic_ctd.setAttributes(attr);
+            ctd_features.push(graphic_ctd);
+        });
 
-    function ShowLocation(x, y) {
-        var pointa = new Point(x, y, new SpatialReference({
-            wkid: 4326
-        }));
-        var simpleMarkerSymbol = new SimpleMarkerSymbol();
-        var graphic = new Graphic(pointa, simpleMarkerSymbol);
-        console.log(pointa);
-        map.graphics.add(graphic);
-    };
+        CTD_Layer.applyEdits(ctd_features, null, null);
+    }
 
     function graficar(capa) {
         var wmsLayer = new WMSLayer(
