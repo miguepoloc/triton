@@ -1,5 +1,6 @@
 from django.db import models
 
+
 class VmAgm334580310(models.Model):
     id_muestreo = models.IntegerField(primary_key=True)
     id_estacion = models.IntegerField()
@@ -61,6 +62,7 @@ class VmAgm2507816(models.Model):
     class Meta:
         managed = False
         db_table = 'vm_agm_2507_816'
+
 
 class VTriton(models.Model):
     id_muestreo = models.IntegerField(primary_key=True)
@@ -133,7 +135,8 @@ class VmAgm2068822(models.Model):
     variable_des = models.CharField(max_length=4000, blank=True, null=True)
     valor = models.FloatField(blank=True, null=True)
     unidades_medida = models.CharField(max_length=2000, blank=True, null=True)
-    unidades_medida_des = models.CharField(max_length=4000, blank=True, null=True)
+    unidades_medida_des = models.CharField(
+        max_length=4000, blank=True, null=True)
     muestra = models.FloatField(blank=True, null=True)
     err_creacion = models.CharField(max_length=4000, blank=True, null=True)
 
@@ -177,10 +180,34 @@ class VmAgm3303822(models.Model):
     variable_des = models.CharField(max_length=4000, blank=True, null=True)
     valor = models.FloatField(blank=True, null=True)
     unidades_medida = models.CharField(max_length=2000, blank=True, null=True)
-    unidades_medida_des = models.CharField(max_length=4000, blank=True, null=True)
+    unidades_medida_des = models.CharField(
+        max_length=4000, blank=True, null=True)
     muestra = models.CharField(max_length=2000, blank=True, null=True)
     err_creacion = models.CharField(max_length=4000, blank=True, null=True)
 
     class Meta:
         managed = False
         db_table = 'vm_agm_3303_822'
+
+
+class Ctd_Lances(models.Model):
+    id_muestreo = models.IntegerField(primary_key=True)
+    id_estacion = models.IntegerField()
+    id_proyecto = models.IntegerField()
+    id_metodologia = models.IntegerField()
+    id_tematicas = models.IntegerField()
+    fecha = models.DateField()
+    notas = models.CharField(max_length=1000, blank=True, null=True)
+    fechasis = models.DateField()
+    id_muestreotex = models.CharField(max_length=40, blank=True, null=True)
+    latitudinicio_loc = models.FloatField(blank=True, null=True)
+    longitudinicio_loc = models.FloatField(blank=True, null=True)
+    prof_max_loc = models.FloatField(blank=True, null=True)
+    prefijo_cdg_est_loc = models.CharField(max_length=1000, blank=True, null=True)
+    codigo_estacion_loc = models.IntegerField()
+    lugar = models.CharField(max_length=1000, blank=True, null=True)
+    titulo = models.CharField(max_length=1000, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'ctd_lances'

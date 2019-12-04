@@ -12,8 +12,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.oracle',
         'NAME': 'sci',
-        'USER': 'datosdecampo',
-        'PASSWORD': 'paseos',
+        'USER': 'oceanograficos',
+        'PASSWORD': 'mareados',
         'HOST': '192.168.3.70',
         'PORT': '1521',
     },

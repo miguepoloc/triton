@@ -12,6 +12,7 @@ router.register("39161", views.DatosCoralinaList39161, "39161")
 router.register("39162", views.DatosCoralinaList39162, "39162")
 router.register("ctd", views.DatosCTDList2068, "ctd")
 router.register("ctd2", views.DatosCTDList3303, "ctd2")
+router.register("ctd_lances", views.DatosCTDLancesList, "ctd_lances")
 
 urlpatterns = [
     url(r'^datos/$', views.MareaList.as_view()),

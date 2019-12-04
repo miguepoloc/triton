@@ -418,6 +418,8 @@ require(['esri/map',
             }
         });
     };
+
+    // Añadir las estaciones
     var fl;
     $("#xbEstaciones").on("change", function () {
         // Si NO está seleccionado
@@ -439,6 +441,41 @@ require(['esri/map',
         }
     });
 
+    // Añadir las CTD
+    $("#xbCTD").on("change", function () {
+        // Si NO está seleccionado
+        if (!$(this).is(":checked")) {
+            //Nada
+            map.graphics.clear();
+        }
+        // En caso de estar chequeado el elemento
+        else {
+            // Añade la capa al mapa
+            // Agregar las estaciones
+            $.get("/api/ctd_lances/", function (data) {
+
+                var simpleMarkerSymbol = new SimpleMarkerSymbol();
+                ctd_data = data.results;
+                console.log(ctd_data);
+                for (let index = 0; index < ctd_data.length; index++) {
+                    // console.log(ctd_data[index].latitudinicio_loc + " , " + ctd_data[index].longitudinicio_loc)
+                    ShowLocation(ctd_data[index].longitudinicio_loc, ctd_data[index].latitudinicio_loc)
+                }
+            });
+
+        }
+    });
+
+
+    function ShowLocation(x, y) {
+        var pointa = new Point(x, y, new SpatialReference({
+            wkid: 4326
+        }));
+        var simpleMarkerSymbol = new SimpleMarkerSymbol();
+        var graphic = new Graphic(pointa, simpleMarkerSymbol);
+        console.log(pointa);
+        map.graphics.add(graphic);
+    };
 
     function graficar(capa) {
         var wmsLayer = new WMSLayer(

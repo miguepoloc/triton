@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import VmAgm334580310, VmAgm2507816, VTriton, VmAgm2068822, VmAgm3303822
+from .models import VmAgm334580310, VmAgm2507816, VTriton, VmAgm2068822, VmAgm3303822, Ctd_Lances
 
 
 class MareaSerializer(serializers.Serializer):
@@ -73,4 +73,10 @@ class DatosCTDSerializer(serializers.ModelSerializer):
 class DatosCTDSerializer2(serializers.ModelSerializer):
     class Meta:
         model = VmAgm3303822
+        fields = '__all__'
+
+
+class DatosCTDLancesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Ctd_Lances
         fields = '__all__'
