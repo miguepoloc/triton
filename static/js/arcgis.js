@@ -428,6 +428,15 @@ require(['esri/map',
 
     // Añadir las estaciones
     var fl;
+    var url = "http://gis.invemar.org.co/arcgis/rest/services/CLIMARES/Estaciones_Meteoceanograficas/MapServer/0";
+    var template = new InfoTemplate("Estación", "${Name} <br> <a href='/estacion/${id}' target='_blank'> Ver más </a>");
+    fl = new FeatureLayer(url, {
+        id: "Estaciones",
+        infoTemplate: template,
+        outFields: ["*"]
+    });
+
+
     $("#xbEstaciones").on("change", function () {
         // Si NO está seleccionado
         if (!$(this).is(":checked")) {
@@ -437,13 +446,8 @@ require(['esri/map',
         else {
             // Añade la capa al mapa
             // Agregar las estaciones
-            var url = "http://gis.invemar.org.co/arcgis/rest/services/CLIMARES/Estaciones_Meteoceanograficas/MapServer/0";
-            var template = new InfoTemplate("Estación", "${Name} <br> <a href='/estacion/${id}' target='_blank'> Ver más </a>");
-            fl = new FeatureLayer(url, {
-                id: "Estaciones",
-                infoTemplate: template,
-                outFields: ["*"]
-            });
+
+            console.log(fl);
             map.addLayer(fl);
         }
     });
@@ -502,13 +506,17 @@ require(['esri/map',
         //loop through the items and add to the feature layer
         var ctd_features = [];
         array.forEach(response.results, function (item) {
+            // console.log(item);
             var attr = {};
             attr["titulo"] = item.titulo;
-            attr["descripcion"] = "Fecha: " + item.fecha + "<br>" + "Código de la estación: " + item.prefijo_cdg_est_loc + item.codigo_estacion_loc + "<br>" + "Lugar: " + item.lugar + "<br>" + "Profundidad máxima del lance: " + item.prof_max_loc;
+            attr["descripcion"] = "<b>Fecha: </b>" + item.fecha + "<br>" + "<b>Código de la estación: </b>" + item.prefijo_cdg_est_loc + item.codigo_estacion_loc + "<br>" + "<b>Lugar: </b>" + item.lugar + "<br>" + "<b>Profundidad máxima del lance: </b>" + item.prof_max_loc;
             var punto_ctd = new Point(item.longitudinicio_loc, item.latitudinicio_loc);
             var graphic_ctd = new Graphic(punto_ctd);
             graphic_ctd.setAttributes(attr);
-            ctd_features.push(graphic_ctd);
+            if (item.id_estacion !== 39162 && item.id_estacion !== 39161 && item.id_estacion !== 38884 && item.id_estacion !== 38883 && item.id_estacion !== 38885) {
+                console.log(item.id_estacion);
+                ctd_features.push(graphic_ctd);
+            }
         });
 
         CTD_Layer.applyEdits(ctd_features, null, null);

@@ -203,7 +203,8 @@ class Ctd_Lances(models.Model):
     latitudinicio_loc = models.FloatField(blank=True, null=True)
     longitudinicio_loc = models.FloatField(blank=True, null=True)
     prof_max_loc = models.FloatField(blank=True, null=True)
-    prefijo_cdg_est_loc = models.CharField(max_length=1000, blank=True, null=True)
+    prefijo_cdg_est_loc = models.CharField(
+        max_length=1000, blank=True, null=True)
     codigo_estacion_loc = models.IntegerField()
     lugar = models.CharField(max_length=1000, blank=True, null=True)
     titulo = models.CharField(max_length=1000, blank=True, null=True)

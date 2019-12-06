@@ -3,6 +3,7 @@ from datetime import date
 import time
 import datetime
 from datetimerange import DateTimeRange
+from rest_framework.exceptions import ValidationError
 
 # Directorio raiz del proyecto (triton)
 BASE_DIR = os.path.dirname(os.path.dirname(
@@ -152,4 +153,70 @@ def Coralina():
     return new_list  # Retorna la lista resultante
 
 
-migue = Coralina()
+def get_filters_validated(request, params={}):
+    filters = {}
+    errors = []
+    for param in params:
+        if 'filter' in param and param['filter'].endswith('__range'):
+            param_value = get_values_filter_range(request, param, errors)
+            if param_value:
+                filters[param['filter']] = param_value
+        else:
+            param_value = request.GET.get(param['name'], None)
+            if param_value:
+                if 'ignore' not in param:
+                    filter = param.get('filter', param['name'])
+                    filters[filter] = param_value
+            else:
+                if 'required' in param and param['required']:
+                    errors.append('{} es requerido'.format(param['name']))
+    return filters, errors
+
+
+def get_values_filter_range(request, param, errors=[]):
+    params_range = ['initial', 'final']
+    values_range = []
+    for param_name in params_range:
+        param_value = request.GET.get(param['name'][param_name], None)
+        if param_value:
+            if 'date' in param and param['date']:
+                date_value = validate_date(param_value)
+                if date_value:
+                    values_range.append(date_value)
+                else:
+                    errors.append('{} no es una fecha valida'.format(
+                        param['name'][param_name]))
+            else:
+                values_range.append(param_value)
+        else:
+            errors.append('{} es requerido'.format(param['name'][param_name]))
+    if len(values_range) == 2:
+        return values_range
+    return None
+
+
+def validate_date(string_date):
+    date = None
+    year = string_date[0:4]
+    month = string_date[4:6]
+    day = string_date[6:8]
+    try:
+        date = datetime.datetime(int(year), int(month), int(day))
+    except Exception as err:
+        print('Error Exception date: ', err)
+        return False
+    #print('date.............', date)
+    return date
+
+
+def estacion_get_filters_validated(request):
+    params = (
+        {
+            'name': 'id_estacion',
+            'required': True,
+        },
+    )
+    filters, errors = get_filters_validated(request, params)
+    if errors:
+        raise ValidationError(errors)
+    return filters

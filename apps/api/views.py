@@ -3,7 +3,7 @@ from rest_framework import views, viewsets, mixins
 from rest_framework.response import Response
 from .serializers import (MareaSerializer, DatosEstacionSerializer10, DatosTritonSerializer,
                           DatosCTDSerializer, DatosCTDSerializer2, CoralinaSerializer, DatosCTDLancesSerializer)
-from .helper import MareaHoras, MareaHoy, Coralina
+from .helper import MareaHoras, MareaHoy, Coralina, estacion_get_filters_validated
 from .models import VmAgm334580310, VmAgm2507816, VTriton, VmAgm2068822, VmAgm3303822, Ctd_Lances
 
 
@@ -35,6 +35,31 @@ class DatosEstacionList10(mixins.ListModelMixin, viewsets.GenericViewSet):
 
     serializer_class = DatosEstacionSerializer10
     queryset = VmAgm334580310.objects.using('neo_argos').order_by('-fecha')
+
+
+class DatosTritonList(mixins.ListModelMixin, viewsets.GenericViewSet):
+
+    serializer_class = DatosTritonSerializer
+
+    def list(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset(request))
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
+
+    def get_queryset(self, request=None):
+        queryset_complete = queryset = filters = []
+        if request:
+            filters = estacion_get_filters_validated(request)
+        try:
+            queryset = VTriton.objects.using('neo_argos').filter(**filters)
+            # print('query::::::::::::: ', queryset.query)
+        except Exception as err:
+            print(err)
+        return queryset
 
 
 class DatosCoralinaList38883(mixins.ListModelMixin, viewsets.GenericViewSet):
