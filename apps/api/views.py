@@ -37,7 +37,7 @@ class DatosEstacionList10(mixins.ListModelMixin, viewsets.GenericViewSet):
     queryset = VmAgm334580310.objects.using('neo_argos').order_by('-fecha')
 
 
-class DatosTritonList(mixins.ListModelMixin, viewsets.GenericViewSet):
+class DatosEstacionesList(mixins.ListModelMixin, viewsets.GenericViewSet):
 
     serializer_class = DatosTritonSerializer
 
@@ -55,46 +55,15 @@ class DatosTritonList(mixins.ListModelMixin, viewsets.GenericViewSet):
         if request:
             filters = estacion_get_filters_validated(request)
         try:
-            queryset = VTriton.objects.using('neo_argos').filter(**filters)
-            # print('query::::::::::::: ', queryset.query)
+            queryset = VTriton.objects.using('neo_argos').filter(
+                **filters).order_by('-fecha_hora')[:720]
         except Exception as err:
             print(err)
-        return queryset
-
-
-class DatosCoralinaList38883(mixins.ListModelMixin, viewsets.GenericViewSet):
-
-    serializer_class = DatosTritonSerializer
-    queryset = VTriton.objects.using('neo_argos').filter(
-        id_estacion=38883).order_by('-fecha_hora')[:720]
-
-
-class DatosCoralinaList38884(mixins.ListModelMixin, viewsets.GenericViewSet):
-
-    serializer_class = DatosTritonSerializer
-    queryset = VTriton.objects.using('neo_argos').filter(
-        id_estacion=38884).order_by('-fecha_hora')[:720]
-
-
-class DatosCoralinaList38885(mixins.ListModelMixin, viewsets.GenericViewSet):
-
-    serializer_class = DatosTritonSerializer
-    queryset = VTriton.objects.using('neo_argos').filter(
-        id_estacion=38885).order_by('-fecha_hora')[:720]
-
-
-class DatosCoralinaList39161(mixins.ListModelMixin, viewsets.GenericViewSet):
-
-    serializer_class = DatosTritonSerializer
-    queryset = VTriton.objects.using('neo_argos').filter(
-        id_estacion=39161).order_by('-fecha_hora')[:720]
-
-
-class DatosCoralinaList39162(mixins.ListModelMixin, viewsets.GenericViewSet):
-
-    serializer_class = DatosTritonSerializer
-    queryset = VTriton.objects.using('neo_argos').filter(
-        id_estacion=39162).order_by('-fecha_hora')[:720]
+        if len(queryset)>0:
+            return queryset
+        else:
+            print("ERROR")
+            return (queryset)
 
 
 class DatosCTDList2068(mixins.ListModelMixin, viewsets.GenericViewSet):

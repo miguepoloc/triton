@@ -441,13 +441,13 @@ function graficar(dato, selecto) {
 
 function myFunction(variables) {
     console.log(variables.id);
-    $.get('/api/estacion/' + document.getElementById("id_estacion").innerHTML, function (result) {
+    $.get('/api/estaciones/?id_estacion=' + document.getElementById("id_estacion").innerHTML, function (result) {
         graficar(result, variables.id)
     });
 }
 var variables = document.getElementById('tai_h');
 $(document).ready(function () {
-    $.get('/api/estacion/' + document.getElementById("id_estacion").innerHTML, function (result) {
+    $.get('/api/estaciones/?id_estacion=' + document.getElementById("id_estacion").innerHTML, function (result) {
         graficar(result, variables.id)
     });
 });
