@@ -270,6 +270,7 @@ hr {
 .min-h6em {
 	min-height: 6em;
 	min-width: 13.5em;
+	margin: 1em;
 }
 
 .active-btn {

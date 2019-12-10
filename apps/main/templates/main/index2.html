@@ -1,15 +1,10 @@
 {% load staticfiles %}
-<script src="https://code.highcharts.com/highcharts.js"></script>
+<script type="text/javascript" src="{%  static 'js/highcharts.js' %}"></script>
 <script src="https://code.highcharts.com/modules/exporting.js"></script>
 <script src="https://code.highcharts.com/modules/export-data.js"></script>
 
-<select name="grafica" id="grafica_id">
-    <option value="" disabled selected>Seleccione una Gráfica</option>
-    <option value="AB">Albacete</option>
-    <option value="AL">Almería</option>
-    <option value="AR">Araba</option>
-    <option value="AV">Ávila</option>
-    <option value="BA">Badajoz</option>
+<select name="select_grafica" id="select_grafica">
+    <option value="TEMP" disabled selected>Seleccione una Gráfica...</option>
 </select>
 
 <div id="container" style="max-width: 310px; height: 400px; margin: 0 auto"></div>

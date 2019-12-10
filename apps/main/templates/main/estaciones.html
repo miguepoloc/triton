@@ -64,7 +64,7 @@
                                         <div class="city">
                                             <span id="wind"></span>
                                         </div>
-                                        <p id="id_estacion" style="display: none">{{ estacion.id_estacion }}</p>
+                                        <p id="id_estacion" style="display: none">{{ estacion }}</p>
                                     </div>
                                 </article>
                             </div>
@@ -72,7 +72,7 @@
                     </div>
                     <!----------------------------------GRÁFICA DE LA MAREA--------------------------------------->
                     <div class="col-md-6">
-                        <div id="g-mareas" style="height: 300px;"></div>
+                        <div id="g-mareas" style="height: 300px; display: none;"></div>
                     </div>
                     <div class="col-md-6" style="display: none;">
                         <div id="info_text" style="height: 300px;"></div>
@@ -105,8 +105,8 @@
                 </div>
             </div>
         </section>
-        <div class="container mb-3em">
-            <div class="col-md-12" style="display: flex;align-items: center;justify-content: center;">
+        <div class="container-fluid mb-3em">
+            <div class="col-md-12" style="text-align: center;">
                 <button onclick="myFunction(tai_h)" id="tai_h" type="button"
                     class="btn min-h6em mx-8px active-btn">Temperatura del aire
                     <hr> Humedad</button>
