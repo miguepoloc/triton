@@ -301,9 +301,6 @@ require(['esri/map',
     'esri/geometry/Extent',
     'esri/layers/FeatureLayer',
     "esri/InfoTemplate",
-    "esri/dijit/Print",
-    "esri/tasks/PrintTemplate",
-    "esri/tasks/PrintTask",
     "dojo/dom",
     "dojo/parser",
     "esri/symbols/SimpleMarkerSymbol",
@@ -322,6 +319,8 @@ require(['esri/map',
     "esri/tasks/QueryTask",
     "esri/request",
     "esri/dijit/PopupTemplate",
+    "dojo/dom-construct",
+    "dojo/query",
 
     "dojo/domReady!"
 ], function (Map,
@@ -330,9 +329,6 @@ require(['esri/map',
     Extent,
     FeatureLayer,
     InfoTemplate,
-    Print,
-    PrintTemplate,
-    PrintTask,
     dom,
     parser,
     SimpleMarkerSymbol,
@@ -351,6 +347,8 @@ require(['esri/map',
     QueryTask,
     esriRequest,
     PopupTemplate,
+    domConstruct,
+    query,
 ) {
 
     var CTD_Layer;
@@ -368,21 +366,6 @@ require(['esri/map',
 
     map.on("load", initToolbar);
 
-    // var printer = new Print({
-    //         map: map,
-    //         url: "http://utility.arcgisonline.com/arcgis/rest/services/Utilities/PrintingTools/GPServer/Export%20Web%20Map%20Task"
-    //     }, dom.byId("printButton"));
-    // printer.startup();
-    // printer.on('print-complete', function (evt) {
-    //     console.log('The url to the print image is : ' + evt.result.url);
-    // });
-    // printer.on('print-start', function () {
-    //     console.log('The print operation has started');
-    // });
-    // printer.on('error', function () {
-    //     console.log('Fallando');
-    // });
-
     // Añandiendo una cpa de tierra para evitar la superposición
     var url = "http://gis.invemar.org.co/arcgis/rest/services/Conectividad/ConectividadBase/MapServer/0/";
     var tierra = new FeatureLayer(url);
@@ -393,7 +376,6 @@ require(['esri/map',
         llenarlista(variables[i]);
         iniciarControles(variables[i]);
     }
-
 
     function iniciarControl(capa) {
         // Si el elemento con id "#c capa.b" cambia
@@ -436,7 +418,6 @@ require(['esri/map',
         outFields: ["*"]
     });
 
-
     $("#xbEstaciones").on("change", function () {
         // Si NO está seleccionado
         if (!$(this).is(":checked")) {
@@ -446,7 +427,6 @@ require(['esri/map',
         else {
             // Añade la capa al mapa
             // Agregar las estaciones
-
             console.log(fl);
             map.addLayer(fl);
         }
@@ -509,19 +489,22 @@ require(['esri/map',
             // console.log(item);
             var attr = {};
             attr["titulo"] = item.titulo;
-            attr["descripcion"] = "<b>Fecha: </b>" + item.fecha + "<br>" + "<b>Código de la estación: </b>" + item.prefijo_cdg_est_loc + item.codigo_estacion_loc + "<br>" + "<b>Lugar: </b>" + item.lugar + "<br>" + "<b>Profundidad máxima del lance: </b>" + item.prof_max_loc;
+            attr["descripcion"] = "<b>Fecha: </b>" + item.fecha + "<br>" + "<b>Código de la estación: </b>" + item.prefijo_cdg_est_loc +
+                item.codigo_estacion_loc + "<br>" + "<b>Lugar: </b>" + item.lugar + "<br>" + "<b>Profundidad máxima del lance: </b>" +
+                item.prof_max_loc + "<br>" + '<button onclick="myFunction()" id="boton_grafica">Graficar</button>' + "<br>" + '<select name="select_grafica" id="select_grafica" style="display: none;"><br>' +
+                '<option value="TEMP" disabled selected>Seleccione una Gráfica...</option></select>' +
+                "<br>" + "<div id='ctd_grafica'></div><p id='text_grafica'></p>"
             var punto_ctd = new Point(item.longitudinicio_loc, item.latitudinicio_loc);
             var graphic_ctd = new Graphic(punto_ctd);
             graphic_ctd.setAttributes(attr);
             if (item.id_estacion !== 39162 && item.id_estacion !== 39161 && item.id_estacion !== 38884 && item.id_estacion !== 38883 && item.id_estacion !== 38885) {
-                console.log(item.id_estacion);
                 ctd_features.push(graphic_ctd);
             }
         });
-
         CTD_Layer.applyEdits(ctd_features, null, null);
     }
 
+    // Cargar capa WMS
     function graficar(capa) {
         var wmsLayer = new WMSLayer(
             capa.wms, {
