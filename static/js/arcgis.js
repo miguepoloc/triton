@@ -491,9 +491,7 @@ require(['esri/map',
             attr["titulo"] = item.titulo;
             attr["descripcion"] = "<b>Fecha: </b>" + item.fecha + "<br>" + "<b>Código de la estación: </b>" + item.prefijo_cdg_est_loc +
                 item.codigo_estacion_loc + "<br>" + "<b>Lugar: </b>" + item.lugar + "<br>" + "<b>Profundidad máxima del lance: </b>" +
-                item.prof_max_loc + "<br>" + '<button onclick="myFunction()" id="boton_grafica">Graficar</button>' + "<br>" + '<select name="select_grafica" id="select_grafica" style="display: none;"><br>' +
-                '<option value="TEMP" disabled selected>Seleccione una Gráfica...</option></select>' +
-                "<br>" + "<div id='ctd_grafica'></div><p id='text_grafica'></p>"
+                item.prof_max_loc + "<br>" + '<button onclick="myFunction()" id="boton_grafica">Graficar</button>'
             var punto_ctd = new Point(item.longitudinicio_loc, item.latitudinicio_loc);
             var graphic_ctd = new Graphic(punto_ctd);
             graphic_ctd.setAttributes(attr);
@@ -532,13 +530,17 @@ require(['esri/map',
             map.graphics.clear();
             $('#table').bootstrapTable('removeAll');
             $('#coor').html('');
+            document.getElementById("select_grafica").style.display = "none";
+            document.getElementById("ctd_grafica").innerHTML = "";
         } else {
             $("#slider").slideReveal("hide");
             $("#tracer").slideReveal("hide");
+            $("#slider_graph").slideReveal("hide");
             $("#picker").slideReveal("show");
             tpicker = true;
             tlegend = false;
             trace = false;
+            t_graph = false;
         }
     });
 
@@ -739,15 +741,20 @@ require(['esri/map',
             tpicker = false;
             tlegend = false;
             trace = false;
+            t_graph = false;
             map.graphics.clear();
+            document.getElementById("select_grafica").style.display = "none";
+            document.getElementById("ctd_grafica").innerHTML = "";
 
         } else {
             $("#slider").slideReveal("hide");
             $("#picker").slideReveal("hide");
+            $("#slider_graph").slideReveal("hide");
             $("#tracer").slideReveal("show");
             tpicker = false;
             tlegend = false;
             trace = true;
+            t_graph = false;
         }
         //console.log("select tracer");
     });
@@ -769,6 +776,7 @@ sidebar: $('#sidebar').sidebar();
 var tlegend = false;
 var tpicker = false;
 var trace = false;
+var t_graph = false;
 
 var punto = {};
 
@@ -788,52 +796,44 @@ $("#trigger").click(function () {
     if (tlegend) {
         $("#slider").slideReveal("hide");
         tlegend = false;
+        document.getElementById("select_grafica").style.display = "none";
+        document.getElementById("ctd_grafica").innerHTML = "";
     } else {
         $("#picker").slideReveal("hide");
         $("#tracer").slideReveal("hide");
+        $("#slider_graph").slideReveal("hide");
         $("#slider").slideReveal("show");
         tlegend = true;
         tpicker = false;
         trace = false;
+        t_graph = false;
         map.removeLayer(punto);
         $('#table').bootstrapTable('removeAll');
         $('#coor').html('');
     }
 });
 
-// $("#tpicker").click(function () {
-//     if (tpicker) {
-//         $("#picker").slideReveal("hide");
-//         tpicker = false;
-//         map.removeLayer(punto);
-//         $('#table').bootstrapTable('removeAll');
-//         $('#coor').html('');
-//     } else {
-//         $("#slider").slideReveal("hide");
-//         $("#tracer").slideReveal("hide");
-//         $("#picker").slideReveal("show");
-//         tpicker = true;
-//         tlegend = false;
-//         trace = false;
-//     }
-// });
-
-// $("#trace").click(function () {
-//     if (trace) {
-//         $("#tracer").slideReveal("hide");
-//         tpicker = false;
-//         tlegend = false;
-//         trace = false;
-//     } else {
-//         $("#slider").slideReveal("hide");
-//         $("#picker").slideReveal("hide");
-//         $("#tracer").slideReveal("show");
-//         tpicker = false;
-//         tlegend = false;
-//         trace = true;
-//     }
-//     //console.log("select tracer");
-// });
+// CONTROL BOTON DE LA GRÁFICA
+$("#graph").click(function () {
+    if (t_graph) {
+        $("#slider_graph").slideReveal("hide");
+        t_graph = false;
+        document.getElementById("select_grafica").style.display = "none";
+        document.getElementById("ctd_grafica").innerHTML = "";
+    } else {
+        $("#picker").slideReveal("hide");
+        $("#tracer").slideReveal("hide");
+        $("#slider").slideReveal("hide");
+        $("#slider_graph").slideReveal("show");
+        tlegend = false;
+        tpicker = false;
+        trace = false;
+        t_graph = true;
+        map.removeLayer(punto);
+        $('#table').bootstrapTable('removeAll');
+        $('#coor').html('');
+    }
+});
 
 $(document).ready(function () {
     $('#table').bootstrapTable();
@@ -841,6 +841,7 @@ $(document).ready(function () {
     $("#slider").show();
     $("#picker").show();
     $("#tracer").show();
+    $("#slider_graph").show();
 
     $("#slider").slideReveal({
         position: "right",
@@ -853,6 +854,11 @@ $(document).ready(function () {
         speed: 400
     });
     $("#tracer").slideReveal({
+        position: "right",
+        width: 317,
+        speed: 400
+    });
+    $("#slider_graph").slideReveal({
         position: "right",
         width: 317,
         speed: 400
