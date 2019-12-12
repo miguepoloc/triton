@@ -248,53 +248,6 @@ var variables = [{
     },
 ];
 
-// Llena la lista de URLS correspondientes a la ubicación del servicio WMS
-function llenarlista(capa) {
-    // Obtiene los datos de la siguiente URL
-    $.get(homeUrl + "catalog/" + capa.variable + "/latest.xml", function (data) {
-        // Trata de obtener los elementos que tengan el nombre "Latest capa.variable"
-        // Por ejemplo "SLA-H"
-        // Selecciona sólo el último dato y de él obtiene el atributo urlPath
-        // Esta es la ubicación donde se encuentran las imágenes WMS
-        // Guardas las URL en capa.l
-        try {
-            capa.l.push(data.getElementsByName("Latest " + capa.variable)[0].attributes.urlPath
-                .nodeValue);
-        } catch (err) {
-            // En caso de que se presente un error, obtiene los elementos con nombre "dataset"
-            // Y luego se hace lo mismo de arriba
-            capa.l.push(data.getElementsByTagName("dataset")[0].attributes.urlPath.nodeValue);
-        }
-        // Guarda los datos de las capas en capa.wms
-        capa.wms = homeUrl + 'wms/' + capa.l[0];
-        if (capa.v) {
-            // Si es verdadero el valor de "capa.v" (La variable que controla la visibilidad)
-            // Grafica la capa en el mapa
-            // Se anexa la tierra (Por el error de que se superponen en la tierra los datos oceanográficos)
-            // Cambia el botón de esa capa a ON
-            $('#c' + capa.b).bootstrapToggle('on');
-            // Pone visible esa capa
-            $("#" + capa.legendiv).show();
-        }
-
-        // Obtiene los datos de la siguiente URL
-        $.get(homeUrl + "catalog/" + capa.variable + "/catalog.xml", function (data2) {
-            var historico = [];
-            try {
-                historico = data2.getElementsByName(capa.variable)[0].children;
-                for (var i = 5; i < historico.length; i++) {
-                    capa.l.push(historico[i].attributes.urlPath.nodeValue);
-                }
-            } catch (err) {
-                historico = data2.getElementsByTagName("dataset")
-                for (var i = 3; i < historico.length; i++) {
-                    capa.l.push(historico[i].attributes.urlPath.nodeValue);
-                }
-            }
-        });
-    });
-};
-
 require(['esri/map',
     'esri/layers/WMSLayer',
     'esri/layers/WMSLayerInfo',
@@ -373,11 +326,10 @@ require(['esri/map',
 
     for (var i = 0; i < variables.length; i++) {
         iniciarControl(variables[i]);
-        llenarlista(variables[i]);
-        iniciarControles(variables[i]);
     }
 
     function iniciarControl(capa) {
+        llenarlista(capa);
         // Si el elemento con id "#c capa.b" cambia
         $("#c" + capa.b).on("change", function () {
             // Si NO está seleccionado
@@ -407,6 +359,97 @@ require(['esri/map',
             }
         });
     };
+
+    // Llena la lista de URLS correspondientes a la ubicación del servicio WMS
+    function llenarlista(capa) {
+        // Obtiene los datos de la siguiente URL
+        $.get(homeUrl + "catalog/" + capa.variable + "/latest.xml", function (data) {
+            // Trata de obtener los elementos que tengan el nombre "Latest capa.variable"
+            // Por ejemplo "SLA-H"
+            // Selecciona sólo el último dato y de él obtiene el atributo urlPath
+            // Esta es la ubicación donde se encuentran las imágenes WMS
+            // Guardas las URL en capa.l
+            try {
+                capa.l.push(data.getElementsByName("Latest " + capa.variable)[0].attributes.urlPath
+                    .nodeValue);
+            } catch (err) {
+                // En caso de que se presente un error, obtiene los elementos con nombre "dataset"
+                // Y luego se hace lo mismo de arriba
+                capa.l.push(data.getElementsByTagName("dataset")[0].attributes.urlPath.nodeValue);
+            }
+            // Guarda los datos de las capas en capa.wms
+            capa.wms = homeUrl + 'wms/' + capa.l[0];
+            if (capa.v) {
+                // Si es verdadero el valor de "capa.v" (La variable que controla la visibilidad)
+                // Grafica la capa en el mapa
+                // Se anexa la tierra (Por el error de que se superponen en la tierra los datos oceanográficos)
+                // Cambia el botón de esa capa a ON
+                $('#c' + capa.b).bootstrapToggle('on');
+                // Pone visible esa capa
+                $("#" + capa.legendiv).show();
+            }
+
+            // Obtiene los datos de la siguiente URL
+            $.get(homeUrl + "catalog/" + capa.variable + "/catalog.xml", function (data2) {
+                var historico = [];
+                console.log(homeUrl + "catalog/" + capa.variable + "/catalog.xml");
+                try {
+                    historico = data2.getElementsByName(capa.variable)[0].children;
+                    for (let i = 5; i < historico.length; i++) {
+                        capa.l.push(historico[i].attributes.urlPath.nodeValue);
+                    }
+                } catch (err) {
+                    historico = data2.getElementsByTagName("dataset")
+                    for (let i = 3; i < historico.length; i++) {
+                        capa.l.push(historico[i].attributes.urlPath.nodeValue);
+                    }
+                }
+                iniciarControles(capa);
+            });
+        });
+    };
+
+    function iniciarControles(capa) {
+        console.log(capa);
+        var html = '<div class="panel panel-info" style="margin-top:1em"><div class="panel-heading">';
+        html += capa.nombre;
+        html += '</div><div class="panel-body">';
+        html += '<p>' + capa.texto + '</p>'
+        html += '<div class="img-scale" style="height: 10px;"><img class="rotate90" src="';
+        console.log(capa.l);
+        console.log(homeUrl + 'wms/' + capa.l[0] + '?REQUEST=GetLegendGraphic&COLORBARONLY=true&WIDTH=15&HEIGHT=280&PALETTE=' + capa.p.palete + '&NUMCOLORBANDS=' + capa.p.NUMCOLORBANDS);
+        html += homeUrl + 'wms/' + capa.l[0] + '?REQUEST=GetLegendGraphic&COLORBARONLY=true&WIDTH=15&HEIGHT=280&PALETTE=' + capa.p.palete + '&NUMCOLORBANDS=' + capa.p.NUMCOLORBANDS;
+        html += '" alt=""></div><ul class="nav nav-pills ter"><li class="text-left">';
+        html += capa.min;
+        html += '</li><li class="text-center">';
+        html += capa.center;
+        html += '</li><li class="text-right">';
+        html += capa.max;
+        html += '</li></ul><div class="input-group"><div class="input-group-addon">Historico</div><select class="form-control" name="historial" id="';
+        html += capa.sp;
+        html += '">';
+        for (var i = 0; i < capa.l.length; i++) {
+            html += "<option>" + capa.l[i] + "</option>";
+        }
+        html += '</select></div></div></div></div>';
+        $("#" + capa.legendiv).html(html);
+        $("#" + capa.legendiv).on('change', "#" + capa.sp, function () {
+            let idx = map.getLayer(capa.l_id)
+            map.removeLayer(idx);
+            capa.l_id = null;
+            capa.wms = homeUrl + 'wms/' + $(this).val() + '?';
+            console.log(capa.wms);
+            wmsLayer = graficar(capa);
+            map.addLayer(wmsLayer);
+            let idy = map.layerIds;
+            console.log(idy);
+            capa.l_id = idy[idy.length - 1];
+            // map.removeLayer(capa.wms);
+            // capa.wms = L.tileLayer.wms(homeUrl + 'wms/' + $(this).val() + '?', capa.p);
+            // capa.wms.addTo(map);
+            // tierra.addTo(map);
+        });
+    }
 
     // Añadir las estaciones
     var fl;
@@ -691,7 +734,7 @@ require(['esri/map',
         // return wms._url + L.Util.getParamString(params, wms._url, true);
     }
 
-    // LA PARTE IZQUIERDA
+    // LA PARTE DERECHA
     // markerSymbol is used for point and multipoint, see http://raphaeljs.com/icons/#talkq for more examples
     var markerSymbol = new SimpleMarkerSymbol();
     markerSymbol.setPath("M16,4.938c-7.732,0-14,4.701-14,10.5c0,1.981,0.741,3.833,2.016,5.414L2,25.272l5.613-1.44c2.339,1.316,5.237,2.106,8.387,2.106c7.732,0,14-4.701,14-10.5S23.732,4.938,16,4.938zM16.868,21.375h-1.969v-1.889h1.969V21.375zM16.772,18.094h-1.777l-0.176-8.083h2.113L16.772,18.094z");
@@ -866,34 +909,6 @@ $(document).ready(function () {
 
 });
 
-function iniciarControles(capa) {
-    var html = '<div class="panel panel-info" style="margin-top:1em"><div class="panel-heading">';
-    html += capa.nombre;
-    html += '</div><div class="panel-body">';
-    html += '<p>' + capa.texto + '</p>'
-    html += '<div class="img-scale" style="height: 10px;"><img class="rotate90" src="';
-    html += homeUrl + 'wms/' + capa.l[0] + '?REQUEST=GetLegendGraphic&COLORBARONLY=true&WIDTH=15&HEIGHT=280&PALETTE=' + capa.p.palete + '&NUMCOLORBANDS=' + capa.p.NUMCOLORBANDS;
-    html += '" alt=""></div><ul class="nav nav-pills ter"><li class="text-left">';
-    html += capa.min;
-    html += '</li><li class="text-center">';
-    html += capa.center;
-    html += '</li><li class="text-right">';
-    html += capa.max;
-    html += '</li></ul><div class="input-group"><div class="input-group-addon">Historico</div><select class="form-control" name="historial" id="';
-    html += capa.sp;
-    html += '">';
-    for (var i = 0; i < capa.l.length; i++) {
-        html += "<option>" + capa.l[i] + "</option>";
-    }
-    html += '</select></div></div></div></div>';
-    $("#" + capa.legendiv).html(html);
-    $("#" + capa.legendiv).on('change', "#" + capa.sp, function () {
-        // map.removeLayer(capa.wms);
-        // capa.wms = L.tileLayer.wms(homeUrl + 'wms/' + $(this).val() + '?', capa.p);
-        // capa.wms.addTo(map);
-        // tierra.addTo(map);
-    });
-}
 
 function descargarTrace(evt) {
     let csvContent = "";
