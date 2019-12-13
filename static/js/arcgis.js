@@ -248,7 +248,129 @@ var variables = [{
     },
 ];
 
-require(['esri/map',
+// Cuando el documento esté listo
+$(document).ready(function () {
+    $('#table').bootstrapTable();
+    $('#tableTrace').bootstrapTable();
+    $("#slider").show();
+    $("#picker").show();
+    $("#tracer").show();
+    $("#slider_graph").show();
+    // Control de la barra lateral derecha
+    $("#slider").slideReveal({
+        position: "right",
+        width: 317,
+        speed: 400
+    });
+    $("#picker").slideReveal({
+        position: "right",
+        width: 317,
+        speed: 400
+    });
+    $("#tracer").slideReveal({
+        position: "right",
+        width: 317,
+        speed: 400
+    });
+    $("#slider_graph").slideReveal({
+        position: "right",
+        width: 317,
+        speed: 400
+    });
+});
+
+// Variables de control de vista de los paneles laterales derechos
+// Cuando están en falso se encuentran ocultos
+var tlegend = false;
+var tpicker = false;
+var trace = false;
+var t_graph = false;
+
+// Inicialización de las variables
+var punto = {};
+var trazado = [];
+var puntos = [];
+
+// var trazadoLine = L.polyline(trazado, {
+//     color: 'blue'
+// });
+// map.on('click', getFeatureInfo);
+// var markerIcon = L.icon({
+//     iconUrl: 'static/images/marker.png',
+//     iconSize: [20, 20]
+// });
+
+// Cuando se da click en el botón de información
+$("#trigger").on("click", function () {
+    // Si la variable de control es verdadero
+    if (tlegend) {
+        // Oculta el panel
+        $("#slider").slideReveal("hide");
+        // Coloca la variable en falso
+        tlegend = false;
+        // Coloca el control de visualización de las CTD en none y borra la gráfica
+        document.getElementById("select_grafica").style.display = "none";
+        document.getElementById("ctd_grafica").innerHTML = "";
+    }
+    // Si la variable de control es falsa
+    else {
+        // Oculta los otros páneles
+        $("#picker").slideReveal("hide");
+        $("#tracer").slideReveal("hide");
+        $("#slider_graph").slideReveal("hide");
+        // Deja ver el panel seleccionado
+        $("#slider").slideReveal("show");
+        // Coloca la variable de control en verdadero
+        tlegend = true;
+        // El resto de variables en falso
+        tpicker = false;
+        trace = false;
+        t_graph = false;
+        // Elimina el punto y borra todo en el punto de análisis puntual
+        map.removeLayer(punto);
+        $('#table').bootstrapTable('removeAll');
+        $('#coor').html('');
+    }
+});
+
+// Cuando se da click en el botón de la gráfica
+$("#graph").on("click", function () {
+    // Si la variable de control es verdadero
+    if (t_graph) {
+        // Oculta el panel
+        $("#slider_graph").slideReveal("hide");
+        // Coloca la variable en falso
+        t_graph = false;
+        // Coloca el control de visualización de las CTD en none y borra la gráfica
+        document.getElementById("select_grafica").style.display = "none";
+        document.getElementById("ctd_grafica").innerHTML = "";
+    }
+    // Si la variable de control es falsa 
+    else {
+        // Oculta los otros páneles
+        $("#picker").slideReveal("hide");
+        $("#tracer").slideReveal("hide");
+        $("#slider").slideReveal("hide");
+        // Deja ver el panel seleccionado
+        $("#slider_graph").slideReveal("show");
+        // El resto de variables en falso
+        tlegend = false;
+        tpicker = false;
+        trace = false;
+        // Coloca la variable de control en verdadero
+        t_graph = true;
+        // Elimina el punto y borra todo en el punto de análisis puntual
+        map.removeLayer(punto);
+        $('#table').bootstrapTable('removeAll');
+        $('#coor').html('');
+    }
+});
+
+
+/******************************PROCESO DE ARCGIS*******************************/
+
+require([
+    'esri/map',
     'esri/layers/WMSLayer',
     'esri/layers/WMSLayerInfo',
     'esri/geometry/Extent',
@@ -273,10 +395,8 @@ require(['esri/map',
     "esri/request",
     "esri/dijit/PopupTemplate",
     "dojo/dom-construct",
-    "dojo/query",
-
-    "dojo/domReady!"
-], function (Map,
+], function (
+    Map,
     WMSLayer,
     WMSLayerInfo,
     Extent,
@@ -301,56 +421,74 @@ require(['esri/map',
     esriRequest,
     PopupTemplate,
     domConstruct,
-    query,
 ) {
 
-    var CTD_Layer;
-
+    // No sé
     parser.parse();
     esriConfig.defaults.geometryService = new GeometryService("https://utility.arcgisonline.com/ArcGIS/rest/services/Geometry/GeometryServer");
     esriConfig.defaults.io.proxyUrl = "/proxy/";
 
-    map = new Map('map', {
-        basemap: 'gray-vector',
-        center: [-75, 16],
-        zoom: 5,
-        slider: false
-    });
+    // Se definen los criterios del mapa
+    map = new Map(
+        // id del div donde se va a mostar el mapa
+        'map', {
+            // Tipo de mapa que se va a mostrar
+            basemap: 'gray-vector',
+            // Centro del mapa
+            center: [-75, 16],
+            // Cantidad de zoom que se va a realizar
+            zoom: 5,
+            // Se desactiva el slider
+            slider: false
+        });
 
-    map.on("load", initToolbar);
-
-    // Añandiendo una cpa de tierra para evitar la superposición
+    // Añandiendo una cpa de tierra para evitar la superposición de las variables en la tierra
     var url = "http://gis.invemar.org.co/arcgis/rest/services/Conectividad/ConectividadBase/MapServer/0/";
+    // Se guarda en la variable tierra la Feature Layer de la tierra de los paises
     var tierra = new FeatureLayer(url);
+    // Se añade al mapa la capa de tierra
     map.addLayer(tierra);
 
+
+    /******************************PROCESO PARA AÑADIR LAS CAPAS AL MAPA*******************************/
+
+    // Recorre todas las posiciones del objeto variables
     for (var i = 0; i < variables.length; i++) {
+        // LLama a la función iniciar control para cada vector de variables
         iniciarControl(variables[i]);
     }
 
+    // Función que se encarga de controlar el mostrar o eliminar las capas
+    // de las variables cada vez que se active o desactive un botón
     function iniciarControl(capa) {
+        // Inicialmente llama a la función llenar lista para rellenar los campos
+        // de la capa, como el link de consulta
         llenarlista(capa);
-        // Si el elemento con id "#c capa.b" cambia
+        // Si el elemento con id "#c capa.b" (cbSLAh) cambia
         $("#c" + capa.b).on("change", function () {
-            // Si NO está seleccionado
+            // Si NO está checkeado
             if (!$(this).is(":checked")) {
-                // Elimina la capa
+                // Obtiene la capa que tiene el id (capa.l_id)
                 let idx = map.getLayer(capa.l_id)
-
+                // Elimina la capa obtenida anteriormente
                 map.removeLayer(idx);
+                // Asigna null el valor de capa.l_id
                 capa.l_id = null;
-                // Cambia el estado de visibilidad a falso
+                // Cambia el estado de visibilidad de la capa a falso
                 capa.v = false;
                 // Oculta el elemento "#capa.legendiv"
                 $("#" + capa.legendiv).hide();
             }
             // En caso de estar chequeado el elemento
             else {
-                // Añade la capa al mapa
+                // Llama a la función graficar
                 wmsLayer = graficar(capa);
+                // Se añade al mapa la capa chekeada
                 map.addLayer(wmsLayer);
+                // Obtiene los ids de todas las capas presentes en el mapa
                 let idx = map.layerIds;
                 console.log(idx);
+                // Le asigna a capa.l_id el nombre del id de la última capa añadida
                 capa.l_id = idx[idx.length - 1];
                 // Cambia el estado de visibilidad a true
                 capa.v = true;
@@ -377,12 +515,10 @@ require(['esri/map',
                 // Y luego se hace lo mismo de arriba
                 capa.l.push(data.getElementsByTagName("dataset")[0].attributes.urlPath.nodeValue);
             }
-            // Guarda los datos de las capas en capa.wms
+            // Guarda la dirección dónde se consultarán los datos de las capas
             capa.wms = homeUrl + 'wms/' + capa.l[0];
+            // Al momento de llenar la lista de variables, Si es verdadero el valor de "capa.v" (La variable que controla la visibilidad)
             if (capa.v) {
-                // Si es verdadero el valor de "capa.v" (La variable que controla la visibilidad)
-                // Grafica la capa en el mapa
-                // Se anexa la tierra (Por el error de que se superponen en la tierra los datos oceanográficos)
                 // Cambia el botón de esa capa a ON
                 $('#c' + capa.b).bootstrapToggle('on');
                 // Pone visible esa capa
@@ -391,11 +527,14 @@ require(['esri/map',
 
             // Obtiene los datos de la siguiente URL
             $.get(homeUrl + "catalog/" + capa.variable + "/catalog.xml", function (data2) {
+                // Crea la variable historico, donde se van a almacenar la lista de todos los datos descargados 
                 var historico = [];
-                console.log(homeUrl + "catalog/" + capa.variable + "/catalog.xml");
+                // Trata de obtener los elementos que tienen por nombre (capa.variable)
                 try {
                     historico = data2.getElementsByName(capa.variable)[0].children;
+                    // Recorre todas las posiciones de histórico desde la posición 5
                     for (let i = 5; i < historico.length; i++) {
+                        // Guarda en capa.l la dirección donde se va a consultar cada capa histórica
                         capa.l.push(historico[i].attributes.urlPath.nodeValue);
                     }
                 } catch (err) {
@@ -404,20 +543,22 @@ require(['esri/map',
                         capa.l.push(historico[i].attributes.urlPath.nodeValue);
                     }
                 }
-                iniciarControles(capa);
+                // Llama a la función iniciarHistorico
+                iniciarHistorico(capa);
             });
         });
     };
 
-    function iniciarControles(capa) {
-        console.log(capa);
+    // Función que crea en el panel lateral derecho una tarjeta con el rango de las variables y el histórico
+    // Para que se  pueda elegir cuál día graficar
+    function iniciarHistorico(capa) {
+        // Se crea el panel del html donde se verá la información de las capas
         var html = '<div class="panel panel-info" style="margin-top:1em"><div class="panel-heading">';
         html += capa.nombre;
         html += '</div><div class="panel-body">';
         html += '<p>' + capa.texto + '</p>'
         html += '<div class="img-scale" style="height: 10px;"><img class="rotate90" src="';
-        console.log(capa.l);
-        console.log(homeUrl + 'wms/' + capa.l[0] + '?REQUEST=GetLegendGraphic&COLORBARONLY=true&WIDTH=15&HEIGHT=280&PALETTE=' + capa.p.palete + '&NUMCOLORBANDS=' + capa.p.NUMCOLORBANDS);
+        // Paleta de colores y rangos
         html += homeUrl + 'wms/' + capa.l[0] + '?REQUEST=GetLegendGraphic&COLORBARONLY=true&WIDTH=15&HEIGHT=280&PALETTE=' + capa.p.palete + '&NUMCOLORBANDS=' + capa.p.NUMCOLORBANDS;
         html += '" alt=""></div><ul class="nav nav-pills ter"><li class="text-left">';
         html += capa.min;
@@ -428,64 +569,105 @@ require(['esri/map',
         html += '</li></ul><div class="input-group"><div class="input-group-addon">Historico</div><select class="form-control" name="historial" id="';
         html += capa.sp;
         html += '">';
+        // Recorre todas las posiciones de los históricos 
         for (var i = 0; i < capa.l.length; i++) {
+            // Agrega opciones de las listas desplegables con cada uno de los links del histórico
             html += "<option>" + capa.l[i] + "</option>";
         }
         html += '</select></div></div></div></div>';
+        // Al elemento de id (capa.legendiv) se agrega el html anterior
         $("#" + capa.legendiv).html(html);
+        // Cuando el elemento de la lista cambia
         $("#" + capa.legendiv).on('change', "#" + capa.sp, function () {
+            // Obtiene la capa que tiene el id (capa.l_id)
             let idx = map.getLayer(capa.l_id)
+            // Elimina la capa obtenida anteriormente
             map.removeLayer(idx);
+            // Asigna null el valor de capa.l_id
             capa.l_id = null;
+            // Añade a capa.wms el link donde consultará los datos del histórico del día seleccionado
             capa.wms = homeUrl + 'wms/' + $(this).val() + '?';
-            console.log(capa.wms);
+            // Llama a la función graficar para pintar en el mapa la capa del día seleccionado
             wmsLayer = graficar(capa);
+            // Añade la capa
             map.addLayer(wmsLayer);
-            let idy = map.layerIds;
-            console.log(idy);
-            capa.l_id = idy[idy.length - 1];
-            // map.removeLayer(capa.wms);
-            // capa.wms = L.tileLayer.wms(homeUrl + 'wms/' + $(this).val() + '?', capa.p);
-            // capa.wms.addTo(map);
-            // tierra.addTo(map);
+            // Obtiene los ids de todas las capas presentes en el mapa
+            idx = map.layerIds;
+            console.log(idx);
+            // Le asigna a capa.l_id el nombre del id de la última capa añadida
+            capa.l_id = idx[idx.length - 1];
         });
     }
 
-    // Añadir las estaciones
-    var fl;
+    // Función encargada de configurar la capa WMS a mostrar
+    function graficar(capa) {
+        // Crea la variable WMSLayer
+        var wmsLayer = new WMSLayer(
+            // Usa el link proveniente de capa.wms
+            capa.wms, {
+                resourceInfo: {
+                    // Se define la extensión donde se mostrará
+                    extent: new Extent(-124.71430969199997, -33.741115570999966, 179.77593994100005,
+                        53.01194000300006, {
+                            wkid: 4269
+                        }),
+                    // Se definen los parámetros usados para la consulta
+                    customLayerParameters: capa.p,
+                    getFeatureInfoURL: capa.wms,
+                    layerInfos: new WMSLayerInfo({ //No sé esto por qué toca ponerlo
+                    })
+                },
+                visibleLayers: ['Todas'] //No sé esto por qué toca ponerlo
+            }
+        );
+        return wmsLayer;
+    }
+
+
+    /******************************PROCESO PARA AÑADIR LAS ESTACIONES*******************************/
+
+    // Se guarda en la variable url el link para consumir el servicio de las estaciones meteoceanográficas
     var url = "http://gis.invemar.org.co/arcgis/rest/services/CLIMARES/Estaciones_Meteoceanograficas/MapServer/0";
+    // Se añade el template que se mostrará en el popup
     var template = new InfoTemplate("Estación", "${Name} <br> <a href='/estacion/${id}' target='_blank'> Ver más </a>");
-    fl = new FeatureLayer(url, {
+    // Se crea un nuevo feature layer donde se guardarán las estaciones meteoceanográficas
+    fl_estaciones = new FeatureLayer(url, {
         id: "Estaciones",
         infoTemplate: template,
         outFields: ["*"]
     });
-
+    // Cuando el botón xbEstaciones cambia
     $("#xbEstaciones").on("change", function () {
         // Si NO está seleccionado
         if (!$(this).is(":checked")) {
-            map.removeLayer(fl);
+            // Elimina las estaciones del mapa
+            map.removeLayer(fl_estaciones);
         }
         // En caso de estar chequeado el elemento
         else {
-            // Añade la capa al mapa
-            // Agregar las estaciones
-            console.log(fl);
-            map.addLayer(fl);
+            // Añade las estaciones al mapa
+            map.addLayer(fl_estaciones);
+            console.log(document.getElementById("id_ctd_gra"));
         }
     });
 
-    // Añadir las CTD
-    var featureCollection = {
+
+    /******************************PROCESO PARA AÑADIR LAS CTD*******************************/
+
+    // Variable que almacena las características de la CTD
+    var CTD_featureCollection = {
         "layerDefinition": null,
         "featureSet": {
             "features": [],
             "geometryType": "esriGeometryPoint"
         }
     };
-    featureCollection.layerDefinition = {
+    // Luego se definen las caracteristicas de la CTD
+    CTD_featureCollection.layerDefinition = {
+        // Geometría de tipo punto
         "geometryType": "esriGeometryPoint",
         "objectIdField": "ObjectID",
+        // Tipo de forma del punto
         "drawingInfo": {
             // "renderer": {
             //     "type": "simple",
@@ -499,80 +681,330 @@ require(['esri/map',
             // }
         },
     };
-    // Configuración del Popup
-    var popupTemplate = new PopupTemplate({
+    // Variable de control del popup (Lo que sale cuando le das click en la estación)
+    var CTD_popupTemplate = new PopupTemplate({
+        // Se le asigna a title la variable titulo que se describe más abajo
         title: "{titulo}",
+        // Se le asigna a description la variable descripcion
         description: "{descripcion}"
     });
-    // Creación de la capa donde se almacenarán las CTS
-    CTD_Layer = new FeatureLayer(featureCollection, {
-        infoTemplate: popupTemplate
+    // Se crea un nuevo feature layer donde se guardarán las CTD
+    CTD_Layer = new FeatureLayer(CTD_featureCollection, {
+        // Se declara que se mostrará en el infoTemplate al dar click
+        infoTemplate: CTD_popupTemplate
     });
+    // Variable que controla cuántas veces ha sido llamado anteriormente el botón de CTD
     var contar = 0;
+    // Si el botón de id xbCTD ha sido seleccionado y cambia
     $("#xbCTD").on("change", function () {
+        // Si NO está checkeado
         if (!$(this).is(":checked")) {
+            // Elimina la feature layer de la CTD
             map.removeLayer(CTD_Layer);
+            // Si checkea el botón
         } else {
-            var requestHandle = esriRequest({
+            // Se realiza un llamado a la api
+            var ctd_request = esriRequest({
                 url: "/api/ctd_lances/",
                 callbackParamName: "jsoncallback"
             });
+            // Si el contador está en 0, es decir, que nunca había sido llamado antes
             if (contar == 0) {
-                requestHandle.then(requestSucceeded);
+                // Se llama a la función que configura los resultados de la CTD
+                ctd_request.then(ctd_conf);
             }
+            // Añade las CTD al mapa
             map.addLayers([CTD_Layer]);
+
+        }
+    });
+    // Función que configura la feature layer de la CTD
+    function ctd_conf(response) {
+        // Se coloca la variable contar en 1 para asegurar de que ya ingresó y no volver a confirgurar la ctd
+        contar = 1;
+        var ctd_features = [];
+        // Recorre los elementos y los agrega a la feature layer
+        array.forEach(response.results, function (item) {
+            var attr = {};
+            // En el título se agrega el título que viene de la api rest
+            attr["titulo"] = item.titulo;
+            // Se configura lo que se mostrará en la descripción a partir de lo traido del api rest para cada CTD
+            attr["descripcion"] = "<b>Fecha: </b>" + item.fecha + "<br>" + "<b>Código de la estación: </b>" + item.prefijo_cdg_est_loc + item.codigo_estacion_loc +
+                "<br>" + "<b>id de la estación: </b>" + item.id_estacion + "<div id='id_ctd_gra' style='display: none;'>" + item.id_estacion + "</div>" +
+                "<br>" + "<b>Lugar: </b>" + item.lugar + "<br>" + "<b>Profundidad máxima del lance: </b>" +
+                item.prof_max_loc + "<br>" + '<button id="boton_grafica">Graficar</button>'
+            // Crear el punto a partir de la longitud y la latitud extraida del api rest
+            var punto_ctd = new Point(item.longitudinicio_loc, item.latitudinicio_loc);
+            // Grafica los puntos
+            var graphic_ctd = new Graphic(punto_ctd);
+            // Le coloca los atributos definidos anteriormente
+            graphic_ctd.setAttributes(attr);
+            // Añade la gráfica a la feature layer
+            ctd_features.push(graphic_ctd);
+            // Aplica lo realizado anteriormente
+            CTD_Layer.applyEdits(ctd_features, null, null);
+        });
+    }
+
+    var datos_CTD;
+    map.on("click", function () {
+        popup_visible = document.getElementsByClassName("esriPopupVisible");
+        console.log(popup_visible);
+        if (popup_visible.length > 0) {
+            $("#boton_grafica").on("click", function popup_v() {
+                document.getElementById("ctd_grafica").innerHTML = "";
+                console.log(document.getElementById("id_ctd_gra").textContent);
+                $("#picker").slideReveal("hide");
+                $("#tracer").slideReveal("hide");
+                $("#slider").slideReveal("hide");
+                $("#slider_graph").slideReveal("show");
+                tlegend = false;
+                tpicker = false;
+                trace = false;
+                t_graph = true;
+                map.removeLayer(punto);
+                $('#table').bootstrapTable('removeAll');
+                $('#coor').html('');
+                document.getElementById("select_grafica").style.display = "none";
+                document.getElementById("text_grafica").style.display = "block";
+                document.getElementById("text_grafica").innerHTML = "Cargando...";
+                // Función de inicio
+                $(document).ready(function () {
+                    //Obtiene los datos de la CTD de la API
+                    $.get('/api/ctd2/', function (result) {
+                        // Guarda en la variable ctd los resultados de la API
+                        ctd = result.results;
+                        document.getElementById("text_grafica").style.display = "none";
+                        document.getElementById("select_grafica").style.display = "block";
+                        // Llama a la función gráfica
+                        control();
+                    });
+                });
+
+                // Variable donde se almacenan los datos de la base de datos
+                // var ctd;
+                var ctd = new Object();
+                // Sección del selector de las variables a graficar
+                // Seleccionamos el elemento que contiene el select
+                var select = document.getElementById('select_grafica');
+                var selectedOption;
+                // Cuando el select cambie
+                select.addEventListener('change',
+                    function () {
+                        selectedOption = this.options[select.selectedIndex];
+                        // En este caso imprime el valor y el texto del select seleccionado
+                        console.log(selectedOption.value + ': ' + selectedOption.text);
+                        if (selectedOption.value !== "nada") {
+                            grafica(selectedOption)
+                        }
+                    }
+                );
+
+
+                // Objeto que almacena las variables
+                var objeto_variable = new Object();
+
+                // Objeto que almacena las unidades
+                var objeto_unidades = new Object();
+
+                // Función encargada de graficar los datos de la CTD
+                function control() {
+                    console.log(ctd);
+                    // Se crean los vectores de control
+                    vector_muestra = [];
+                    vector_variable = [];
+                    vector_variable_des = [];
+                    vector_unidad_des = [];
+                    // Se recorren todas las posiciones del vector de datos de la CTD
+                    for (i = 0; i < ctd.length; i++) {
+                        // Guarda el id de la muestra de la posicón i del vector
+                        muestra = String(ctd[i]["muestra"]);
+                        // Se elimina la primera posición del id de la muestra, debido a que este número
+                        // Es variante según la variable a la que corresponda
+                        // var cod_muestra = muestra.slice(1, muestra.length);
+                        // En esta parte se va a llenar el vector con los identificadores de muestra
+                        // Para saber cuántos muestras se tomaron y relacionar los datos
+                        // A partir de este identificador
+                        // Si aún no se ha añadido el código de muestra de la posición i
+                        // En el vector de muestra
+                        if (vector_muestra.includes(muestra) == false) {
+                            // Se añade el id de muestra
+                            vector_muestra.push(muestra);
+                        }
+                        // Se realiza el mismo proceso anterior pero con el nombre de la variable
+                        variable = String(ctd[i]["variable"]);
+                        if (vector_variable.includes(variable) == false) {
+                            vector_variable.push(variable);
+                        }
+                        // Se realiza el mismo proceso anterior pero con la descripción de la variable
+                        variable_des = String(ctd[i]["variable_des"]);
+                        if (vector_variable_des.includes(variable_des) == false) {
+                            vector_variable_des.push(variable_des);
+                        }
+                        // Se realiza el mismo proceso anterior pero con la unidad de la variable
+                        unidad_des = String(ctd[i]["unidades_medida_des"]);
+                        if (vector_unidad_des.includes(unidad_des) == false) {
+                            vector_unidad_des.push(unidad_des);
+                        }
+                    }
+
+                    // Para borrar la lista
+                    var list = document.getElementById("select_grafica");
+
+                    // As long as <ul> has a child node, remove it
+                    while (list.hasChildNodes()) {
+                        list.removeChild(list.firstChild);
+                    }
+
+                    g = document.getElementById("ctd_grafica");
+
+                    // Para añadir el elemento de seleccione una gráfica    
+                    z = document.createElement("option");
+                    t = document.createTextNode("Seleccione una Gráfica");
+                    z.appendChild(t);
+                    z.setAttribute("value", "nada");
+                    list.appendChild(z);
+
+
+                    // Se recorren todas las posiciones del vector que contiene a las variables
+                    for (i = 0; i < vector_variable_des.length; i++) {
+                        // Si la variable leida NO es profundidad
+                        if (vector_variable_des[i] != "Profundidad") {
+                            // Se crea un elemento tipo option
+                            // m = document.createElement("div");
+                            // document.getElementById("select_grafica").appendChild(m);
+                            let z = document.createElement("option");
+                            // Al cual se le asigna el valor de la variable
+                            z.setAttribute("value", vector_variable[i]);
+                            // Y se le asigna al valor a mostrar el valor de variable_des
+                            let t = document.createTextNode(vector_variable_des[i]);
+                            z.appendChild(t);
+                            // Luego se añade al html
+                            document.getElementById("select_grafica").appendChild(z);
+                        }
+                        // Se añade un atributo al objeto de las variables que será una lista vacía
+                        // que tendrá como nombre la variable de la posición i
+                        objeto_variable[vector_variable[i]] = [];
+                        // Se añade un atributo al objeto de las unidades que será la unidad
+                        // de la misma posición i que tendrá como nombre la variable de la posición i
+                        objeto_unidades[vector_variable[i]] = vector_unidad_des[i];
+                    }
+
+                    // Se recorren todas las posiciones del vector de datos de la lista CTD
+                    for (i = 0; i < ctd.length; i++) {
+                        // Se recorren todas las posiciones del vector de datos de la lista de variables
+                        for (j = 0; j < vector_variable.length; j++) {
+                            // Si el la variable de la lista CTD en la posición i es la misma que
+                            // La variable del vector variable en la posición j
+                            if (ctd[i].variable == vector_variable[j]) {
+                                // Si es profundidad
+                                if (ctd[i].variable == "PROF") {
+                                    // Se multiplica por -1 para darle el efecto de bajada y se añade
+                                    // el valor de la ctd en la posición i al objeto variable en su 
+                                    // posición correspondiente a vector variable j
+                                    objeto_variable[vector_variable[j]].push(-1 * ctd[i].valor);
+                                } else {
+                                    // Sino, se añade
+                                    // el valor de la ctd en la posición i al objeto variable en su 
+                                    // posición correspondiente a vector variable j
+                                    objeto_variable[vector_variable[j]].push(ctd[i].valor);
+                                }
+                            }
+                        }
+                    }
+                }
+
+                function grafica(sx) {
+                    vector_grafica = [];
+                    objeto_variable["grafica"] = [];
+                    for (i = 0; i < objeto_variable[vector_variable[0]].length; i++) {
+                        objeto_variable["grafica"].push([objeto_variable["PROF"][i], objeto_variable[sx.value][i]]);
+                    }
+                    console.log(objeto_variable["grafica"]);
+
+                    Highcharts.chart('ctd_grafica', {
+                        chart: {
+                            type: 'spline',
+                            inverted: true,
+                            zoomType: 'x',
+                            // resetZoomButton: {
+                            //     position: {
+                            //         // align: 'right', // by default
+                            //         verticalAlign: 'bottom', // by default
+                            //         x: 0,
+                            //         y: -30
+                            //     }
+                            // }
+                        },
+                        title: {
+                            text: 'Estacion ' + ctd[0].id_estacion
+                        },
+                        subtitle: {
+                            text: sx.text + ' vs Profundidad'
+                        },
+                        xAxis: {
+                            reversed: false,
+                            title: {
+                                enabled: true,
+                                text: 'Produndidad'
+                            },
+                            labels: {
+                                format: '{value} m'
+                            },
+                            maxPadding: 0.05,
+                            showLastLabel: true
+                        },
+                        yAxis: {
+                            title: {
+                                text: sx.text
+                            },
+                            labels: {
+                                format: '{value} ' + objeto_unidades[sx.value]
+                            },
+                            lineWidth: 2
+                        },
+                        legend: {
+                            enabled: false
+                        },
+                        tooltip: {
+                            headerFormat: '<b>{series.name}</b><br/>',
+                            pointFormat: '{point.x} m: {point.y} ' + objeto_unidades[sx.value]
+                        },
+                        plotOptions: {
+                            spline: {
+                                marker: {
+                                    enable: false
+                                }
+                            }
+                        },
+                        series: [{
+                            name: sx.text,
+                            data: objeto_variable["grafica"]
+                        }]
+                    });
+
+                }
+            });
+
         }
     });
 
-    function requestSucceeded(response) {
-        contar = 1;
-        //loop through the items and add to the feature layer
-        var ctd_features = [];
-        array.forEach(response.results, function (item) {
-            // console.log(item);
-            var attr = {};
-            attr["titulo"] = item.titulo;
-            attr["descripcion"] = "<b>Fecha: </b>" + item.fecha + "<br>" + "<b>Código de la estación: </b>" + item.prefijo_cdg_est_loc +
-                item.codigo_estacion_loc + "<br>" + "<b>Lugar: </b>" + item.lugar + "<br>" + "<b>Profundidad máxima del lance: </b>" +
-                item.prof_max_loc + "<br>" + '<button onclick="myFunction()" id="boton_grafica">Graficar</button>'
-            var punto_ctd = new Point(item.longitudinicio_loc, item.latitudinicio_loc);
-            var graphic_ctd = new Graphic(punto_ctd);
-            graphic_ctd.setAttributes(attr);
-            if (item.id_estacion !== 39162 && item.id_estacion !== 39161 && item.id_estacion !== 38884 && item.id_estacion !== 38883 && item.id_estacion !== 38885) {
-                ctd_features.push(graphic_ctd);
-            }
-        });
-        CTD_Layer.applyEdits(ctd_features, null, null);
-    }
 
-    // Cargar capa WMS
-    function graficar(capa) {
-        var wmsLayer = new WMSLayer(
-            capa.wms, {
-                resourceInfo: {
-                    extent: new Extent(-124.71430969199997, -33.741115570999966, 179.77593994100005,
-                        53.01194000300006, {
-                            wkid: 4269
-                        }),
-                    customLayerParameters: capa.p,
-                    getFeatureInfoURL: capa.wms,
-                    layerInfos: new WMSLayerInfo({ //No sé esto por qué toca ponerlo
-                    })
-                },
-                visibleLayers: ['Todas'] //No sé esto por qué toca ponerlo
-            }
-        );
-        return wmsLayer;
-    }
+    /******************************PROCESO PARA AÑADIR PUNTOS Y SABER EL VALOR DE LA VARIABLE EN ESE PUNTO*******************************/
 
-    // PUNTOOOOOOOOOOOO
-    $("#tpicker").click(function () {
+    // Cuando se da click en el botón derecho del botón del punto
+    $("#tpicker").on("click", function () {
+        // Si la variable de control es verdadero
         if (tpicker) {
+            // Oculta el panel
             $("#picker").slideReveal("hide");
+            // Coloca la variable en falso
             tpicker = false;
+            // Elimina el punto y borra todo en el punto de análisis puntual
             map.graphics.clear();
             $('#table').bootstrapTable('removeAll');
             $('#coor').html('');
+            // Coloca el control de visualización de las CTD en none y borra la gráfica
             document.getElementById("select_grafica").style.display = "none";
             document.getElementById("ctd_grafica").innerHTML = "";
         } else {
@@ -587,40 +1019,133 @@ require(['esri/map',
         }
     });
 
+    // Cuando se da click en el mapa se va a la función getFeatureInfo
     map.on('click', getFeatureInfo);
-    var graphic;
-
+    // Variables usadas
+    var graficar_punto;
     var punto_seleccion;
 
     function getFeatureInfo(evt) {
+        // Si se ha seleccionado el punto
         if (tpicker) {
+            // Guarda en mp el punto en el mapa que ha sido seleccionado
             var mp = webMercatorUtils.webMercatorToGeographic(evt.mapPoint);
             // y = Latitud
             // x = Longitud
-            // {lat: 18.187606552494625, lng: -68.00537109375001}
+            // Se guarda en el objeto coordenada la latitud y la longitud
             coordenada = {
+                // Convierte a número el resultado con 15 decimales
                 lat: Number(mp.y.toFixed(15)),
                 lng: Number(mp.x.toFixed(15))
             }
-            // coordenada = mp.x.toFixed(15) + ", " + mp.y.toFixed(15);
-            console.log(coordenada);
+            // Borra el punto anteriormente creado
             map.graphics.clear();
+            // Crea un punto en el lugar seleccionado
             punto_seleccion = new Point(Number(mp.x.toFixed(4)), Number(mp.y.toFixed(4)));
-            console.log(punto_seleccion);
-
-            console.log(map);
-
+            // Se crea el símbolo que se mostrará en el punto
             var simpleMarkerSymbol = new SimpleMarkerSymbol();
             // simpleMarkerSymbol.setPath("M16,4.938c-7.732,0-14,4.701-14,10.5c0,1.981,0.741,3.833,2.016,5.414L2,25.272l5.613-1.44c2.339,1.316,5.237,2.106,8.387,2.106c7.732,0,14-4.701,14-10.5S23.732,4.938,16,4.938zM16.868,21.375h-1.969v-1.889h1.969V21.375zM16.772,18.094h-1.777l-0.176-8.083h2.113L16.772,18.094z");
             // simpleMarkerSymbol.setColor(new Color("#00FFFF"));
-            graphic = new Graphic(punto_seleccion, simpleMarkerSymbol);
-            map.graphics.add(graphic);
+            // Se crea la gráfica del punto
+            graficar_punto = new Graphic(punto_seleccion, simpleMarkerSymbol);
+            // Se añade al mapa
+            map.graphics.add(graficar_punto);
+            // Se crea el html donde se van a observar las coordenadas seleccionadas
             $('#coor').html('<span class="glyphicon glyphicon-map-marker"></span>(Lat,Lng):' + mp.y.toFixed(4) + ',' + mp.x.toFixed(4) + '')
+            // Borra todo lo que haya en la tabla de datos
             $('#table').bootstrapTable('removeAll');
+            // Luego se recorre todas las posiciones de las variables para rellenar la tabla
             for (var i = 0; i < variables.length; i++) {
+                // Se llama a la función getInfo
                 getInfo('#table', variables[i], coordenada);
             }
         }
+
+        function getInfo(tabla, capa, latlng, p) {
+            var v = {};
+            // Si existe un id para la capa, es decir, si la capa está visible
+            if (capa.l_id) {
+                console.log("Soy " + capa.l_id);
+                // Se llama a la función getFeatureInfoUrl para obtener la información a partir del lugar seleccionado
+                var url = getFeatureInfoUrl(latlng, capa);
+                //     //var capa=variables[i];
+                //     $.get(url, function (data) {
+                //         v = {
+                //             variable: capa.nombre,
+                //             valor: parseFloat(data.getElementsByTagName("value")[0].childNodes[0].data, 2).toFixed(2),
+                //             unidades: capa.unidades
+                //         };
+                //         if (p) {
+                //             p[capa.nombre] = v.valor;
+                //             p[capa.nombre] = v.valor;
+                //         }
+                //         $(tabla).bootstrapTable('append', v);
+                //     });
+            }
+            return v;
+        }
+
+        // Función para obtener la información de una capa a partir de la coordenada seleccionada
+        function getFeatureInfoUrl(latlng, capa) {
+            // Se obtiene el equivalente del punto en coordenadas a pixeles
+            var punto_pixel = screenUtils.toScreenPoint(map.extent, map.width, map.height, punto_seleccion);
+            // La extensión (cuadro delimitador) donde se analizará el punto
+            bbox_string = String(map.geographicExtent.toJson().xmin) + "," + String(map.geographicExtent.toJson().ymin) +
+                "," + String(map.geographicExtent.toJson().xmax) + "," + String(map.geographicExtent.toJson().ymax)
+
+            // Los parámetros usados para obtener la inforamción de las capas
+            params = {
+                // Tipo de respuesta
+                request: 'GetFeatureInfo',
+                // Tipo de servicio
+                service: 'WMS',
+                // Tipo de espacialización
+                srs: 'EPSG:4326',
+                // Estilo de la capa
+                styles: capa.p.STYLES,
+                // Transparencia de la capa
+                transparent: capa.p.TRANSPARENT,
+                // Formato de la capa
+                format: capa.p.format,
+                // La extensión (cuadro delimitador)
+                bbox: bbox_string,
+                // Alto del mapa
+                height: map.height,
+                // Ancho del mapa
+                width: map.width,
+                // La capa a usar
+                layers: capa.p.layers,
+                // El query de la capa
+                query_layers: capa.p.layers,
+                // El tipo de formato de la información
+                info_format: 'text/xml'
+            };
+            // Se guarda el valor en pixeles en x y en y
+            params[params.version === '1.3.0' ? 'i' : 'x'] = punto_pixel.x;
+            params[params.version === '1.3.0' ? 'j' : 'y'] = punto_pixel.y;
+            // Se crea una solicitud query
+            var query_point = new Query();
+            query_point.returnGeometry = true;
+            // query_point.outFields = ["CITY_NAME"];
+            console.log(capa.wms);
+            var queryTask = new QueryTask(capa.wms);
+            query_point.text = params;
+            query_point.outSpatialReference = {
+                wkid: 102100
+            };
+            console.log(query_point);
+            prueba = queryTask.execute(query_point, respuesta);
+            // console.log("LA prueba");
+            function respuesta(R) {
+                console.log(R);
+
+            }
+            console.log(prueba);
+            // return wms._url + L.Util.getParamString(params, wms._url, true);
+        }
+
+
+
         // if (trace) {
         //     map.removeLayer(trazadoLine);
         //     for (var i = 0; i < trazado.length; i++) {
@@ -671,69 +1196,8 @@ require(['esri/map',
         // }
     }
 
-    function getInfo(tabla, capa, latlng, p) {
-        var v = {};
-        if (capa.l_id) {
-            console.log("Soy " + capa.l_id);
-            var url = getFeatureInfoUrl(latlng, capa);
-            //     //var capa=variables[i];
-            //     $.get(url, function (data) {
-            //         v = {
-            //             variable: capa.nombre,
-            //             valor: parseFloat(data.getElementsByTagName("value")[0].childNodes[0].data, 2).toFixed(2),
-            //             unidades: capa.unidades
-            //         };
-            //         if (p) {
-            //             p[capa.nombre] = v.valor;
-            //             p[capa.nombre] = v.valor;
-            //         }
-            //         $(tabla).bootstrapTable('append', v);
-            //     });
-        }
-        return v;
-    }
 
-    function getFeatureInfoUrl(latlng, capa) {
-        var punto_pixel = screenUtils.toScreenPoint(map.extent, map.width, map.height, punto_seleccion);
-        console.log("AQUI");
-        console.log(map.geographicExtent);
-        console.log(map.geographicExtent.toJson());
-        bbox_string = String(map.geographicExtent.toJson().xmin) + "," + String(map.geographicExtent.toJson().ymin) + "," + String(map.geographicExtent.toJson().xmax) + "," + String(map.geographicExtent.toJson().ymax)
-        console.log(bbox_string);
-
-        params = {
-            request: 'GetFeatureInfo',
-            service: 'WMS',
-            srs: 'EPSG:4326',
-            styles: capa.p.STYLES,
-            transparent: capa.p.TRANSPARENT,
-            format: capa.p.format,
-            bbox: bbox_string,
-            height: map.height,
-            width: map.width,
-            layers: capa.p.layers,
-            query_layers: capa.p.layers,
-            info_format: 'text/xml'
-        };
-
-        params[params.version === '1.3.0' ? 'i' : 'x'] = punto_pixel.x;
-        params[params.version === '1.3.0' ? 'j' : 'y'] = punto_pixel.y;
-        console.log(params);
-        console.log(map);
-        var query = new Query();
-        var queryTask = new QueryTask(capa.p.wms);
-        query.where = params;
-        query.outSpatialReference = {
-            wkid: 102100
-        };
-        query.returnGeometry = true;
-        // query.outFields = ["CITY_NAME"];
-        prueba = queryTask.execute(query);
-        console.log("LA prueba");
-        console.log(prueba);
-        // return wms._url + L.Util.getParamString(params, wms._url, true);
-    }
-
+    /*
     // LA PARTE DERECHA
     // markerSymbol is used for point and multipoint, see http://raphaeljs.com/icons/#talkq for more examples
     var markerSymbol = new SimpleMarkerSymbol();
@@ -745,6 +1209,9 @@ require(['esri/map',
     lineSymbol.setCap(CartographicLineSymbol.CAP_ROUND);
     lineSymbol.setWidth(3);
     lineSymbol.setColor(new Color([0, 112, 255, 1]));
+
+
+    map.on("load", initToolbar);
 
     function initToolbar() {
         tb = new Draw(map);
@@ -778,7 +1245,7 @@ require(['esri/map',
         map.graphics.add(new Graphic(evt.geometry, symbol));
     }
 
-    $("#trace").click(function () {
+    $("#trace").on("click", function () {
         if (trace) {
             $("#tracer").slideReveal("hide");
             tpicker = false;
@@ -786,6 +1253,7 @@ require(['esri/map',
             trace = false;
             t_graph = false;
             map.graphics.clear();
+            // Coloca el control de visualización de las CTD en none y borra la gráfica
             document.getElementById("select_grafica").style.display = "none";
             document.getElementById("ctd_grafica").innerHTML = "";
 
@@ -807,110 +1275,39 @@ require(['esri/map',
             map.graphics.clear();
         }
     });
+    */
 
 });
 
+// No sé por qué pero debe ir
 sidebar: $('#sidebar').sidebar();
 
-
-
-// La izquierda
-
-var tlegend = false;
-var tpicker = false;
-var trace = false;
-var t_graph = false;
-
-var punto = {};
-
-var trazado = [];
-var puntos = [];
-// var trazadoLine = L.polyline(trazado, {
-//     color: 'blue'
-// });
-// map.on('click', getFeatureInfo);
-// var markerIcon = L.icon({
-//     iconUrl: 'static/images/marker.png',
-//     iconSize: [20, 20]
-// });
-
-// Control de botones
-$("#trigger").click(function () {
-    if (tlegend) {
-        $("#slider").slideReveal("hide");
-        tlegend = false;
-        document.getElementById("select_grafica").style.display = "none";
-        document.getElementById("ctd_grafica").innerHTML = "";
-    } else {
-        $("#picker").slideReveal("hide");
-        $("#tracer").slideReveal("hide");
-        $("#slider_graph").slideReveal("hide");
-        $("#slider").slideReveal("show");
-        tlegend = true;
-        tpicker = false;
-        trace = false;
-        t_graph = false;
-        map.removeLayer(punto);
-        $('#table').bootstrapTable('removeAll');
-        $('#coor').html('');
-    }
-});
-
-// CONTROL BOTON DE LA GRÁFICA
-$("#graph").click(function () {
-    if (t_graph) {
-        $("#slider_graph").slideReveal("hide");
-        t_graph = false;
-        document.getElementById("select_grafica").style.display = "none";
-        document.getElementById("ctd_grafica").innerHTML = "";
-    } else {
-        $("#picker").slideReveal("hide");
-        $("#tracer").slideReveal("hide");
-        $("#slider").slideReveal("hide");
-        $("#slider_graph").slideReveal("show");
-        tlegend = false;
-        tpicker = false;
-        trace = false;
-        t_graph = true;
-        map.removeLayer(punto);
-        $('#table').bootstrapTable('removeAll');
-        $('#coor').html('');
-    }
-});
-
-$(document).ready(function () {
-    $('#table').bootstrapTable();
-    $('#tableTrace').bootstrapTable();
-    $("#slider").show();
-    $("#picker").show();
-    $("#tracer").show();
-    $("#slider_graph").show();
-
-    $("#slider").slideReveal({
-        position: "right",
-        width: 317,
-        speed: 400
-    });
-    $("#picker").slideReveal({
-        position: "right",
-        width: 317,
-        speed: 400
-    });
-    $("#tracer").slideReveal({
-        position: "right",
-        width: 317,
-        speed: 400
-    });
-    $("#slider_graph").slideReveal({
-        position: "right",
-        width: 317,
-        speed: 400
-    });
-
-});
-
-
 function descargarTrace(evt) {
+    let csvContent = "";
+    for (v in puntos[puntos.length - 1]) {
+        csvContent += v + ";"
+    }
+    csvContent += "\r\n";
+    puntos.forEach(function (r) {
+        let row = "";
+        for (v in puntos[puntos.length - 1]) {
+            row += r[v] + ";"
+        }
+        csvContent += row + "\r\n";
+    });
+    // console.log(csvContent);
+
+    var element = document.createElement('a');
+    element.setAttribute('href', 'data:text/csv;charset=utf-8,' + encodeURIComponent(csvContent));
+    element.setAttribute('download', "export.csv");
+    element.style.display = 'none';
+    document.body.appendChild(element);
+    element.click();
+    document.body.removeChild(element);
+}
+
+
+function descargarCTD(evt) {
     let csvContent = "";
     for (v in puntos[puntos.length - 1]) {
         csvContent += v + ";"
