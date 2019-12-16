@@ -2,7 +2,6 @@ import os
 from datetime import date
 import time
 import datetime
-from datetimerange import DateTimeRange
 from rest_framework.exceptions import ValidationError
 
 # Directorio raiz del proyecto (triton)
