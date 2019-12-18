@@ -300,6 +300,26 @@ var puntos = [];
 //     iconSize: [20, 20]
 // });
 
+// Objeto que almacena las variables
+var objeto_variable = new Object();
+
+// Variables de ctd
+var id_muestreo_ctd;
+var id_estacion_ctd;
+var id_proyecto_ctd;
+var id_metodologia_ctd;
+var id_tematica_ctd;
+var fecha_ctd;
+var notas_ctd;
+var latitud_ctd;
+var longitud_ctd;
+var profundidad_max_ctd;
+var prefijo_ctd;
+var codigo_ctd;
+var lugar_ctd;
+var titulo_ctd;
+var respuesta_ctd;
+
 // Cuando se da click en el botón de información
 $("#trigger").on("click", function () {
     // Si la variable de control es verdadero
@@ -723,11 +743,12 @@ require([
         // Se coloca la variable contar en 1 para asegurar de que ya ingresó y no volver a confirgurar la ctd
         contar = 1;
         var ctd_features = [];
+        respuesta_ctd = response.results;
         // Recorre los elementos y los agrega a la feature layer
         array.forEach(response.results, function (item) {
             var attr = {};
             // En el título se agrega el título que viene de la api rest
-            attr["titulo"] = item.titulo;
+            attr["titulo"] = "<p id='id_titulo_ctd'>" + item.titulo + "</p>";
             // Se configura lo que se mostrará en la descripción a partir de lo traido del api rest para cada CTD
             attr["descripcion"] = "<b>Fecha: </b>" + item.fecha + "<br>" + "<b>Código de la estación: </b>" + item.prefijo_cdg_est_loc + item.codigo_estacion_loc +
                 "<br>" + "<b>id de la estación: </b>" + item.id_estacion + "<div id='id_ctd_gra' style='display: none;'>" + item.id_estacion + "</div>" +
@@ -749,11 +770,29 @@ require([
     var datos_CTD;
     map.on("click", function () {
         popup_visible = document.getElementsByClassName("esriPopupVisible");
-        console.log(popup_visible);
         if (popup_visible.length > 0) {
+            id_estacion_ctd = document.getElementById("id_ctd_gra").textContent;
+            for (let index = 0; index < respuesta_ctd.length; index++) {
+                if (id_estacion_ctd == String(respuesta_ctd[index].id_estacion)) {
+                    console.log(respuesta_ctd[index]);
+                    id_muestreo_ctd = respuesta_ctd[index].id_muestreotex;
+                    id_estacion_ctd = respuesta_ctd[index].id_estacion;
+                    id_proyecto_ctd = respuesta_ctd[index].id_proyecto;
+                    id_metodologia_ctd = respuesta_ctd[index].id_metodologia;
+                    id_tematica_ctd = respuesta_ctd[index].id_tematicas;
+                    fecha_ctd = respuesta_ctd[index].fecha;
+                    notas_ctd = respuesta_ctd[index].notas;
+                    latitud_ctd = respuesta_ctd[index].latitudinicio_loc;
+                    longitud_ctd = respuesta_ctd[index].longitudinicio_loc;
+                    profundidad_max_ctd = respuesta_ctd[index].prof_max_loc;
+                    prefijo_ctd = respuesta_ctd[index].prefijo_cdg_est_loc;
+                    codigo_ctd = respuesta_ctd[index].codigo_estacion_loc;
+                    lugar_ctd = respuesta_ctd[index].lugar;
+                    titulo_ctd = respuesta_ctd[index].titulo;
+                }
+            }
             $("#boton_grafica").on("click", function popup_v() {
                 document.getElementById("ctd_grafica").innerHTML = "";
-                console.log(document.getElementById("id_ctd_gra").textContent);
                 $("#picker").slideReveal("hide");
                 $("#tracer").slideReveal("hide");
                 $("#slider").slideReveal("hide");
@@ -801,8 +840,7 @@ require([
                 );
 
 
-                // Objeto que almacena las variables
-                var objeto_variable = new Object();
+
 
                 // Objeto que almacena las unidades
                 var objeto_unidades = new Object();
@@ -912,16 +950,45 @@ require([
                             }
                         }
                     }
+                    for (let index = 0; index < array.length; index++) {
+                        const element = array[index];
+
+                    }
                 }
 
                 function grafica(sx) {
                     vector_grafica = [];
                     objeto_variable["grafica"] = [];
+                    objeto_variable["csv"] = "";
+                    objeto_variable["csv"] += "id muestreo: ," + id_muestreo_ctd + ";\r\n";
+                    objeto_variable["csv"] += "id estacion: ," + id_estacion_ctd + ";\r\n";
+                    objeto_variable["csv"] += "id proyecto: ," + id_proyecto_ctd + ";\r\n";
+                    objeto_variable["csv"] += "id metodologia: ," + id_metodologia_ctd + ";\r\n";
+                    objeto_variable["csv"] += "id tematica: ," + id_tematica_ctd + ";\r\n";
+                    objeto_variable["csv"] += "Fecha: ," + fecha_ctd + ";\r\n";
+                    objeto_variable["csv"] += "Notas: ," + notas_ctd + ";\r\n";
+                    objeto_variable["csv"] += "Latitud: ," + latitud_ctd + ";\r\n";
+                    objeto_variable["csv"] += "Longitud: ," + longitud_ctd + ";\r\n";
+                    objeto_variable["csv"] += "Profundidad maxima: ," + profundidad_max_ctd + ";\r\n";
+                    objeto_variable["csv"] += "Prefijo: ," + prefijo_ctd + ";\r\n";
+                    objeto_variable["csv"] += "Codigo: ," + codigo_ctd + ";\r\n";
+                    objeto_variable["csv"] += "Lugar: ," + lugar_ctd + ";\r\n";
+                    objeto_variable["csv"] += "Titulo: ," + titulo_ctd + ";\r\n";
+                    objeto_variable["csv"] += " " + ";\r\n";
+                    objeto_variable["csv"] += " " + ";\r\n";
+
+                    console.log(vector_variable_des);
+                    for (let ix = 0; ix < vector_variable_des.length; ix++) {
+                        objeto_variable["csv"] += vector_variable_des[ix] + "(" + vector_unidad_des[ix] + ")" + ",";
+                    }
+                    objeto_variable["csv"] += " " + ";\r\n";
                     for (i = 0; i < objeto_variable[vector_variable[0]].length; i++) {
                         objeto_variable["grafica"].push([objeto_variable["PROF"][i], objeto_variable[sx.value][i]]);
+                        for (let ix = 0; ix < vector_variable.length; ix++) {
+                            objeto_variable["csv"] += objeto_variable[vector_variable[ix]][i] + ",";
+                        }
+                        objeto_variable["csv"] += " " + ";\r\n";
                     }
-                    console.log(objeto_variable["grafica"]);
-
                     Highcharts.chart('ctd_grafica', {
                         chart: {
                             type: 'spline',
@@ -1306,24 +1373,12 @@ function descargarTrace(evt) {
     document.body.removeChild(element);
 }
 
+/******************************PROCESO PARA DESCARGAR CSV DE DATOS DE CTD   *******************************/
 
 function descargarCTD(evt) {
-    let csvContent = "";
-    for (v in puntos[puntos.length - 1]) {
-        csvContent += v + ";"
-    }
-    csvContent += "\r\n";
-    puntos.forEach(function (r) {
-        let row = "";
-        for (v in puntos[puntos.length - 1]) {
-            row += r[v] + ";"
-        }
-        csvContent += row + "\r\n";
-    });
-    // console.log(csvContent);
-
+    console.log("Descargando CTD");
     var element = document.createElement('a');
-    element.setAttribute('href', 'data:text/csv;charset=utf-8,' + encodeURIComponent(csvContent));
+    element.setAttribute('href', 'data:text/csv;charset=utf-8,' + encodeURIComponent(objeto_variable["csv"]));
     element.setAttribute('download', "export.csv");
     element.style.display = 'none';
     document.body.appendChild(element);
