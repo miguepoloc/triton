@@ -330,6 +330,7 @@ $("#trigger").on("click", function () {
         tlegend = false;
         // Coloca el control de visualización de las CTD en none y borra la gráfica
         document.getElementById("select_grafica").style.display = "none";
+        document.getElementById("descarga_boton").style.display = "none";
         document.getElementById("ctd_grafica").innerHTML = "";
     }
     // Si la variable de control es falsa
@@ -363,6 +364,7 @@ $("#graph").on("click", function () {
         t_graph = false;
         // Coloca el control de visualización de las CTD en none y borra la gráfica
         document.getElementById("select_grafica").style.display = "none";
+        document.getElementById("descarga_boton").style.display = "none";
         document.getElementById("ctd_grafica").innerHTML = "";
     }
     // Si la variable de control es falsa 
@@ -834,6 +836,7 @@ require([
                         // En este caso imprime el valor y el texto del select seleccionado
                         console.log(selectedOption.value + ': ' + selectedOption.text);
                         if (selectedOption.value !== "nada") {
+                            document.getElementById("descarga_boton").style.display = "block";
                             grafica(selectedOption)
                         }
                     }
@@ -950,44 +953,39 @@ require([
                             }
                         }
                     }
-                    for (let index = 0; index < array.length; index++) {
-                        const element = array[index];
-
-                    }
                 }
 
                 function grafica(sx) {
+                    var d = new Date();
                     vector_grafica = [];
                     objeto_variable["grafica"] = [];
                     objeto_variable["csv"] = "";
-                    objeto_variable["csv"] += "id muestreo: ," + id_muestreo_ctd + ";\r\n";
-                    objeto_variable["csv"] += "id estacion: ," + id_estacion_ctd + ";\r\n";
-                    objeto_variable["csv"] += "id proyecto: ," + id_proyecto_ctd + ";\r\n";
-                    objeto_variable["csv"] += "id metodologia: ," + id_metodologia_ctd + ";\r\n";
-                    objeto_variable["csv"] += "id tematica: ," + id_tematica_ctd + ";\r\n";
-                    objeto_variable["csv"] += "Fecha: ," + fecha_ctd + ";\r\n";
-                    objeto_variable["csv"] += "Notas: ," + notas_ctd + ";\r\n";
-                    objeto_variable["csv"] += "Latitud: ," + latitud_ctd + ";\r\n";
-                    objeto_variable["csv"] += "Longitud: ," + longitud_ctd + ";\r\n";
-                    objeto_variable["csv"] += "Profundidad maxima: ," + profundidad_max_ctd + ";\r\n";
-                    objeto_variable["csv"] += "Prefijo: ," + prefijo_ctd + ";\r\n";
-                    objeto_variable["csv"] += "Codigo: ," + codigo_ctd + ";\r\n";
-                    objeto_variable["csv"] += "Lugar: ," + lugar_ctd + ";\r\n";
-                    objeto_variable["csv"] += "Titulo: ," + titulo_ctd + ";\r\n";
-                    objeto_variable["csv"] += " " + ";\r\n";
-                    objeto_variable["csv"] += " " + ";\r\n";
+                    objeto_variable["csv"] += "Nombre del proyecto:;" + titulo_ctd + "\r\n";
+                    objeto_variable["csv"] += "Lugar:;" + lugar_ctd + "\r\n";
+                    objeto_variable["csv"] += "Código:;" + prefijo_ctd + codigo_ctd + "\r\n";
+                    objeto_variable["csv"] += "Id de la estación:;" + id_estacion_ctd + "\r\n";
+                    objeto_variable["csv"] += "Fecha:;" + fecha_ctd + "\r\n";
+                    objeto_variable["csv"] += "Notas:;" + notas_ctd + "\r\n";
+                    objeto_variable["csv"] += "Latitud:;" + latitud_ctd + "\r\n";
+                    objeto_variable["csv"] += "Longitud:;" + longitud_ctd + "\r\n";
+                    objeto_variable["csv"] += "Profundidad máxima:;" + profundidad_max_ctd + "\r\n";
+                    objeto_variable["csv"] += "Sistema de Información Ambiental Marina de Colombia, componente Triton (http://triton.invemar.org.co/). Conjunto de datos "+
+                        "correspondiente a perfil oceanográfico, tomado con CTD, descargado el " + d + ". El conjunto de datos se entrega bajo Licencia "+
+                        "CC BY 4.0, por INVEMAR como administrador del sistema. Es responsabilidad del usuario revisar los datos y utilizar los "+
+                        "criterios y herramientas pertinentes para interpretar y eliminar los datos que pudiesen estar errados." + "\r\n";
+                    objeto_variable["csv"] += "" + "\r\n";
+                    objeto_variable["csv"] += "" + "\r\n";
 
-                    console.log(vector_variable_des);
                     for (let ix = 0; ix < vector_variable_des.length; ix++) {
-                        objeto_variable["csv"] += vector_variable_des[ix] + "(" + vector_unidad_des[ix] + ")" + ",";
+                        objeto_variable["csv"] += vector_variable_des[ix] + "(" + vector_unidad_des[ix] + ")" + ";";
                     }
-                    objeto_variable["csv"] += " " + ";\r\n";
+                    objeto_variable["csv"] += "" + "\r\n";
                     for (i = 0; i < objeto_variable[vector_variable[0]].length; i++) {
                         objeto_variable["grafica"].push([objeto_variable["PROF"][i], objeto_variable[sx.value][i]]);
                         for (let ix = 0; ix < vector_variable.length; ix++) {
-                            objeto_variable["csv"] += objeto_variable[vector_variable[ix]][i] + ",";
+                            objeto_variable["csv"] += String(objeto_variable[vector_variable[ix]][i]).replace(".",",") + ";";
                         }
-                        objeto_variable["csv"] += " " + ";\r\n";
+                        objeto_variable["csv"] += "" + "\r\n";
                     }
                     Highcharts.chart('ctd_grafica', {
                         chart: {
@@ -1073,6 +1071,7 @@ require([
             $('#coor').html('');
             // Coloca el control de visualización de las CTD en none y borra la gráfica
             document.getElementById("select_grafica").style.display = "none";
+            document.getElementById("descarga_boton").style.display = "none";
             document.getElementById("ctd_grafica").innerHTML = "";
         } else {
             $("#slider").slideReveal("hide");
