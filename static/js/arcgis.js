@@ -1,4 +1,5 @@
-var homeUrl = 'http://192.168.3.173:8080/thredds/';
+//var homeUrl = 'http://192.168.3.173:8080/thredds/';
+var homeUrl = 'http://triton.invemar.org.co/thredds/';
 var variables = [{
         // Almacena las imágenes que van a ser graficadas
         wms: null,
@@ -509,7 +510,6 @@ require([
                 map.addLayer(wmsLayer);
                 // Obtiene los ids de todas las capas presentes en el mapa
                 let idx = map.layerIds;
-                console.log(idx);
                 // Le asigna a capa.l_id el nombre del id de la última capa añadida
                 capa.l_id = idx[idx.length - 1];
                 // Cambia el estado de visibilidad a true
@@ -615,7 +615,6 @@ require([
             map.addLayer(wmsLayer);
             // Obtiene los ids de todas las capas presentes en el mapa
             idx = map.layerIds;
-            console.log(idx);
             // Le asigna a capa.l_id el nombre del id de la última capa añadida
             capa.l_id = idx[idx.length - 1];
         });
@@ -669,7 +668,6 @@ require([
         else {
             // Añade las estaciones al mapa
             map.addLayer(fl_estaciones);
-            console.log(document.getElementById("id_ctd_gra"));
         }
     });
 
@@ -755,7 +753,8 @@ require([
             attr["descripcion"] = "<b>Fecha: </b>" + item.fecha + "<br>" + "<b>Código de la estación: </b>" + item.prefijo_cdg_est_loc + item.codigo_estacion_loc +
                 "<br>" + "<b>id de la estación: </b>" + item.id_estacion + "<div id='id_ctd_gra' style='display: none;'>" + item.id_estacion + "</div>" +
                 "<br>" + "<b>Lugar: </b>" + item.lugar + "<br>" + "<b>Profundidad máxima del lance: </b>" +
-                item.prof_max_loc + "<br>" + '<button id="boton_grafica">Graficar</button>'
+                item.prof_max_loc + "<br>"
+            //  + '<button id="boton_grafica">Graficar</button>'
             // Crear el punto a partir de la longitud y la latitud extraida del api rest
             var punto_ctd = new Point(item.longitudinicio_loc, item.latitudinicio_loc);
             // Grafica los puntos
@@ -776,7 +775,6 @@ require([
             id_estacion_ctd = document.getElementById("id_ctd_gra").textContent;
             for (let index = 0; index < respuesta_ctd.length; index++) {
                 if (id_estacion_ctd == String(respuesta_ctd[index].id_estacion)) {
-                    console.log(respuesta_ctd[index]);
                     id_muestreo_ctd = respuesta_ctd[index].id_muestreotex;
                     id_estacion_ctd = respuesta_ctd[index].id_estacion;
                     id_proyecto_ctd = respuesta_ctd[index].id_proyecto;
@@ -834,7 +832,6 @@ require([
                     function () {
                         selectedOption = this.options[select.selectedIndex];
                         // En este caso imprime el valor y el texto del select seleccionado
-                        console.log(selectedOption.value + ': ' + selectedOption.text);
                         if (selectedOption.value !== "nada") {
                             document.getElementById("descarga_boton").style.display = "block";
                             grafica(selectedOption)
@@ -850,7 +847,6 @@ require([
 
                 // Función encargada de graficar los datos de la CTD
                 function control() {
-                    console.log(ctd);
                     // Se crean los vectores de control
                     vector_muestra = [];
                     vector_variable = [];
@@ -969,9 +965,9 @@ require([
                     objeto_variable["csv"] += "Latitud:;" + latitud_ctd + "\r\n";
                     objeto_variable["csv"] += "Longitud:;" + longitud_ctd + "\r\n";
                     objeto_variable["csv"] += "Profundidad máxima:;" + profundidad_max_ctd + "\r\n";
-                    objeto_variable["csv"] += "Sistema de Información Ambiental Marina de Colombia, componente Triton (http://triton.invemar.org.co/). Conjunto de datos "+
-                        "correspondiente a perfil oceanográfico, tomado con CTD, descargado el " + d + ". El conjunto de datos se entrega bajo Licencia "+
-                        "CC BY 4.0, por INVEMAR como administrador del sistema. Es responsabilidad del usuario revisar los datos y utilizar los "+
+                    objeto_variable["csv"] += "Sistema de Información Ambiental Marina de Colombia, componente Triton (http://triton.invemar.org.co/). Conjunto de datos " +
+                        "correspondiente a perfil oceanográfico, tomado con CTD, descargado el " + d + ". El conjunto de datos se entrega bajo Licencia " +
+                        "CC BY 4.0, por INVEMAR como administrador del sistema. Es responsabilidad del usuario revisar los datos y utilizar los " +
                         "criterios y herramientas pertinentes para interpretar y eliminar los datos que pudiesen estar errados." + "\r\n";
                     objeto_variable["csv"] += "" + "\r\n";
                     objeto_variable["csv"] += "" + "\r\n";
@@ -983,7 +979,7 @@ require([
                     for (i = 0; i < objeto_variable[vector_variable[0]].length; i++) {
                         objeto_variable["grafica"].push([objeto_variable["PROF"][i], objeto_variable[sx.value][i]]);
                         for (let ix = 0; ix < vector_variable.length; ix++) {
-                            objeto_variable["csv"] += String(objeto_variable[vector_variable[ix]][i]).replace(".",",") + ";";
+                            objeto_variable["csv"] += String(objeto_variable[vector_variable[ix]][i]).replace(".", ",") + ";";
                         }
                         objeto_variable["csv"] += "" + "\r\n";
                     }
@@ -1131,7 +1127,6 @@ require([
             var v = {};
             // Si existe un id para la capa, es decir, si la capa está visible
             if (capa.l_id) {
-                console.log("Soy " + capa.l_id);
                 // Se llama a la función getFeatureInfoUrl para obtener la información a partir del lugar seleccionado
                 var url = getFeatureInfoUrl(latlng, capa);
                 //     //var capa=variables[i];
@@ -1193,20 +1188,16 @@ require([
             var query_point = new Query();
             query_point.returnGeometry = true;
             // query_point.outFields = ["CITY_NAME"];
-            console.log(capa.wms);
             var queryTask = new QueryTask(capa.wms);
             query_point.text = params;
             query_point.outSpatialReference = {
                 wkid: 102100
             };
-            console.log(query_point);
             prueba = queryTask.execute(query_point, respuesta);
             // console.log("LA prueba");
             function respuesta(R) {
-                console.log(R);
-
+                // Nada
             }
-            console.log(prueba);
             // return wms._url + L.Util.getParamString(params, wms._url, true);
         }
 
@@ -1375,7 +1366,6 @@ function descargarTrace(evt) {
 /******************************PROCESO PARA DESCARGAR CSV DE DATOS DE CTD   *******************************/
 
 function descargarCTD(evt) {
-    console.log("Descargando CTD");
     var element = document.createElement('a');
     element.setAttribute('href', 'data:text/csv;charset=utf-8,' + encodeURIComponent(objeto_variable["csv"]));
     element.setAttribute('download', "export.csv");
