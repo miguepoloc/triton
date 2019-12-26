@@ -1,5 +1,6 @@
 from rest_framework import serializers
-from .models import VmAgm334580310, VmAgm2507816, VTriton, VmAgm2068822, VmAgm3303822, Ctd_Lances
+from .models import (VmAgm334580310, VmAgm2507816, VTriton, VmAgm2068822,
+                     VmAgm3303822, Ctd_Lances, VmMetereologicos803, VmOceanograficos858)
 
 
 class MareaSerializer(serializers.Serializer):
@@ -66,12 +67,6 @@ class DatosTritonSerializer(serializers.ModelSerializer):
 
 class DatosCTDSerializer(serializers.ModelSerializer):
     class Meta:
-        model = VmAgm2068822
-        fields = '__all__'
-
-
-class DatosCTDSerializer2(serializers.ModelSerializer):
-    class Meta:
         model = VmAgm3303822
         fields = '__all__'
 
@@ -79,4 +74,16 @@ class DatosCTDSerializer2(serializers.ModelSerializer):
 class DatosCTDLancesSerializer(serializers.ModelSerializer):
     class Meta:
         model = Ctd_Lances
+        fields = '__all__'
+
+
+class DatosMetereologicosSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = VmMetereologicos803
+        fields = '__all__'
+
+
+class DatosOceanograficosSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = VmOceanograficos858
         fields = '__all__'

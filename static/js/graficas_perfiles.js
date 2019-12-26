@@ -1,7 +1,7 @@
 // Función de inicio
 $(document).ready(function () {
     //Obtiene los datos de la CTD de la API
-    $.get('/api/ctd2/', function (result) {
+    $.get('/api/ctd/', function (result) {
         // Guarda en la variable ctd los resultados de la API
         ctd = result.results;
         // Llama a la función gráfica

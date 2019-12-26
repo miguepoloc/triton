@@ -219,3 +219,15 @@ def estacion_get_filters_validated(request):
     if errors:
         raise ValidationError(errors)
     return filters
+
+def meteorologicos_get_filters_validated(request):
+    params = (
+        {
+            'name': 'id_estacion',
+            'required': True,
+        },
+    )
+    filters, errors = get_filters_validated(request, params)
+    if errors:
+        raise ValidationError(errors)
+    return filters

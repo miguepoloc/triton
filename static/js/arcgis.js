@@ -810,7 +810,7 @@ require([
                 // Función de inicio
                 $(document).ready(function () {
                     //Obtiene los datos de la CTD de la API
-                    $.get('/api/ctd2/', function (result) {
+                    $.get('/api/ctd/', function (result) {
                         // Guarda en la variable ctd los resultados de la API
                         ctd = result.results;
                         document.getElementById("text_grafica").style.display = "none";
@@ -838,9 +838,6 @@ require([
                         }
                     }
                 );
-
-
-
 
                 // Objeto que almacena las unidades
                 var objeto_unidades = new Object();
@@ -901,7 +898,6 @@ require([
                     z.appendChild(t);
                     z.setAttribute("value", "nada");
                     list.appendChild(z);
-
 
                     // Se recorren todas las posiciones del vector que contiene a las variables
                     for (i = 0; i < vector_variable_des.length; i++) {
