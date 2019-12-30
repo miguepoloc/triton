@@ -159,13 +159,14 @@ function control(datos) {
             objeto_unix[vector_variable_des[q]].push(Date.UTC(anio, mes, dia, hora, minuto));
         }
     }
-    console.log(objeto_unix);
 
-    console.log("VARIABLE");
-    console.log(objeto_variable);
-    console.log("FECHA");
-    console.log(objeto_fecha);
-    console.log(vector_fecha);
+    // Vectores de datos y tiempo
+    for (q = 0; q < vector_variable_des.length; q++) {
+        let m = objeto_fecha[vector_variable_des[q]].length;
+        for (i = 0; i < m; i++) {
+            objeto_tiempo_variable[vector_variable_des[q]].push([objeto_unix[vector_variable_des[q]][i], objeto_variable[vector_variable_des[q]][i]]);
+        }
+    }
 }
 
 var select = document.getElementById('select_grafica');
@@ -704,22 +705,7 @@ function graficar(selecto) {
         data_vientos.push([velocidad[i], direccion[i]])
     }
 
-    // Vectores de datos y tiempo
 
-    for (q = 0; q < vector_variable_des.length; q++) {
-        // console.log(q);
-        // console.log(objeto_fecha[vector_variable_des[q]].length);
-        console.log(vector_variable_des[q]);
-        console.log(objeto_fecha[vector_variable_des[q]].length);
-        let m = objeto_fecha[vector_variable_des[q]].length;
-        for (i = 0; i < m; i++) {
-            objeto_tiempo_variable[vector_variable_des[q]].push([objeto_unix[vector_variable_des[q]][i], objeto_variable[vector_variable_des[q]][i]]);
-            // tiempo_temperatura_aire.push([objeto_unix[vector_variable_des[q]][i], temperatura_aire[i]]);
-            // tiempo_humedad.push([objeto_unix[vector_variable_des[q]][i], humedad[i]]);
-            // tiempo_presion_atmosferica.push([objeto_unix[vector_variable_des[q]][i], presion_atmosferica[i]]);
-        }
-    }
-    console.log(objeto_tiempo_variable);
 
     for (i = 0; i < fecha_unix.length; i++) {
         tiempo_direccion.push([fecha_unix[i], direccion[i]]);
@@ -735,15 +721,15 @@ function graficar(selecto) {
 
 
     var seleccion = {
-        tai_h: [objeto_variable["Temperatura del aire"], objeto_variable["Humedad relativa"], null, "Temperatura del aire", "Humedad", null, u_temperatura_aire, u_humedad, null],
-        v_p: [objeto_variable["Velocidad del viento"], objeto_variable["Presión atmosferica"], null, "Velocidad del viento", "Presión atmosférica", null, u_velocidad, u_presion_atmosferica, null],
-        r_l: [objeto_variable["Precipitación 10 minutos"], null, null, "Precipitación", null, null, u_precipitacion, null, null],
+        tai_h: [objeto_tiempo_variable["Temperatura del aire"], objeto_tiempo_variable["Humedad relativa"], null, "Temperatura del aire", "Humedad", null, u_temperatura_aire, u_humedad, null],
+        v_p: [objeto_tiempo_variable["Velocidad del viento"], objeto_tiempo_variable["Presión atmosferica"], null, "Velocidad del viento", "Presión atmosférica", null, u_velocidad, u_presion_atmosferica, null],
+        r_l: [objeto_tiempo_variable["Precipitación 10 minutos"], null, null, "Precipitación", null, null, u_precipitacion, null, null],
         // s_tag: [tiempo_salinidad, tiempo_temperatura_agua, null, "Salinidad", "Temperatura del agua", null, u_salinidad, u_temperatura_agua, null],
         // od_ph: [tiempo_od, tiempo_ph, null, "Oxígeno disuelto", "pH", null, u_od, u_ph, null],
         // vv_od: [tiempo_velocidad, tiempo_od, tiempo_ph, "Velocidad del viento", "Oxígeno disuelto", "pH", u_velocidad, u_od, u_ph],
         // tai_tag_p: [tiempo_temperatura_aire, tiempo_temperatura_agua, tiempo_presion_atmosferica, "Temperatura del aire", "Temperatura del agua", "Presión atmosférica", u_temperatura_aire, u_temperatura_agua, u_presion_atmosferica],
     }
-
+    console.log(seleccion);
     if (selecto == "viento") {
         // var primera_fecha = new Date(fecha[0]);
         console.log(fecha_unix);
