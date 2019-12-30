@@ -451,3 +451,11 @@ $(document).ready(function () {
         graficar(result, variables.id)
     });
 });
+
+$(document).ready(function () {
+    $.get('/api/fecha_estaciones/?id_estacion=' + document.getElementById("id_estacion").innerHTML, function (result) {
+        console.log(result.results[0]);
+        fecha_inicial = result.results[0]["fecha_hora"];
+        document.getElementById("fecha_inicial").innerHTML = fecha_inicial;
+    });
+});

@@ -68,6 +68,35 @@ class DatosEstacionesList(mixins.ListModelMixin, viewsets.GenericViewSet):
             return (queryset)
 
 
+class DatosFechaEstacionesList(mixins.ListModelMixin, viewsets.GenericViewSet):
+
+    serializer_class = DatosTritonSerializer
+
+    def list(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset(request))
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
+
+    def get_queryset(self, request=None):
+        queryset_complete = queryset = filters = []
+        if request:
+            filters = estacion_get_filters_validated(request)
+        try:
+            queryset = VTriton.objects.using('neo_argos').filter(
+                **filters).order_by('fecha_hora')[:1]
+        except Exception as err:
+            print(err)
+        if len(queryset) > 0:
+            return queryset
+        else:
+            print("ERROR")
+            return (queryset)
+
+
 class DatosCTDList3303(mixins.ListModelMixin, viewsets.GenericViewSet):
 
     serializer_class = DatosCTDSerializer
