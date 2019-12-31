@@ -157,9 +157,9 @@ function graficar(dato, selecto) {
 
     // Datos instantánenos a mostrar
     document.getElementById("nom_estacion").innerHTML = dato[0].des_estacion;
-    document.getElementById("time").innerHTML = "Fecha: " + dato[0].fecha_hora;
+    document.getElementById("time").innerHTML = "<b>Fecha del último dato ingresado: </b>" + dato[0].fecha_hora;
     document.getElementById("temp").innerHTML = temp_mostrar + " " + u_temperatura_aire;
-    document.getElementById("wind").innerHTML = "Velocidad del viento: " + velocidad_mostrar + " " +
+    document.getElementById("wind").innerHTML = "<b>Velocidad del viento: </b>" + velocidad_mostrar + " " +
         u_velocidad;
 
 
@@ -456,6 +456,6 @@ $(document).ready(function () {
     $.get('/api/fecha_estaciones/?id_estacion=' + document.getElementById("id_estacion").innerHTML, function (result) {
         console.log(result.results[0]);
         fecha_inicial = result.results[0]["fecha_hora"];
-        document.getElementById("fecha_inicial").innerHTML = fecha_inicial;
+        document.getElementById("time_inicio").innerHTML = "<b>Serie de datos registrados desde:</b> " + fecha_inicial;
     });
 });

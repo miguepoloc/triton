@@ -20,3 +20,6 @@ def Estacion(request, idx):
 
 def Estacion2(request):
     return render(request, 'main/estaciones2.html')
+
+def Estacion3(request):
+    return render(request, 'main/estaciones3.html')

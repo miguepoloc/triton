@@ -68,7 +68,7 @@
         </div>
 
         <div class="sidebar-content">
-            <div class="sidebar-pane" id="info">
+            <div class="sidebar-pane text-justify" id="info">
                 <h1 class="sidebar-header">
                     Acerca de
                     <span class="sidebar-close"><i class="fa fa-caret-left"></i></span>
@@ -81,25 +81,26 @@
                     este fin, TRITON despliega de forma casi permanente y en tiempo cercano al real (entre 6 horas a 2
                     días de retraso) información oceanográfica de alta relevancia en la mayor resolución espacial
                     posible para toda la cuenca.</p>
-                <p>La información desplegada en TRITON proviene o ha sido procesada a partir de diferentes bases de
-                    datos satelitales y salidas de modelos numéricos de libre acceso. Sus fuentes originales pueden ser
+                <p>La información oceanográfica global desplegada en TRITON proviene o ha sido procesada a partir de
+                    diferentes bases de datos satelitales y salidas de modelos numéricos de libre acceso. Sus fuentes
+                    originales pueden ser
                     consultas en los enlaces proporcionados junto con la información correspondiente a cada variable. El
                     procesamiento de los datos se realiza a través de módulos PYTHON y posteriormente es almacenada en
                     formato NetCDF. El despliegue de la información se realiza a través de un servidor THREDDS 4.6.9
                     (Thematic Real-time Environmental Distributed Data Services) en formato WMS. Los servicios WMS son
-                    consumidos e interpretados a través framework Javascript leaflet 1.0.3. </p>
-                <p>Los archivos NetCDF de las variables desplegadas, pueden ser descargados para utilizarlos en otras
-                    plataformas desde el repositorio de datos de TRITON en este <a
+                    consumidos e interpretados a través Arcgis 3.30 framework Javascript</p>
+                <p>Los archivos NetCDF de las variables oceanograficas globales desplegadas, pueden ser descargados para
+                    utilizarlos en otras plataformas desde el repositorio de datos de TRITON en este enlace <a
                         href="http://triton.invemar.org.co:8080/thredds/catalog.html" target="_blank">enlace</a> .</p>
                 <p>
-                    <h5>Versión:</h5> Versión a prueba de errores
+                    <h5>Versión:</h5> Versión 2.0
                 </p>
                 <p>
                     <h5>Contacto:</h5>
                 </p>
                 <p>Si tiene alguna sugerencia o comentario por favor contáctese con: marco.correa@invemar.org.co </p>
                 <p>
-                    <h5>Creditos:</h5>
+                    <h5>Créditos:</h5>
                 </p>
                 <p>Todos los derechos de propiedad intelectual sobre el diseño, despliegue y visualización de la
                     información de TRITON pertenecen al INVEMAR. En el caso de que alguna de la información del portal
@@ -128,9 +129,12 @@
                     Recuperación Contingente No. FP44842-138-2016. Fondo nacional de Financiamiento para la ciencia, la
                     tecnología y la Innovación Francisco José de Caldas - Instituto de Investigaciones Marinas y
                     Costeras INVEMAR (Colombia). Las actividades de desarrollo del Portal se encuentran enmarcadas
-                    dentro del proyecto "Conectividad entre el Sistema de Surgencia de La Guajira y el Archipiélago de
-                    San Andrés, Providencia y Santa Catalina, como insumo de una Plataforma de Despliegue Permanente de
-                    información Oceanográfica para uso en conservación y pesca", convocatoria 714 de COLCIENCIAS</p>
+                    dentro del proyecto "<a href="http://www.invemar.org.co/proyectos?id_proyecto=3345" target="_blank">
+                        Conectividad entre el Sistema de Surgencia de La Guajira y el Archipiélago de
+                        San Andrés, Providencia y Santa Catalina, como insumo de una Plataforma de Despliegue Permanente
+                        de
+                        información Oceanográfica para uso en conservación y pesca</a>", convocatoria 714
+                    del 2015 de COLCIENCIAS</p>
                 <p>
                     <h5>Renuncia de responsabilidad</h5>
                 </p>
@@ -248,12 +252,13 @@
                                 <input id="xbEstaciones" type="checkbox" data-toggle="toggle" data-onstyle="info"
                                     data-on=" " data-off=" ">
                             </span>
-                            <a class="list-group-item" id="bEstaciones" href="#"> Estaciones meteomarinas</a>
+                            <a class="list-group-item" id="bEstaciones" href="#"> Estaciones meteorológicas y/o
+                                oceanográficas</a>
                         </li>
 
                         <li class="list-group-item">
                             <span class="pull-right sbtn">
-                                <a data-toggle="modal" data-target="#texto7" class="info-sb">
+                                <a data-toggle="modal" data-target="#texto8" class="info-sb">
                                     <span class="badge">
                                         <i class="fa fa-question-circle"></i>
                                     </span>
@@ -261,7 +266,20 @@
                                 <input id="xbCTD" type="checkbox" data-toggle="toggle" data-onstyle="info" data-on=" "
                                     data-off=" ">
                             </span>
-                            <a class="list-group-item" id="bCTD" href="#"> Estaciones CTD</a>
+                            <a class="list-group-item" id="bCTD" href="#"> Perfiles CTD</a>
+                        </li>
+
+                        <li class="list-group-item">
+                            <span class="pull-right sbtn">
+                                <a data-toggle="modal" data-target="#texto9" class="info-sb">
+                                    <span class="badge">
+                                        <i class="fa fa-question-circle"></i>
+                                    </span>
+                                </a>
+                                <!-- <input id="xDataloggers" type="checkbox" data-toggle="toggle" data-onstyle="info"
+                                    data-on=" " data-off=" "> -->
+                            </span>
+                            <a class="list-group-item" id="bDataloggers" href="#"> Dataloggers</a>
                         </li>
                     </div>
                 </div>
@@ -496,6 +514,69 @@
                         Imager-TMI, Advanced Microwave Scanning Radiometer-AMSR-E, mas mediciones de
                         dispers&oacute;metros satelitales activos de largo plazo), con una resoluci&oacute;n espacial
                         remuestreada a 1/10&deg;.
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" tabindex="-1" id="texto7" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title">Estaciones meteorológicas y/o oceanográficas</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Estaciones administradas por INVEMAR o que reciben para su administración el apoyo de INVEMAR y
+                        que recolectan datos de forma automatizada para su publicación en esta plataforma.
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" tabindex="-1" id="texto8" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title">Perfiles CTD</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Datos de perfiles verticales de las variables físicas de las aguas oceánicas o marinas,
+                        principalmente de temperatura, salinidad y oxigeno disuelto. Esta información proviene de
+                        proyectos de investigación ejecutados por INVEMAR. Las sondas incluyen opcionalmente otros
+                        sensores como los de clorofila a, pH, CO2.
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" tabindex="-1" id="texto9" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title">Dataloggers</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Datos recolectados por sensores específicos ubicados en localizaciones seleccionadas con
+                        propósitos de investigación particulares. El dato mas frecuentemente recolectado proviene del
+                        monitoreo de la temperatura del agua.
                     </p>
                 </div>
                 <div class="modal-footer">
