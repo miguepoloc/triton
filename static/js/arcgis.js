@@ -249,7 +249,7 @@ var variables = [{
     },
 ];
 
-// Cuando el documento esté listo
+// Cuando el documento esté listo.
 $(document).ready(function () {
     $('#table').bootstrapTable();
     $('#tableTrace').bootstrapTable();
