@@ -25,7 +25,7 @@ SECRET_KEY = '=*tidi7+#10%x$ia5#cyre)epq_a=zvok^$4y9@@uw%(javw7o'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*',]
+ALLOWED_HOSTS = ['*', ]
 
 
 # Application definition
@@ -116,18 +116,19 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
-STATICFILES_DIRS =  [os.path.join(os.path.dirname(BASE_DIR), 'static')] # le digo a django donde esta mi directorio de staticos base
+# le digo a django donde esta mi directorio de staticos base
+STATICFILES_DIRS = [os.path.join(os.path.dirname(BASE_DIR), 'static')]
 STATIC_URL = '/static/'
 
 MEDIA_URL = STATIC_URL + 'media/'
 
-#Agregado como copia de SIAM
+# Agregado como copia de SIAM
 MEDIA_ROOT = os.path.join(BASE_DIR, 'static/media')
 
 CACHES = {
-    'default':{
-        'BACKEND':'django.core.cache.backends.memcached.MemcachedCache',
-        'LOCATION':'127.0.0.1:11211',
+    'default': {
+        'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
+        'LOCATION': '127.0.0.1:11211',
     }
 }
 
@@ -135,6 +136,6 @@ CORS_ORIGIN_ALLOW_ALL = True
 
 REST_FRAMEWORK = {
     'EXCEPTION_HANDLER': 'rest_framework.views.exception_handler',
-    'DEFAULT_PAGINATION_CLASS':'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE':200000,
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 200000,
 }

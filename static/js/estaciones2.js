@@ -168,9 +168,9 @@ function graficar(dato, selecto) {
 
     // Datos instantánenos a mostrar
     // document.getElementById("nom_estacion").innerHTML = dato[0].des_estacion;
-    document.getElementById("time").innerHTML = "Fecha: " + dato[(dato.length - 1)].fecha;
+    document.getElementById("time").innerHTML = "<b>Fecha del último dato ingresado: </b>" + dato[(dato.length - 1)].fecha;
     document.getElementById("temp").innerHTML = temp_mostrar + " " + u_temperatura_aire;
-    document.getElementById("wind").innerHTML = "Velocidad del viento: " + velocidad_mostrar + " " +
+    document.getElementById("wind").innerHTML = "<b>Velocidad del viento: </b>" + velocidad_mostrar + " " +
         u_velocidad;
 
 

@@ -212,3 +212,94 @@ class Ctd_Lances(models.Model):
     class Meta:
         managed = False
         db_table = 'ctd_lances'
+
+
+class VmMetereologicos803(models.Model):
+    id_muestreo = models.IntegerField(primary_key=True, blank=True, null=True)
+    id_metodologia = models.IntegerField(blank=True, null=True)
+    id_tematicas = models.IntegerField(blank=True, null=True)
+    id_proyecto = models.IntegerField(blank=True, null=True)
+    id_estacion = models.IntegerField(blank=True, null=True)
+    nom_estacion = models.CharField(max_length=100, blank=True, null=True)
+    id_muestreotx = models.CharField(max_length=40, blank=True, null=True)
+    proyecto_origen = models.CharField(max_length=2000, blank=True, null=True)
+    proyecto_origen_des = models.CharField(
+        max_length=4000, blank=True, null=True)
+    version_plantilla = models.CharField(
+        max_length=2000, blank=True, null=True)
+    des_estacion = models.CharField(max_length=1200, blank=True, null=True)
+    cod_estacion = models.CharField(max_length=81, blank=True, null=True)
+    sus_estacion = models.CharField(max_length=2, blank=True, null=True)
+    sus_estacion_des = models.CharField(max_length=400, blank=True, null=True)
+    fecha_digita = models.DateField(blank=True, null=True)
+    fecha_ano = models.IntegerField(blank=True, null=True)
+    fecha_mes = models.CharField(max_length=7, blank=True, null=True)
+    participantes = models.CharField(max_length=4000, blank=True, null=True)
+    entidades = models.CharField(max_length=4000, blank=True, null=True)
+    notas_generales = models.CharField(max_length=1000, blank=True, null=True)
+    fecha_descarga = models.DateField(blank=True, null=True)
+    region = models.CharField(max_length=4000, blank=True, null=True)
+    region_des = models.CharField(max_length=4000, blank=True, null=True)
+    id_muestra = models.IntegerField(blank=True, null=True)
+    id_muestratx = models.CharField(max_length=40, blank=True, null=True)
+    fecha_horaregistro = models.CharField(
+        max_length=2000, blank=True, null=True)
+    id_parametro = models.IntegerField(blank=True, null=True)
+    id_unidad_medida = models.IntegerField(blank=True, null=True)
+    id_metodo = models.IntegerField(blank=True, null=True)
+    valor = models.CharField(max_length=2000, blank=True, null=True)
+    quality_flag = models.IntegerField(blank=True, null=True)
+    quality_flag_des = models.CharField(max_length=4000, blank=True, null=True)
+    parametro_des = models.CharField(max_length=100, blank=True, null=True)
+    unidad_medida_d = models.CharField(max_length=100, blank=True, null=True)
+    metodo = models.CharField(max_length=1000, blank=True, null=True)
+    factualizacion = models.DateField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'vm_metereologicos_803'
+
+
+class VmOceanograficos858(models.Model):
+    id_muestreo = models.IntegerField(primary_key=True)
+    id_metodologia = models.IntegerField()
+    id_tematicas = models.IntegerField()
+    id_proyecto = models.IntegerField()
+    id_estacion = models.IntegerField()
+    nom_estacion = models.CharField(max_length=100, blank=True, null=True)
+    id_muestreotx = models.CharField(max_length=40, blank=True, null=True)
+    proyecto_origen = models.CharField(max_length=15, blank=True, null=True)
+    proyecto_origen_des = models.CharField(
+        max_length=15, blank=True, null=True)
+    version_plantilla = models.CharField(
+        max_length=2000, blank=True, null=True)
+    des_estacion = models.CharField(max_length=1200, blank=True, null=True)
+    cod_estacion = models.CharField(max_length=81, blank=True, null=True)
+    sus_estacion = models.CharField(max_length=2, blank=True, null=True)
+    sus_estacion_des = models.CharField(max_length=400, blank=True, null=True)
+    fecha_digita = models.DateField()
+    fecha_ano = models.IntegerField(blank=True, null=True)
+    fecha_mes = models.CharField(max_length=7, blank=True, null=True)
+    participantes = models.CharField(max_length=4000, blank=True, null=True)
+    entidades = models.CharField(max_length=4000, blank=True, null=True)
+    notas_generales = models.CharField(max_length=1000, blank=True, null=True)
+    fecha_descarga = models.CharField(max_length=2000, blank=True, null=True)
+    region = models.CharField(max_length=4000, blank=True, null=True)
+    region_des = models.CharField(max_length=4000, blank=True, null=True)
+    id_muestra = models.IntegerField()
+    id_muestratx = models.CharField(max_length=40, blank=True, null=True)
+    fecha_horaregistro = models.DateField()
+    id_parametro = models.IntegerField()
+    id_unidad_medida = models.IntegerField()
+    id_metodo = models.IntegerField(blank=True, null=True)
+    valor = models.CharField(max_length=2000, blank=True, null=True)
+    quality_flag = models.IntegerField(blank=True, null=True)
+    quality_flag_des = models.CharField(max_length=4000, blank=True, null=True)
+    parametro_des = models.CharField(max_length=100)
+    unidad_medida_d = models.CharField(max_length=100, blank=True, null=True)
+    metodo = models.CharField(max_length=1000, blank=True, null=True)
+    factualizacion = models.DateField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'vm_oceanograficos_858'

@@ -249,7 +249,7 @@ var variables = [{
     },
 ];
 
-// Cuando el documento esté listo
+// Cuando el documento esté listo.
 $(document).ready(function () {
     $('#table').bootstrapTable();
     $('#tableTrace').bootstrapTable();
@@ -448,7 +448,7 @@ require([
 
     // No sé
     parser.parse();
-    esriConfig.defaults.geometryService = new GeometryService("https://utility.arcgisonline.com/ArcGIS/rest/services/Geometry/GeometryServer");
+    esriConfig.defaults.geometryService = new GeometryService("http://utility.arcgisonline.com/ArcGIS/rest/services/Geometry/GeometryServer");
     esriConfig.defaults.io.proxyUrl = "/proxy/";
 
     // Se definen los criterios del mapa
@@ -466,7 +466,7 @@ require([
         });
 
     // Añandiendo una cpa de tierra para evitar la superposición de las variables en la tierra
-    var url = "http://gis.invemar.org.co/arcgis/rest/services/Conectividad/ConectividadBase/MapServer/0/";
+    var url = "https://gis.invemar.org.co/arcgis/rest/services/Conectividad/ConectividadBase/MapServer/0/";
     // Se guarda en la variable tierra la Feature Layer de la tierra de los paises
     var tierra = new FeatureLayer(url);
     // Se añade al mapa la capa de tierra
@@ -648,7 +648,7 @@ require([
     /******************************PROCESO PARA AÑADIR LAS ESTACIONES*******************************/
 
     // Se guarda en la variable url el link para consumir el servicio de las estaciones meteoceanográficas
-    var url = "http://gis.invemar.org.co/arcgis/rest/services/CLIMARES/Estaciones_Meteoceanograficas/MapServer/0";
+    var url = "https://gis.invemar.org.co/arcgis/rest/services/CLIMARES/Estaciones_Meteoceanograficas/MapServer/0";
     // Se añade el template que se mostrará en el popup
     var template = new InfoTemplate("Estación", "${Name} <br> <a href='/estacion/${id}' target='_blank'> Ver más </a>");
     // Se crea un nuevo feature layer donde se guardarán las estaciones meteoceanográficas
@@ -810,7 +810,7 @@ require([
                 // Función de inicio
                 $(document).ready(function () {
                     //Obtiene los datos de la CTD de la API
-                    $.get('/api/ctd2/', function (result) {
+                    $.get('/api/ctd/', function (result) {
                         // Guarda en la variable ctd los resultados de la API
                         ctd = result.results;
                         document.getElementById("text_grafica").style.display = "none";
@@ -838,9 +838,6 @@ require([
                         }
                     }
                 );
-
-
-
 
                 // Objeto que almacena las unidades
                 var objeto_unidades = new Object();
@@ -901,7 +898,6 @@ require([
                     z.appendChild(t);
                     z.setAttribute("value", "nada");
                     list.appendChild(z);
-
 
                     // Se recorren todas las posiciones del vector que contiene a las variables
                     for (i = 0; i < vector_variable_des.length; i++) {
