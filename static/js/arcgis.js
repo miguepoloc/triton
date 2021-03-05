@@ -448,7 +448,7 @@ require([
 
     // No sé
     parser.parse();
-    esriConfig.defaults.geometryService = new GeometryService("https://utility.arcgisonline.com/ArcGIS/rest/services/Geometry/GeometryServer");
+    esriConfig.defaults.geometryService = new GeometryService("http://utility.arcgisonline.com/ArcGIS/rest/services/Geometry/GeometryServer");
     esriConfig.defaults.io.proxyUrl = "/proxy/";
 
     // Se definen los criterios del mapa
@@ -466,7 +466,7 @@ require([
         });
 
     // Añandiendo una cpa de tierra para evitar la superposición de las variables en la tierra
-    var url = "http://gis.invemar.org.co/arcgis/rest/services/Conectividad/ConectividadBase/MapServer/0/";
+    var url = "https://gis.invemar.org.co/arcgis/rest/services/Conectividad/ConectividadBase/MapServer/0/";
     // Se guarda en la variable tierra la Feature Layer de la tierra de los paises
     var tierra = new FeatureLayer(url);
     // Se añade al mapa la capa de tierra
@@ -648,7 +648,7 @@ require([
     /******************************PROCESO PARA AÑADIR LAS ESTACIONES*******************************/
 
     // Se guarda en la variable url el link para consumir el servicio de las estaciones meteoceanográficas
-    var url = "http://gis.invemar.org.co/arcgis/rest/services/CLIMARES/Estaciones_Meteoceanograficas/MapServer/0";
+    var url = "https://gis.invemar.org.co/arcgis/rest/services/CLIMARES/Estaciones_Meteoceanograficas/MapServer/0";
     // Se añade el template que se mostrará en el popup
     var template = new InfoTemplate("Estación", "${Name} <br> <a href='/estacion/${id}' target='_blank'> Ver más </a>");
     // Se crea un nuevo feature layer donde se guardarán las estaciones meteoceanográficas
