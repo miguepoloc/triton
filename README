@@ -12,6 +12,7 @@ cd apps
 python ../manage.py startapp myapp
 
 TOCA INSTALAR LEAFLET
+Pero se cambió a ARCGIS
 
 pip freeze > requirements.txt
 
