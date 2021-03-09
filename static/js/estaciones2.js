@@ -456,13 +456,13 @@ function graficar(dato, selecto) {
 
 function myFunction(variables) {
     console.log(variables.id);
-    $.get('/coralina/', function (result) {
+    $.get('/api/coralina/', function (result) {
         graficar(result, variables.id)
     });
 }
 var variables = document.getElementById('tai_h');
 $(document).ready(function () {
-    $.get('/coralina/', function (result) {
+    $.get('/api/coralina/', function (result) {
         graficar(result, variables.id)
     });
 });

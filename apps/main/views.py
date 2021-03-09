@@ -6,12 +6,12 @@ def invemar_hoy(request):
     return render(request, 'main/invemar_hoy.html')
 
 
-def geovisor(request):
+def index(request):
     return render(request, 'main/index.html')
 
 
-def geovisor2(request):
-    return render(request, 'main/index2.html')
+def grafica_perfiles(request):
+    return render(request, 'main/grafica_perfiles.html')
 
 
 def Estacion(request, idx):

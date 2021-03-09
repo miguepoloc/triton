@@ -1,6 +1,6 @@
 id_estacion = document.getElementById("id_estacion").innerHTML
 Highcharts.getJSON(
-    '/datos/',
+    '/api/datos/',
     function (data) {
         //Variables
         if (id_estacion == "39162") {
@@ -18,7 +18,7 @@ Highcharts.getJSON(
 );
 
 Highcharts.getJSON(
-    '/datos-horas/',
+    '/api/datos-horas/',
     function (xml) {
         var dataMareas = [];
         var horActual = [];

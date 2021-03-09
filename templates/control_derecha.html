@@ -1,0 +1,119 @@
+{% load staticfiles %}
+<!-- Visualización histórico de mapas -->
+<div id="slider" style="padding: 20px; background:#0c3f73; z-index: 335; display: none;">
+    <div class="sidebar-content" style="background:#0c3f73; left: 7px;">
+        <div class="content-tab" id="" style="width:305px;margin-top: 5em;">
+            <div id="lSLAh" style="display: none"></div>
+            <div id="lSLAuv" style="display: none"></div>
+            <div id="lSLA" style="display: none"></div>
+            <div id="lCHL" style="display: none"></div>
+            <div id="lSST" style="display: none"></div>
+            <div id="lWIND" style="display: none"></div>
+            <div id="lWAVES" style="display: none"></div>
+            <div id="lWINDv" style="display: none"></div>
+            <div id="lWAVESv" style="display: none"></div>
+        </div>
+    </div>
+</div>
+
+<!-- Para seleccionar un valor puntual -->
+<div id="picker" style="padding: 20px; background:#0c3f73; z-index: 335;display: none;">
+    <div class="sidebar-content" style="background:#0c3f73; left: 7px;">
+        <div class="content-tab" id="" style="width:305px;margin-top: 5em;">
+            <div class="panel panel-default" style="margin-top:1em; margin-bottom:1em">
+                <div class="panel-heading">
+                    Seleccione un punto en el mapa
+                </div>
+                <div class="panel-body">
+                    <div class="table-responsive">
+                        <table class="table" data-toggle="table" id="table">
+                            <caption id="coor"></caption>
+                            <thead>
+                                <tr>
+                                    <th data-field="variable">Variable</th>
+                                    <th data-field="valor">Valor</th>
+                                    <th data-field="unidades">Unidades</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Para elegir una ruta -->
+<div id="tracer" style="padding: 20px; background:#0c3f73; z-index: 335;display: none;">
+    <div class="sidebar-content" style="background:#0c3f73; left: 7px;">
+        <div class="content-tab" id="" style="width:305px;margin-top: 5em;">
+            <div class="panel panel-default" style="margin-top:1em; margin-bottom:1em">
+                <div class="panel-heading">
+                    Seleccione un punto en el mapa
+                </div>
+                <div class="panel-body">
+                    <div class="table-responsive">
+                        <table class="table" data-toggle="table" id="tableTrace">
+                            <thead>
+                                <tr>
+                                    <th data-field="punto">P</th>
+                                    <th data-field="lon">Lon</th>
+                                    <th data-field="lat">Lat</th>
+                                    <th data-field="dist">dist(km)</th>
+                                    <th data-field="total">Total</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <a onclick="descargarTrace()" class="btn btn-primary">
+                    <i class="glyphicon glyphicon-download"></i>Descargar
+                </a>
+            </div>
+
+            <div>
+                <a class="btn btn-primary" id="clearGraphics">
+                    <i class="glyphicon glyphicon-remove"></i>Borrar trazado
+                </a>
+            </div>
+            <div class="panel panel-default" style="margin-top:1em; margin-bottom:1em">
+                <div class="panel-heading">
+                    Variables
+                </div>
+                <div class="panel-body" id="traceVar">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+<div id="slider_graph" style="padding: 20px; background:#0c3f73; z-index: 335; display: none;">
+    <h1 id='titulo_grafica' style="margin-top: 3em; color: #ffff;">Seleccione una gráfica</h1>
+    <p id='text_grafica' style="margin-top: 5em; color: #ffff;"></p>
+    <select name="select_grafica" id="select_grafica" style="display: none; margin-top: 1em;">
+    </select>
+    <div id='ctd_grafica' style="max-width: 310px; height: 400px; margin: 0 auto; margin-top: 1em;">
+    </div>
+    <div>
+        <a onclick="descargarCTD()" class="btn btn-primary" id="descarga_boton" style="display: none;">
+            <i class="glyphicon glyphicon-download"></i> Descargar datos
+        </a>
+    </div>
+</div>
+
+<ul class="nav nav-pills nav-stacked" style="display: table-cell;  position: absolute; right: -2px; top: 15%;">
+    <li class="bnt-right btn btn-primary" id='trigger'>
+        <span class="fa fa-info-circle"></span>
+    </li>
+    <li class="bnt-right btn btn-primary" id="tpicker">
+        <span class="fa fa-map-marker"></span>
+    </li>
+    <!-- <li class="bnt-right btn btn-primary" id="trace">
+            <span class="glyphicon glyphicon-globe"></span>
+        </li> -->
+    <!-- <li class="bnt-right btn btn-primary" id="graph">
+            <span class="fa fa-bar-chart-o"></span>
+        </li> -->
+</ul>

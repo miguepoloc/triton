@@ -565,7 +565,7 @@ jQuery(document).ready(function ($) {
     });
     $.ajax({
         dataType: 'json',
-        url: '/datos/',
+        url: '/api/datos/',
         success: function (xml) {
             console.log(xml);
             var htmlStr = "";
@@ -580,7 +580,7 @@ jQuery(document).ready(function ($) {
     });
     $.ajax({
         dataType: 'json',
-        url: '/datos-horas/',
+        url: '/api/datos-horas/',
         success: function (xml) {
             var dataMareas = [];
             var horActual = [];

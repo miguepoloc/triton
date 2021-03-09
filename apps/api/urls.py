@@ -4,9 +4,9 @@ from apps.api import views
 from rest_framework import routers
 
 router = routers.DefaultRouter()
-router.register("estacion", views.DatosEstacionList10)
-router.register("ctd", views.DatosCTDList3303, "ctd")
-router.register("ctd_lances", views.DatosCTDLancesList),
+router.register(r"estacion", views.DatosEstacionList10, "DatosEstacion10")
+router.register(r"ctd", views.DatosCTDList3303, "ctd")
+router.register(r"ctd_lances", views.DatosCTDLancesList, "DatosCTDLances"),
 router.register(r'estaciones', views.DatosEstacionesList,
                 'datos_triton_api_list_view')
 router.register(r'meteorologicos', views.DatosMeteorologicosList,
@@ -18,5 +18,5 @@ urlpatterns = [
     url(r'^datos/$', views.MareaList.as_view()),
     url(r'^datos-horas/$', views.MareaHorasList.as_view()),
     url(r'^coralina/$', views.CoralinaList.as_view()),
-    path('api/', include(router.urls)),
+    path('', include(router.urls)),
 ]

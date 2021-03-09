@@ -17,13 +17,9 @@ from django.contrib import admin
 from django.urls import path
 from django.conf.urls import url
 from django.urls import include
-from apps.main.views import invemar_hoy, geovisor, geovisor2
 
 urlpatterns = [
-    path("", geovisor),
-    path("geovisor", geovisor2),
-    path("invemar-hoy/", invemar_hoy),
-    url(r'^', include('apps.api.urls')),
-    url(r'^', include('apps.main.urls')),
+    path('', include('apps.main.urls')),
+    path('api/', include('apps.api.urls')),
     path('admin/', admin.site.urls),
 ]

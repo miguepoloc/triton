@@ -1,0 +1,277 @@
+{% load staticfiles %}
+<div id="sidebar" class="sidebar collapsed">
+    <div class="sidebar-tabs">
+        <ul role="tablist">
+            <li class="hidden-lg hidden-md">
+                <a href="#">
+                    <img src="{% static 'images/cd-logo.svg' %}" alt="Logo INVEMAR" style="height:60px">
+                </a>
+            </li>
+            <li>
+                <a href="#info" role="tab">
+                    <i class="fa fa-info-circle"></i>
+                    <span>Acerca de</span>
+                </a>
+            </li>
+            <li>
+                <a href="#servicios" role="tab">
+                    <i class="icon-stack"></i>
+                    <span>Capas</span>
+                </a>
+            </li>
+            <li>
+                <a href="/estacion/39162/" role="tab" target="_blank">
+                    <i class="icon-estacion-invemar"></i>
+                    <span>Invemar hoy</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://triton.invemar.org.co:8080/thredds/catalog.html" role="tab" target="_blank">
+                    <i class="icon-download"></i>
+                    <span>Descargar datos</span>
+                </a>
+            </li>
+
+
+            <!-- BOTÓN DE IMPRIMIR  -->
+            <!-- <div id="printButton"></div> -->
+
+
+            <!-- <li>
+                <a href="javascript:manualPrint();" role="tab">
+                    <i class="icon-printer"></i>
+                    <span>Imprimir pantalla</span>
+                </a>
+            </li> -->
+        </ul>
+    </div>
+
+    <div class="sidebar-content">
+        <div class="sidebar-pane text-justify" id="info">
+            <h1 class="sidebar-header">
+                Acerca de
+                <span class="sidebar-close"><i class="fa fa-caret-left"></i></span>
+            </h1>
+            <br>
+            <p>El Portal Observatorio de los Mares Tropicales de las Américas (TRITON), es una iniciativa del
+                Programa de Geociencias del Instituto de Investigaciones Marinas y Costeras - INVEMAR (Colombia).
+                TRITON pretende ser una herramienta de apoyo a la investigación, a las actividades productivas y al
+                seguimiento de la evolución (monitoreo) de las condiciones oceánicas en la región del Caribe. Para
+                este fin, TRITON despliega de forma casi permanente y en tiempo cercano al real (entre 6 horas a 2
+                días de retraso) información oceanográfica de alta relevancia en la mayor resolución espacial
+                posible para toda la cuenca.</p>
+            <p>La información oceanográfica global desplegada en TRITON proviene o ha sido procesada a partir de
+                diferentes bases de datos satelitales y salidas de modelos numéricos de libre acceso. Sus fuentes
+                originales pueden ser
+                consultas en los enlaces proporcionados junto con la información correspondiente a cada variable. El
+                procesamiento de los datos se realiza a través de módulos PYTHON y posteriormente es almacenada en
+                formato NetCDF. El despliegue de la información se realiza a través de un servidor THREDDS 4.6.9
+                (Thematic Real-time Environmental Distributed Data Services) en formato WMS. Los servicios WMS son
+                consumidos e interpretados a través Arcgis 3.30 framework Javascript</p>
+            <p>Los archivos NetCDF de las variables oceanograficas globales desplegadas, pueden ser descargados para
+                utilizarlos en otras plataformas desde el repositorio de datos de TRITON en este enlace <a
+                    href="http://triton.invemar.org.co:8080/thredds/catalog.html" target="_blank">enlace</a> .</p>
+            <p>
+            <h5>Versión:</h5> Versión 2.0
+            </p>
+            <p>
+            <h5>Contacto:</h5>
+            </p>
+            <p>Si tiene alguna sugerencia o comentario por favor contáctese con: marco.correa@invemar.org.co </p>
+            <p>
+            <h5>Créditos:</h5>
+            </p>
+            <p>Todos los derechos de propiedad intelectual sobre el diseño, despliegue y visualización de la
+                información de TRITON pertenecen al INVEMAR. En el caso de que alguna de la información del portal
+                sea utilizada, redistribuida, publicada en medios convencionales o en internet, se recomienda a los
+                usuarios incluir en sus agradecimientos "Este producto/publicacion/presentacion fue generado
+                utilizando información del Observatorio de los Mares Tropicales de las Américas (TRITON)"</p>
+            <p>
+            <h5>Equipo Cientifico:</h5>
+            </p>
+            <p>Constanza Ricaurte Villota</p>
+            <p>Marco Correa Ramirez</p>
+            <p>Martha Bastidas</p>
+            <p>Andrés Ordoñez</p>
+            <p>Magnolia Murcia</p>
+            <p>Samuel Hormazabal (Asesor externo)</p>
+            <p>
+            <h5>Equipo de desarrollo de software:</h5>
+            </p>
+            <p>Julian Pizarro (Jefe del LABSIS)</p>
+            <p>Juan Manuel Rodriguez (Lider de desarrollo)</p>
+            <p>Miguel Ospino (Diseñador web)</p>
+            <p>Miguel Polo (Desarrollador web)</p>
+            <p>
+            <h5>Financiamiento</h5>
+            </p>
+            <p>El Portal es inicialmente financiado con recursos provenientes del Contrato de Financiamiento de
+                Recuperación Contingente No. FP44842-138-2016. Fondo nacional de Financiamiento para la ciencia, la
+                tecnología y la Innovación Francisco José de Caldas - Instituto de Investigaciones Marinas y
+                Costeras INVEMAR (Colombia). Las actividades de desarrollo del Portal se encuentran enmarcadas
+                dentro del proyecto "<a href="http://www.invemar.org.co/proyectos?id_proyecto=3345" target="_blank">
+                    Conectividad entre el Sistema de Surgencia de La Guajira y el Archipiélago de
+                    San Andrés, Providencia y Santa Catalina, como insumo de una Plataforma de Despliegue Permanente
+                    de
+                    información Oceanográfica para uso en conservación y pesca</a>", convocatoria 714
+                del 2015 de COLCIENCIAS</p>
+            <p>
+            <h5>Renuncia de responsabilidad</h5>
+            </p>
+            <p>El usuario es advertido de que pueden haber errores en los datos suministrados y asume la
+                responsabilidad de realizar los chequeos necesarios para detectarlos, corregirlos e interpretarlos
+                de manera correcta. El usuario hace uso de los datos bajo su propia responsabilidad y acepta las
+                limitaciones existentes en los datos.</p>
+            <p>Las lineas de delimitación territorial presentadas en en el Portal, son una representación gráfica
+                aproximada con fines de referencia espacial y no expresan una posición de carácter oficial. El
+                INVEMAR no asume ninguna responsabilidad sobre interpretaciones cartográficas que surjan a partir de
+                estas.
+            </p>
+            <img src="{% static 'images/invemar-triton.png' %}" style="width:90%">
+        </div>
+
+        <div class="sidebar-pane" id="servicios">
+            <h1 class="sidebar-header">Servicios<span class="sidebar-close"><i class="fa fa-caret-left"></i></span>
+            </h1>
+            <div class="content-tab">
+                <div class="list-group">
+
+                    <li class="list-group-item" id="bSLAh">
+                        <span class="pull-right sbtn">
+                            <a class="info-sb" data-toggle="modal" data-target="#texto1">
+                                <span class="badge">
+                                    <i class="fa fa-question-circle"></i>
+                                </span>
+                            </a>
+                            <input id="cbSLAh" type="checkbox" data-toggle="toggle" data-onstyle="info" data-on=" "
+                                data-off=" ">
+                        </span>
+                        <a class="list-group-item" href="#"> Altura nivel del mar</a>
+                    </li>
+
+                    <li class="list-group-item">
+                        <span class="pull-right sbtn">
+                            <a data-toggle="modal" data-target="#texto2" class="info-sb">
+                                <span class="badge">
+                                    <i class="fa fa-question-circle"></i>
+                                </span>
+                            </a>
+                            <input id="cbSLAuv" type="checkbox" data-toggle="toggle" data-onstyle="info" data-on=" "
+                                data-off=" ">
+                            <input id="cbSLA" type="checkbox" data-toggle="toggle" data-onstyle="info" data-on=" "
+                                data-off=" ">
+                        </span>
+                        <a class="list-group-item" href="#"> Velocidad de las corrientes </a>
+                    </li>
+
+                    <li class="list-group-item">
+                        <span class="pull-right sbtn">
+                            <a data-toggle="modal" data-target="#texto3" class="info-sb">
+                                <span class="badge">
+                                    <i class="fa fa-question-circle"></i>
+                                </span>
+                            </a>
+                            <input id="cbSST" type="checkbox" data-toggle="toggle" data-onstyle="info" data-on=" "
+                                data-off=" ">
+                        </span>
+                        <a class="list-group-item" id="bSST" href="#"> Temperatura superficial</a>
+                    </li>
+
+                    <li class="list-group-item">
+                        <span class="pull-right sbtn">
+                            <a data-toggle="modal" data-target="#texto4" class="info-sb">
+                                <span class="badge">
+                                    <i class="fa fa-question-circle"></i>
+                                </span>
+                            </a>
+                            <input id="cbCHL" type="checkbox" data-toggle="toggle" data-onstyle="info" data-on=" "
+                                data-off=" ">
+                        </span>
+                        <a class="list-group-item" id="bCHL" href="#">Clorofila</a>
+                    </li>
+                    <hr>
+
+                    <li class="list-group-item">
+                        <span class="pull-right sbtn">
+                            <a data-toggle="modal" data-target="#texto5" class="info-sb">
+                                <span class="badge">
+                                    <i class="fa fa-question-circle"></i>
+                                </span>
+                            </a>
+                            <input id="cbWAVESv" type="checkbox" data-toggle="toggle" data-onstyle="info" data-on=" "
+                                data-off=" ">
+                            <input id="cbWAVES" type="checkbox" data-toggle="toggle" data-onstyle="info" data-on=" "
+                                data-off=" ">
+                        </span>
+                        <a class="list-group-item" id="bWAVES" href="#"> Oleaje</a>
+                    </li>
+
+                    <li class="list-group-item">
+                        <span class="pull-right sbtn">
+                            <a data-toggle="modal" data-target="#texto6" class="info-sb">
+                                <span class="badge">
+                                    <i class="fa fa-question-circle"></i>
+                                </span>
+                            </a>
+                            <input id="cbWIND" type="checkbox" data-toggle="toggle" data-onstyle="info" data-on=" "
+                                data-off=" ">
+                            <input id="cbWINDv" type="checkbox" data-toggle="toggle" data-onstyle="info" data-on=" "
+                                data-off=" ">
+                        </span>
+                        <a class="list-group-item" id="bWIND" href="#"> Viento</a>
+                    </li>
+                    <hr>
+
+                    <li class="list-group-item">
+                        <span class="pull-right sbtn">
+                            <a data-toggle="modal" data-target="#texto7" class="info-sb">
+                                <span class="badge">
+                                    <i class="fa fa-question-circle"></i>
+                                </span>
+                            </a>
+                            <input id="xbEstaciones" type="checkbox" data-toggle="toggle" data-onstyle="info"
+                                data-on=" " data-off=" ">
+                        </span>
+                        <a class="list-group-item" id="bEstaciones" href="#"> Estaciones meteorológicas y/o
+                            oceanográficas</a>
+                    </li>
+
+                    <li class="list-group-item">
+                        <span class="pull-right sbtn">
+                            <a data-toggle="modal" data-target="#texto8" class="info-sb">
+                                <span class="badge">
+                                    <i class="fa fa-question-circle"></i>
+                                </span>
+                            </a>
+                            <input id="xbCTD" type="checkbox" data-toggle="toggle" data-onstyle="info" data-on=" "
+                                data-off=" ">
+                        </span>
+                        <a class="list-group-item" id="bCTD" href="#"> Perfiles CTD</a>
+                    </li>
+
+                    <li class="list-group-item">
+                        <span class="pull-right sbtn">
+                            <a data-toggle="modal" data-target="#texto9" class="info-sb">
+                                <span class="badge">
+                                    <i class="fa fa-question-circle"></i>
+                                </span>
+                            </a>
+                            <!-- <input id="xDataloggers" type="checkbox" data-toggle="toggle" data-onstyle="info"
+                                data-on=" " data-off=" "> -->
+                        </span>
+                        <a class="list-group-item" id="bDataloggers" href="#"> Dataloggers</a>
+                    </li>
+                </div>
+            </div>
+        </div>
+        <div class="sidebar-pane" id="estacion">
+            <h1 class="sidebar-header">
+                INVEMAR Hoy
+                <span class="sidebar-close">
+                    <i class="fa fa-caret-left"></i>
+                </span>
+            </h1>
+        </div>
+
+    </div>
+</div>
