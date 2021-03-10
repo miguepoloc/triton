@@ -456,7 +456,7 @@ require([
         // id del div donde se va a mostar el mapa
         'map', {
             // Tipo de mapa que se va a mostrar
-            basemap: 'oceans',
+            basemap: 'gray-vector',
             // Centro del mapa
             center: [-75, 16],
             // Cantidad de zoom que se va a realizar
@@ -470,7 +470,7 @@ require([
     // Se guarda en la variable tierra la Feature Layer de la tierra de los paises
     var tierra = new FeatureLayer(url);
     // Se añade al mapa la capa de tierra
-    //map.addLayer(tierra);
+    // map.addLayer(tierra);
 
 
     /******************************PROCESO PARA AÑADIR LAS CAPAS AL MAPA*******************************/
