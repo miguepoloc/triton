@@ -1,253 +1,262 @@
 //var homeUrl = 'http://192.168.3.173:8080/thredds/';
 var homeUrl = 'http://triton.invemar.org.co/thredds/';
 var variables = [{
-        // Almacena las imágenes que van a ser graficadas
-        wms: null,
-        // Almacena el estado de visibilidad de la capa, si se muestra o no
-        v: true,
-        // Dirección de las URL donde se ubican los archivos .nc que son consumidos por el WMS
-        l: [],
-        // id del elemento de checkeo
-        b: 'bSLAh',
-        // Nombre de la variable de la capa
-        variable: 'SLA-H',
-        // Nombre usado para visualizar la capa
-        nombre: 'Nivel del mar',
-        sp: "spSLAh",
-        legendiv: "lSLAh",
-        // Valor máximo
-        max: '0.5',
-        // Valor mínimo
-        min: '-0.5',
-        // Valor central
-        center: '0',
-        // Unidades de la variable
-        unidades: 'm',
-        // Parámetros para la petición
-        p: {
-            layers: 'sla',
-            format: 'image/png',
-            COLORSCALERANGE: '-0.5,0.5',
-            TRANSPARENT: true,
-            STYLES: 'boxfill/redblue',
-            NUMCOLORBANDS: 50,
-            palete: "redblue"
-        },
-        // id de la capa
-        l_id: null,
-        // Nombre de la capa
-        name: "sla",
-        // Texto que se visibiliza
-        texto: "Anomal&iacute;a del nivel del mar (m) del producto combinado las mediciones satelitales de altimetr&iacute;a de todas misiones actualmente en orbita (Jason-3, Sentinel-3A, HY-2A, Saral/AltiKa, Cryosat-2, Jason-2, Jason-1, T/P, ENVISAT, GFO, ERS1/2), calculada respecto al promedio del 20 a&ntilde;os del nivel del mar."
+    // Almacena las imágenes que van a ser graficadas
+    wms: null,
+    // Almacena el estado de visibilidad de la capa, si se muestra o no
+    v: true,
+    // Dirección de las URL donde se ubican los archivos .nc que son consumidos por el WMS
+    l: [],
+    // id del elemento de checkeo
+    b: 'bSLAh',
+    // Nombre de la variable de la capa
+    variable: 'SLA-H',
+    // Nombre usado para visualizar la capa
+    nombre: 'Nivel del mar',
+    sp: "spSLAh",
+    legendiv: "lSLAh",
+    // Valor máximo
+    max: '0.5',
+    // Valor mínimo
+    min: '-0.5',
+    // Valor central
+    center: '0',
+    // Unidades de la variable
+    unidades: 'm',
+    // Parámetros para la petición
+    p: {
+        layers: 'sla',
+        format: 'image/png',
+        COLORSCALERANGE: '-0.5,0.5',
+        TRANSPARENT: true,
+        STYLES: 'boxfill/redblue',
+        NUMCOLORBANDS: 50,
+        palete: "redblue"
     },
-    {
-        wms: null,
-        v: false,
-        l: [],
-        b: 'bSLAuv',
-        variable: 'SLA-UV',
-        nombre: 'Corrientes',
-        sp: "spSLAuv",
-        legendiv: "lSLAuv",
-        max: 1,
-        min: 0,
-        center: 0.5,
-        unidades: 'm/s',
-        p: {
-            layers: 'surface_geostrophic_sea_water_velocity_assuming_sea_level_for_geoid',
-            COLORSCALERANGE: '0,1',
-            STYLES: 'linevec/ferret',
-            NUMCOLORBANDS: 50,
-            format: 'image/png',
-            TRANSPARENT: true,
-            palete: "ferret"
-        },
-        l_id: null,
-        name: "ugos",
-        texto: "Campo de corrientes geostr&oacute;ficas derivadas (m) del producto combinado las mediciones satelitales de altimetr&iacute;a de todas misiones actualmente en orbita (Jason-3, Sentinel-3A, HY-2A, Saral/AltiKa, Cryosat-2, Jason-2, Jason-1, T/P, ENVISAT, GFO, ERS1/2)"
+    // id de la capa
+    l_id: null,
+    // Nombre de la capa
+    name: "sla",
+    // Texto que se visibiliza
+    texto: "Anomal&iacute;a del nivel del mar (m) del producto combinado las mediciones satelitales de altimetr&iacute;a de todas misiones actualmente en orbita (Jason-3, Sentinel-3A, HY-2A, Saral/AltiKa, Cryosat-2, Jason-2, Jason-1, T/P, ENVISAT, GFO, ERS1/2), calculada respecto al promedio del 20 a&ntilde;os del nivel del mar."
+},
+{
+    wms: null,
+    v: false,
+    l: [],
+    b: 'bSLAuv',
+    variable: 'SLA-UV',
+    nombre: 'Corrientes',
+    sp: "spSLAuv",
+    legendiv: "lSLAuv",
+    max: 1,
+    min: 0,
+    center: 0.5,
+    unidades: 'm/s',
+    p: {
+        layers: 'surface_geostrophic_sea_water_velocity_assuming_sea_level_for_geoid',
+        COLORSCALERANGE: '0,1',
+        STYLES: 'linevec/ferret',
+        NUMCOLORBANDS: 50,
+        format: 'image/png',
+        TRANSPARENT: true,
+        palete: "ferret"
     },
-    {
-        wms: null,
-        v: false,
-        l: [],
-        b: 'bSLA',
-        variable: 'SLA-UV',
-        nombre: 'Corrientes',
-        sp: "spSLA",
-        legendiv: "lSLA",
-        max: 1,
-        min: 0,
-        center: 0.5,
-        unidades: 'm/s',
-        p: {
-            layers: 'surface_geostrophic_sea_water_velocity_assuming_sea_level_for_geoid',
-            COLORSCALERANGE: '0,1',
-            STYLES: 'vector/ferret',
-            NUMCOLORBANDS: 50,
-            format: 'image/png',
-            TRANSPARENT: true,
-            palete: "ferret"
-        },
-        l_id: null,
-        name: "ugos",
-        texto: "Campo de corrientes geostr&oacute;ficas derivadas (m) del producto combinado las mediciones satelitales de altimetr&iacute;a de todas misiones actualmente en orbita (Jason-3, Sentinel-3A, HY-2A, Saral/AltiKa, Cryosat-2, Jason-2, Jason-1, T/P, ENVISAT, GFO, ERS1/2)"
+    l_id: null,
+    name: "ugos",
+    texto: "Campo de corrientes geostr&oacute;ficas derivadas (m) del producto combinado las mediciones satelitales de altimetr&iacute;a de todas misiones actualmente en orbita (Jason-3, Sentinel-3A, HY-2A, Saral/AltiKa, Cryosat-2, Jason-2, Jason-1, T/P, ENVISAT, GFO, ERS1/2)"
+},
+{
+    wms: null,
+    v: false,
+    l: [],
+    b: 'bSLA',
+    variable: 'SLA-UV',
+    nombre: 'Corrientes',
+    sp: "spSLA",
+    legendiv: "lSLA",
+    max: 1,
+    min: 0,
+    center: 0.5,
+    unidades: 'm/s',
+    p: {
+        layers: 'surface_geostrophic_sea_water_velocity_assuming_sea_level_for_geoid',
+        COLORSCALERANGE: '0,1',
+        STYLES: 'vector/ferret',
+        NUMCOLORBANDS: 50,
+        format: 'image/png',
+        TRANSPARENT: true,
+        palete: "ferret"
     },
-    {
-        wms: null,
-        v: false,
-        l: [],
-        b: 'bCHL',
-        variable: 'CHL_I',
-        nombre: 'Clorofila',
-        sp: "spCHL",
-        legendiv: "lCHL",
-        max: 10,
-        min: 0.01,
-        center: '.',
-        unidades: 'mg m-3',
-        p: {
-            layers: 'chl',
-            format: 'image/png',
-            TRANSPARENT: true,
-            COLORSCALERANGE: '0.01,10',
-            LOGSCALE: true,
-            NUMCOLORBANDS: '50',
-            palete: "rainbow"
-        },
-        l_id: null,
-        name: "chl",
-        texto: "Promedio-compuesto de los &uacute;ltimos tres d&iacute;as de registros satelitales de la Concentraci&oacute;n de Clorofila del sensor Modis-Aqua. Resoluci&oacute;n espacial 1km."
+    l_id: null,
+    name: "ugos",
+    texto: "Campo de corrientes geostr&oacute;ficas derivadas (m) del producto combinado las mediciones satelitales de altimetr&iacute;a de todas misiones actualmente en orbita (Jason-3, Sentinel-3A, HY-2A, Saral/AltiKa, Cryosat-2, Jason-2, Jason-1, T/P, ENVISAT, GFO, ERS1/2)"
+},
+{
+    wms: null,
+    v: false,
+    l: [],
+    b: 'bCHL',
+    variable: 'CHL_I',
+    nombre: 'Clorofila',
+    sp: "spCHL",
+    legendiv: "lCHL",
+    max: 10,
+    min: 0.01,
+    center: '.',
+    unidades: 'mg m-3',
+    p: {
+        layers: 'chl',
+        format: 'image/png',
+        TRANSPARENT: true,
+        COLORSCALERANGE: '0.01,10',
+        LOGSCALE: true,
+        NUMCOLORBANDS: '50',
+        palete: "rainbow"
     },
-    {
-        wms: null,
-        v: false,
-        l: [],
-        b: 'bSST',
-        variable: 'SST_I',
-        nombre: 'Temperatura superficial',
-        sp: "spSST",
-        legendiv: "lSST",
-        max: 31,
-        min: 23,
-        center: 27,
-        unidades: '°c',
-        p: {
-            layers: 'sst',
-            format: 'image/png',
-            TRANSPARENT: true,
-            COLORSCALERANGE: '23,31',
-            NUMCOLORBANDS: '50',
-            palete: "rainbow"
-        },
-        l_id: null,
-        name: "sst",
-        texto: "Promedio-compuesto de los &uacute;ltimos tres d&iacute;as de registros satelitales de la Temperatura Superficial del Mar del sensor Modis-Aqua. Resoluci&oacute;n espacial 1km."
+    l_id: null,
+    name: "chl",
+    texto: "Promedio-compuesto de los &uacute;ltimos tres d&iacute;as de registros satelitales de la Concentraci&oacute;n de Clorofila del sensor Modis-Aqua. Resoluci&oacute;n espacial 1km."
+},
+{
+    wms: null,
+    v: false,
+    l: [],
+    b: 'bSST',
+    variable: 'SST_I',
+    nombre: 'Temperatura superficial',
+    sp: "spSST",
+    legendiv: "lSST",
+    max: 31,
+    min: 23,
+    center: 27,
+    unidades: '°c',
+    p: {
+        layers: 'sst',
+        format: 'image/png',
+        TRANSPARENT: true,
+        COLORSCALERANGE: '23,31',
+        NUMCOLORBANDS: '50',
+        palete: "rainbow"
     },
-    {
-        wms: null,
-        v: false,
-        l: [],
-        b: 'bWIND',
-        variable: 'WIND',
-        nombre: 'Vientos',
-        sp: "spWIND",
-        legendiv: "lWIND",
-        max: 15,
-        min: 0,
-        center: 7.5,
-        unidades: 'm/s',
-        p: {
-            layers: 'wind',
-            STYLES: 'barb/occam_pastel-30',
-            format: 'image/png',
-            TRANSPARENT: true,
-            NUMCOLORBANDS: '50',
-            COLORSCALERANGE: '0,15',
-            palete: "occam_pastel-30"
-        },
-        l_id: null,
-        name: "uwnd",
-        texto: "Campo de vientos a 10 metros sobre el nivel del mar, proveniente del producto combinado de mas de 6 mediciones satelitales (Microwave Imager-SSMI, Tropical Rainfall Measuring Mission Microwave Imager-TMI, Advanced Microwave Scanning Radiometer-AMSR-E, mas mediciones de dispers&oacute;metros satelitales activos de largo plazo), con una resoluci&oacute;n espacial remuestreada a 1/10&deg;."
+    l_id: null,
+    name: "sst",
+    texto: "Promedio-compuesto de los &uacute;ltimos tres d&iacute;as de registros satelitales de la Temperatura Superficial del Mar del sensor Modis-Aqua. Resoluci&oacute;n espacial 1km."
+},
+{
+    wms: null,
+    v: false,
+    l: [],
+    b: 'bWIND',
+    variable: 'WIND',
+    nombre: 'Vientos',
+    sp: "spWIND",
+    legendiv: "lWIND",
+    max: 15,
+    min: 0,
+    center: 7.5,
+    unidades: 'm/s',
+    p: {
+        layers: 'wind',
+        STYLES: 'barb/occam_pastel-30',
+        format: 'image/png',
+        TRANSPARENT: true,
+        NUMCOLORBANDS: '50',
+        COLORSCALERANGE: '0,15',
+        palete: "occam_pastel-30"
     },
-    {
-        wms: null,
-        v: false,
-        l: [],
-        b: 'bWINDv',
-        variable: 'WIND',
-        nombre: 'Vientos',
-        sp: "spWINDv",
-        legendiv: "lWINDv",
-        max: 15,
-        min: 0,
-        center: 7.5,
-        unidades: 'm/s',
-        p: {
-            layers: 'wind',
-            STYLES: 'vector/occam_pastel-30',
-            format: 'image/png',
-            TRANSPARENT: true,
-            NUMCOLORBANDS: '50',
-            COLORSCALERANGE: '0,15',
-            palete: "occam_pastel-30"
-        },
-        l_id: null,
-        name: "uwnd",
-        texto: "Campo de vientos a 10 metros sobre el nivel del mar, proveniente del producto combinado de mas de 6 mediciones satelitales (Microwave Imager-SSMI, Tropical Rainfall Measuring Mission Microwave Imager-TMI, Advanced Microwave Scanning Radiometer-AMSR-E, mas mediciones de dispers&oacute;metros satelitales activos de largo plazo), con una resoluci&oacute;n espacial remuestreada a 1/10&deg;."
+    l_id: null,
+    name: "uwnd",
+    texto: "Campo de vientos a 10 metros sobre el nivel del mar, proveniente del producto combinado de mas de 6 mediciones satelitales (Microwave Imager-SSMI, Tropical Rainfall Measuring Mission Microwave Imager-TMI, Advanced Microwave Scanning Radiometer-AMSR-E, mas mediciones de dispers&oacute;metros satelitales activos de largo plazo), con una resoluci&oacute;n espacial remuestreada a 1/10&deg;."
+},
+{
+    wms: null,
+    v: false,
+    l: [],
+    b: 'bWINDv',
+    variable: 'WIND',
+    nombre: 'Vientos',
+    sp: "spWINDv",
+    legendiv: "lWINDv",
+    max: 15,
+    min: 0,
+    center: 7.5,
+    unidades: 'm/s',
+    p: {
+        layers: 'wind',
+        STYLES: 'vector/occam_pastel-30',
+        format: 'image/png',
+        TRANSPARENT: true,
+        NUMCOLORBANDS: '50',
+        COLORSCALERANGE: '0,15',
+        palete: "occam_pastel-30"
     },
-    {
-        wms: null,
-        v: false,
-        l: [],
-        b: 'bWAVES',
-        variable: 'WAVES',
-        nombre: 'Olas',
-        sp: "spWAVES",
-        legendiv: "lWAVES",
-        max: 5,
-        min: 0,
-        center: 2.5,
-        unidades: 'm',
-        p: {
-            layers: 'dir',
-            COLORSCALERANGE: '0,5',
-            STYLES: 'vector/occam_pastel-30',
-            NUMCOLORBANDS: '50',
-            format: 'image/png',
-            TRANSPARENT: true,
-            palete: "occam_pastel-30"
-        },
-        l_id: null,
-        name: "vwnd",
-        texto: "Predicciones de la altura, direcci&oacute;n y periodo de ola, generadas cada 6 horas (0, 6, 12 y 18H) por el modelo WAVEWATCH III y remuestreadas a una resoluci&oacute;n espacial de 1/10&deg;."
+    l_id: null,
+    name: "uwnd",
+    texto: "Campo de vientos a 10 metros sobre el nivel del mar, proveniente del producto combinado de mas de 6 mediciones satelitales (Microwave Imager-SSMI, Tropical Rainfall Measuring Mission Microwave Imager-TMI, Advanced Microwave Scanning Radiometer-AMSR-E, mas mediciones de dispers&oacute;metros satelitales activos de largo plazo), con una resoluci&oacute;n espacial remuestreada a 1/10&deg;."
+},
+{
+    wms: null,
+    v: false,
+    l: [],
+    b: 'bWAVES',
+    variable: 'WAVES',
+    nombre: 'Olas',
+    sp: "spWAVES",
+    legendiv: "lWAVES",
+    max: 5,
+    min: 0,
+    center: 2.5,
+    unidades: 'm',
+    p: {
+        layers: 'dir',
+        COLORSCALERANGE: '0,5',
+        STYLES: 'vector/occam_pastel-30',
+        NUMCOLORBANDS: '50',
+        format: 'image/png',
+        TRANSPARENT: true,
+        palete: "occam_pastel-30"
     },
-    {
-        wms: null,
-        v: false,
-        l: [],
-        b: 'bWAVESv',
-        variable: 'WAVES',
-        nombre: 'Olas',
-        sp: "spWAVESv",
-        legendiv: "lWAVESv",
-        max: 5,
-        min: 0,
-        center: 2.5,
-        unidades: 'm',
-        p: {
-            layers: 'dir',
-            COLORSCALERANGE: '0,5',
-            STYLES: 'linevec/occam_pastel-30',
-            NUMCOLORBANDS: '50',
-            format: 'image/png',
-            TRANSPARENT: true,
-            palete: "occam_pastel-30"
-        },
-        l_id: null,
-        name: "vwnd",
-        texto: "Predicciones de la altura, direcci&oacute;n y periodo de ola, generadas cada 6 horas (0, 6, 12 y 18H) por el modelo WAVEWATCH III y remuestreadas a una resoluci&oacute;n espacial de 1/10&deg;."
+    l_id: null,
+    name: "vwnd",
+    texto: "Predicciones de la altura, direcci&oacute;n y periodo de ola, generadas cada 6 horas (0, 6, 12 y 18H) por el modelo WAVEWATCH III y remuestreadas a una resoluci&oacute;n espacial de 1/10&deg;."
+},
+{
+    wms: null,
+    v: false,
+    l: [],
+    b: 'bWAVESv',
+    variable: 'WAVES',
+    nombre: 'Olas',
+    sp: "spWAVESv",
+    legendiv: "lWAVESv",
+    max: 5,
+    min: 0,
+    center: 2.5,
+    unidades: 'm',
+    p: {
+        layers: 'dir',
+        COLORSCALERANGE: '0,5',
+        STYLES: 'linevec/occam_pastel-30',
+        NUMCOLORBANDS: '50',
+        format: 'image/png',
+        TRANSPARENT: true,
+        palete: "occam_pastel-30"
     },
+    l_id: null,
+    name: "vwnd",
+    texto: "Predicciones de la altura, direcci&oacute;n y periodo de ola, generadas cada 6 horas (0, 6, 12 y 18H) por el modelo WAVEWATCH III y remuestreadas a una resoluci&oacute;n espacial de 1/10&deg;."
+},
 ];
+
+function sleep(milliseconds) {
+    var start = new Date().getTime();
+    for (var i = 0; i < 1e7; i++) {
+        if ((new Date().getTime() - start) > milliseconds) {
+            break;
+        }
+    }
+}
 
 // Cuando el documento esté listo.
 $(document).ready(function () {
@@ -455,23 +464,25 @@ require([
     map = new Map(
         // id del div donde se va a mostar el mapa
         'map', {
-            // Tipo de mapa que se va a mostrar
-            basemap: 'gray-vector',
-            // Centro del mapa
-            center: [-75, 16],
-            // Cantidad de zoom que se va a realizar
-            zoom: 5,
-            // Se desactiva el slider
-            slider: false
-        });
+        // Tipo de mapa que se va a mostrar
+        // basemap: 'gray-vector',
+        basemap: 'oceans',
+        // Centro del mapa
+        center: [-75, 16],
+        // Cantidad de zoom que se va a realizar
+        zoom: 5,
+        // Se desactiva el slider
+        slider: false
+    });
 
-    // Añandiendo una cpa de tierra para evitar la superposición de las variables en la tierra
+    // Añandiendo una capa de tierra para evitar la superposición de las variables en la tierra
     var url = "https://gis.invemar.org.co/arcgis/rest/services/Conectividad/ConectividadBase/MapServer/0/";
     // Se guarda en la variable tierra la Feature Layer de la tierra de los paises
     var tierra = new FeatureLayer(url);
     // Se añade al mapa la capa de tierra
     // map.addLayer(tierra);
 
+    console.log(map.layerIds);
 
     /******************************PROCESO PARA AÑADIR LAS CAPAS AL MAPA*******************************/
 
@@ -484,6 +495,7 @@ require([
     // Función que se encarga de controlar el mostrar o eliminar las capas
     // de las variables cada vez que se active o desactive un botón
     function iniciarControl(capa) {
+        // console.log(capa);
         // Inicialmente llama a la función llenar lista para rellenar los campos
         // de la capa, como el link de consulta
         llenarlista(capa);
@@ -508,14 +520,23 @@ require([
                 wmsLayer = graficar(capa);
                 // Se añade al mapa la capa chekeada
                 map.addLayer(wmsLayer);
-                // Obtiene los ids de todas las capas presentes en el mapa
-                let idx = map.layerIds;
-                // Le asigna a capa.l_id el nombre del id de la última capa añadida
-                capa.l_id = idx[idx.length - 1];
-                // Cambia el estado de visibilidad a true
-                capa.v = true;
-                // Deja visible el elemento "#capa.legendiv"
-                $("#" + capa.legendiv).show();
+                // Espera 50 ms y luego si procede a lo siguiente:
+                // Se realiza esta espera para que se cargue la capa o sino no quedaría almacenada en map.layerIds el id de la capa nueva
+                // Por lo que asignaría mal el id, dándole como id el de la toponimia o el de tierra
+                setTimeout(function () {
+                    // Obtiene los ids de todas las capas presentes en el mapa
+                    let idx = map.layerIds;
+                    // Le asigna a capa.l_id el nombre del id de la última capa añadida
+                    // Pero primero se ordena el vector de las capas en orden alfabético, debido a que la capa 0 es la tierra
+                    // La 1 es la toponimia y de ahí en adelante se añaden los mapas
+                    // Pero como la toponimia siempre va arriba de todo, queda en la última posición ella y podría asignarse a la capa
+                    // El valor de id 1 por error, siendo que la capa es el 2 en adelante, por eso se ordena
+                    capa.l_id = idx.sort()[idx.length - 1];
+                    // Cambia el estado de visibilidad a true
+                    capa.v = true;
+                    // Deja visible el elemento "#capa.legendiv"
+                    $("#" + capa.legendiv).show();
+                }, 50);
             }
         });
     };
@@ -543,7 +564,7 @@ require([
             if (capa.v) {
                 // Cambia el botón de esa capa a ON
                 $('#c' + capa.b).bootstrapToggle('on');
-                // Pone visible esa capa
+                // Pone visible esa el control derecho de esa capa
                 $("#" + capa.legendiv).show();
             }
 
@@ -602,7 +623,10 @@ require([
         // Cuando el elemento de la lista cambia
         $("#" + capa.legendiv).on('change', "#" + capa.sp, function () {
             // Obtiene la capa que tiene el id (capa.l_id)
-            let idx = map.getLayer(capa.l_id)
+            console.log(map.layerIds);
+            let idx = map.getLayer(capa.l_id);
+            console.log(capa.l_id);
+            console.log(idx);
             // Elimina la capa obtenida anteriormente
             map.removeLayer(idx);
             // Asigna null el valor de capa.l_id
@@ -626,20 +650,20 @@ require([
         var wmsLayer = new WMSLayer(
             // Usa el link proveniente de capa.wms
             capa.wms, {
-                resourceInfo: {
-                    // Se define la extensión donde se mostrará
-                    extent: new Extent(-124.71430969199997, -33.741115570999966, 179.77593994100005,
-                        53.01194000300006, {
-                            wkid: 4269
-                        }),
-                    // Se definen los parámetros usados para la consulta
-                    customLayerParameters: capa.p,
-                    getFeatureInfoURL: capa.wms,
-                    layerInfos: new WMSLayerInfo({ //No sé esto por qué toca ponerlo
-                    })
-                },
-                visibleLayers: ['Todas'] //No sé esto por qué toca ponerlo
-            }
+            resourceInfo: {
+                // Se define la extensión donde se mostrará
+                extent: new Extent(-124.71430969199997, -33.741115570999966, 179.77593994100005,
+                    53.01194000300006, {
+                    wkid: 4269
+                }),
+                // Se definen los parámetros usados para la consulta
+                customLayerParameters: capa.p,
+                getFeatureInfoURL: capa.wms,
+                layerInfos: new WMSLayerInfo({ //No sé esto por qué toca ponerlo
+                })
+            },
+            visibleLayers: ['Todas'] //No sé esto por qué toca ponerlo
+        }
         );
         return wmsLayer;
     }
