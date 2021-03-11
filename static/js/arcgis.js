@@ -482,7 +482,6 @@ require([
     // Se añade al mapa la capa de tierra
     // map.addLayer(tierra);
 
-    console.log(map.layerIds);
 
     /******************************PROCESO PARA AÑADIR LAS CAPAS AL MAPA*******************************/
 
@@ -495,7 +494,6 @@ require([
     // Función que se encarga de controlar el mostrar o eliminar las capas
     // de las variables cada vez que se active o desactive un botón
     function iniciarControl(capa) {
-        // console.log(capa);
         // Inicialmente llama a la función llenar lista para rellenar los campos
         // de la capa, como el link de consulta
         llenarlista(capa);
@@ -623,10 +621,7 @@ require([
         // Cuando el elemento de la lista cambia
         $("#" + capa.legendiv).on('change', "#" + capa.sp, function () {
             // Obtiene la capa que tiene el id (capa.l_id)
-            console.log(map.layerIds);
             let idx = map.getLayer(capa.l_id);
-            console.log(capa.l_id);
-            console.log(idx);
             // Elimina la capa obtenida anteriormente
             map.removeLayer(idx);
             // Asigna null el valor de capa.l_id
@@ -640,7 +635,7 @@ require([
             // Obtiene los ids de todas las capas presentes en el mapa
             idx = map.layerIds;
             // Le asigna a capa.l_id el nombre del id de la última capa añadida
-            capa.l_id = idx[idx.length - 1];
+            capa.l_id = idx.sort()[idx.length - 1];
         });
     }
 
@@ -1214,7 +1209,6 @@ require([
                 wkid: 102100
             };
             prueba = queryTask.execute(query_point, respuesta);
-            // console.log("LA prueba");
             function respuesta(R) {
                 // Nada
             }
